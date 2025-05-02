@@ -113,6 +113,72 @@ void insercao(ArvRN **r, ArvRN *novoNo) {
     if (inseriu) (**r).cor = preto;
 }
 
+ArvRN* moveTwoEsqRed(ArvRN *r) {
+    trocaCor(&r);
+
+    if (cor((*r).dir->esq) == vermelho) {
+        rotDir(&((*r).dir));
+        rotEsq(&r);
+        trocaCor(&r);
+    }
+
+    return r;
+}
+
+ArvRN* moveTwoDirRed(ArvRN *r) {
+    trocaCor(&r);
+
+    if (cor((*r).esq->esq) == vermelho) {
+        rotDir(&r);
+        trocaCor(&r);
+    }
+
+    return r;
+}
+
+ArvRN *removeMenor(ArvRN *r) {
+    if ((*r).esq == NULL) {
+        free (r);
+        return NULL;
+    }
+
+    if (cor((*r).esq) == preto && cor((*r).esq->esq) == preto) r =  moveTwoEsqRed((*r).esq);
+
+    (*r).esq = removeMenor((*r).esq);
+    balanceamento(&r);
+
+    return r;
+}
+
+ArvRN* removeNo(ArvRN *r, int valor) {
+    if (valor < (*r).info) {
+        if (cor((*r).esq) == preto && cor((*r).dir) == preto) r = moveTwoEsqRed(r);
+        
+        (*r).esq = removeNo((*r).esq, valor);
+
+    } else {
+        if (cor((*r).esq) == vermelho) rotDir(&r);
+
+        if (valor == (*r).info && ((*r).dir) == NULL) {
+            free(r);
+            return NULL;
+        }
+
+        if (cor((*r).dir) == preto && cor((*r).dir->esq) == preto) r = moveTwoDirRed(r);
+
+        if (valor == (*r).info) {
+            ArvRN *menor = procuraMenor((*r).dir);
+            (*r).info = (*menor).info;
+            (*r).dir = removeMenor((*r).dir);
+        } else 
+            (*r).dir = removeNo((*r).dir, valor);
+    }
+
+    balanceamento(&r);
+
+    return r;
+}
+
 int main() {
     printf("inicializando a main...\n");
 
