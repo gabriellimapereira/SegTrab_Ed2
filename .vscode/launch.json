@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": false,
-      "cwd": "/home/olima/Faculdade/ED2/SegTrab/Backups",
-      "program": "/home/olima/Faculdade/ED2/SegTrab/Backups/build/Debug/outDebug",
+      "cwd": "/home/olima/Faculdade/ED2/SegTrab/Arvores",
+      "program": "/home/olima/Faculdade/ED2/SegTrab/Arvores/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
