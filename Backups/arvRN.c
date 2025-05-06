@@ -84,7 +84,8 @@ void trocaCor(ArvRN **r) {
     (**r).dir->cor = !((**r).dir->cor);
 }
 
-void balanceamento(ArvRN **r) {
+void balanceamento(ArvRN **r) 
+{
     if (cor((**r).esq) == preto && cor((**r).dir) == vermelho) rotEsq(r);
 
     if (cor((**r).esq) == vermelho) if (cor((**r).esq->esq) == vermelho) rotDir(&((**r).dir));
