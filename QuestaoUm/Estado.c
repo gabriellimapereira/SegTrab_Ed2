@@ -23,7 +23,7 @@ int inserirEstado(Estado **lista, Estado *novoNo)
     {
         *lista = novoNo;
     } 
-    else if (strcmp((*lista)->info.nome, novoNo->info.nome) == 0) 
+    else if ((*lista)->info.nome == novoNo->info.nome)
     {
         inseriu = 0; 
     }
@@ -40,5 +40,23 @@ int inserirEstado(Estado **lista, Estado *novoNo)
     return 1;
 }
 
+void exibeListaEstado(Estado *lista) {
+    Estado *aux = lista;
 
+    while (aux != NULL)
+    {
+        printf("Estado: %d\n", aux->info.nome);
+        aux = aux->prox;
+    }
+}
 
+void liberarLista(Estado **lista)
+{
+    Estado *aux;
+    while(aux != NULL)
+    {   
+        aux = lista;
+        *lista = (*lista)->prox;
+        free(aux);
+    }
+}

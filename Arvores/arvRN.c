@@ -7,7 +7,7 @@
 typedef struct ArvRN {
     int info;
     int cor;
-    ArvRN *esq, *dir;
+    struct ArvRN *esq, *dir;
 } ArvRN;
 
 ArvRN* criarNo(int dado) {
@@ -16,28 +16,26 @@ ArvRN* criarNo(int dado) {
         novoNo->info = dado;
         novoNo->esq = NULL;
         novoNo->dir = NULL;
+        novoNo->cor = vermelho;
     }
     return novoNo;
 }
 
-ArvRN* inserirNo(ArvRN *r, int dado) {
-    if (r == NULL) 
-        return criarNo(dado);
-    
-    if (dado < r->info) 
-        r->esq = inserirNo(r->esq, dado);
-    else if (dado > r->info) 
-        r->dir = inserirNo(r->dir, dado);
-    
-    return r;
-}
+void imprimirArvore(ArvRN *r, int espaco) {
+    if (r == NULL) return;
 
-void imprimirEmOrdem(ArvRN *r) {
-    if (r != NULL) {
-        imprimirEmOrdem(r->esq);
-        printf("%d ", r->info);
-        imprimirEmOrdem(r->dir);
-    }
+    const int DISTANCIA = 5;
+    espaco += DISTANCIA;
+
+    imprimirArvore(r->dir, espaco);
+
+    printf("\n");
+    for (int i = DISTANCIA; i < espaco; i++)
+        printf(" ");
+    
+    printf("%d (%s)\n", r->info, r->cor == 0 ? "P" : "V");
+
+    imprimirArvore(r->esq, espaco);
 }
 
 void liberarArvore(ArvRN *r) {
@@ -61,8 +59,8 @@ int cor(ArvRN *r) {
 void rotEsq(ArvRN **r) {
     ArvRN *aux = (**r).dir;
 
-    (**r).esq = (*aux).dir;
-    (*aux).dir = *r;
+    (**r).dir = (*aux).esq;
+    (*aux).esq = *r;
     (*aux).cor = (**r).cor;
     (**r).cor = vermelho;
     (*r) = aux;
@@ -71,8 +69,8 @@ void rotEsq(ArvRN **r) {
 void rotDir(ArvRN **r) {
     ArvRN *aux = (**r).esq;
 
-    (**r).dir = (*aux).esq;
-    (*aux).esq = *r;
+    (**r).esq = (*aux).dir;
+    (*aux).dir = *r;
     (*aux).cor = (**r).cor;
     (**r).cor = vermelho;
     (*r) = aux;
@@ -86,11 +84,20 @@ void trocaCor(ArvRN **r) {
 
 void balanceamento(ArvRN **r) 
 {
-    if (cor((**r).esq) == preto && cor((**r).dir) == vermelho) rotEsq(r);
+    if (cor((**r).esq) == preto && cor((**r).dir) == vermelho)
+    {
+        rotEsq(r);
+    } 
 
-    if (cor((**r).esq) == vermelho) if (cor((**r).esq->esq) == vermelho) rotDir(&((**r).dir));
+    if (cor((**r).esq) == vermelho) if (cor((**r).esq->esq) == vermelho)
+    {
+        rotDir(r);
+    } 
 
-    if (cor((**r).esq) == vermelho && cor((**r).dir) == vermelho) trocaCor(r);
+    if (cor((**r).esq) == vermelho && cor((**r).dir) == vermelho)
+    {
+        trocaCor(r); 
+    } 
 }
 
 int insereNo(ArvRN **r, ArvRN *novoNo) {
@@ -106,6 +113,8 @@ int insereNo(ArvRN **r, ArvRN *novoNo) {
         inseriu = 0;
     
     if (*r && inseriu) balanceamento(r);
+
+    return inseriu;
 }
 
 void insercao(ArvRN **r, ArvRN *novoNo) {
@@ -151,6 +160,14 @@ ArvRN *removeMenor(ArvRN *r) {
     return r;
 }
 
+ArvRN* procuraMenor(ArvRN *r) {
+    ArvRN *aux = r;
+
+    while (aux->esq != NULL) aux = aux->esq;
+
+    return aux;
+}
+
 ArvRN* removeNo(ArvRN *r, int valor) {
     if (valor < (*r).info) {
         if (cor((*r).esq) == preto && cor((*r).dir) == preto) r = moveTwoEsqRed(r);
@@ -178,7 +195,7 @@ ArvRN* removeNo(ArvRN *r, int valor) {
     balanceamento(&r);
 
     return r;
-}
+} 
 
 int main() {
     printf("inicializando a main...\n");
@@ -188,12 +205,20 @@ int main() {
     int valores[] = {1000, 300, 250, 200, 350, 2000, 3000, 3500, 3200, 1500, 1250, 1100, 1200, 1700, 1300, 100};
     int n = sizeof(valores) / sizeof(valores[0]);
 
-    for (int i = 0; i < n; i++) {
-        raiz = inserirNo(raiz, valores[i]);
+    for (int i = 0; i < 7; i++) {
+        insercao(&raiz, criarNo(valores[i]));
     }
 
-    printf("\nárvore em ordem antes da remoção:\n");
-    imprimirEmOrdem(raiz);
+    printf("\nárvore antes da remoção:\n");
+    imprimirArvore(raiz, 0);
+
+    printf("\n");
+
+    raiz = removeNo(raiz, 2000);
+
+    printf("\nárvore depois da remoção:\n");
+    imprimirArvore(raiz, 0);
+
     printf("\n");
 
     liberarArvore(raiz);
