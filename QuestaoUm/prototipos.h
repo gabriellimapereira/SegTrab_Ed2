@@ -3,7 +3,7 @@
 typedef struct InfoPessoa
 {
     int cpf;
-    char nome[50];
+    int nome;
     int cepNatal;
     int cepAtual;
     int dataNasc;
@@ -22,8 +22,8 @@ typedef struct CEP
 
 typedef struct InfoCidade 
 {
-    char nome[50];
-    int populacao[50];
+    int nome;
+    int populacao;
     CEP *ceps;
 } InfoCidade;
 
@@ -35,8 +35,8 @@ typedef struct Cidade
 
 typedef struct InfoEstado 
 {
-    char nome[50];
-    char capital[50];
+    int nome;
+    int capital;
     int quantCidades;
     int populacao;
     Cidade *cidades;
@@ -48,4 +48,6 @@ typedef struct Estado
     struct Estado *ant, *prox;
 } Estado;
 
+InfoEstado lerInfoEstado();
+Estado* alocarEstado(InfoEstado info);
 int inserirEstado(Estado **lista, Estado *novoNo);

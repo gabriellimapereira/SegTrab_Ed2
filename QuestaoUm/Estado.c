@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 InfoEstado lerInfoEstado() {
-    //
+    //dispensável por hora já que estão sendo usados valores inteiros
 }
 
 Estado *alocarEstado(InfoEstado info) {
@@ -34,9 +34,11 @@ int inserirEstado(Estado **lista, Estado *novoNo)
     } 
     else 
     {
-        return inserirEstado(&(*lista)->prox, novoNo);
+        inseriu = inserirEstado(&(*lista)->prox, novoNo);
     }
 
     return 1;
 }
+
+
 
