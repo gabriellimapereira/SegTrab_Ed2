@@ -1,11 +1,13 @@
 #include "prototipos.h"
 #include <stdlib.h>
 
-InfoEstado lerInfoEstado() {
+InfoEstado lerInfoEstado() 
+{
     //dispensável por hora já que estão sendo usados valores inteiros
 }
 
-Estado *alocarEstado(InfoEstado info) {
+Estado *alocarEstado(InfoEstado info) 
+{
     Estado *no = (Estado*) malloc(sizeof(Estado));
 
     no->ant = NULL;
@@ -40,7 +42,8 @@ int inserirEstado(Estado **lista, Estado *novoNo)
     return 1;
 }
 
-void exibeListaEstado(Estado *lista) {
+void exibeListaEstado(Estado *lista) 
+{
     Estado *aux = lista;
 
     while (aux != NULL)
