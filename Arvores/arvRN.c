@@ -205,7 +205,7 @@ int main() {
     int valores[] = {1000, 300, 250, 200, 350, 2000, 3000, 3500, 3200, 1500, 1250, 1100, 1200, 1700, 1300, 100};
     int n = sizeof(valores) / sizeof(valores[0]);
 
-    for (int i = 0; i < 7; i++) {
+    for (int i = 0; i < n; i++) {
         insercao(&raiz, criarNo(valores[i]));
     }
 

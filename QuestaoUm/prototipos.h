@@ -51,5 +51,14 @@ typedef struct Estado
 InfoEstado lerInfoEstado();
 Estado* alocarEstado(InfoEstado info);
 int inserirEstado(Estado **lista, Estado *novoNo);
-void exibeListaEstado(Estado *lista);
+void exibirEstados(Estado *lista);
 void liberarLista(Estado **lista);
+
+//Cidades
+
+int lerCep();
+CEP* alocarCep(int numCep);
+int inserirCep(CEP **raiz, CEP *novoNo);
+int removerCep(CEP **raiz, int numCep);
+void exibirCeps(CEP *raiz);
+void liberarCeps(CEP **raiz);
