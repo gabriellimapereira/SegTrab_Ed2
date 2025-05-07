@@ -7,7 +7,7 @@
 typedef struct ArvRN {
     int info;
     int cor;
-    struct ArvRN *esq, *dir;
+    ArvRN *esq, *dir;
 } ArvRN;
 
 ArvRN* criarNo(int dado) {
