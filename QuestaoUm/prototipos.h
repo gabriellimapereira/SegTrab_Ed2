@@ -65,6 +65,7 @@ void liberarLista(Estado **lista);
 //Ceps
 int lerCep();
 CEP* alocarCep(int numCep);
+CEP* buscaCep(CEP *raiz, int valor);
 int corCep(CEP *raiz);
 void rotEsqCep(CEP **raiz);
 void rotDirCep(CEP **raiz);

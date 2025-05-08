@@ -46,6 +46,22 @@ void liberarArvore(ArvRN *r) {
     }
 }
 
+ArvRN* buscaNo(ArvRN *r, int valor) 
+{
+    ArvRN *no;
+
+    if (r->info == valor) 
+        no = r;
+    else if (r->info > valor)
+        no = buscaNo(r->esq, valor);
+    else if (r->info < valor)
+        no = buscaNo(r->dir, valor);
+    else 
+        no = NULL;
+    
+    return no;
+}
+
 int cor(ArvRN *r) {
     int cor = preto;
 
@@ -117,7 +133,7 @@ int insereNo(ArvRN **r, ArvRN *novoNo) {
     return inseriu;
 }
 
-int insercao(ArvRN **r, ArvRN *novoNo) {
+int  insercao(ArvRN **r, ArvRN *novoNo) {
     int inseriu = insereNo(r, novoNo);
 
     if (inseriu) (**r).cor = preto;
@@ -207,7 +223,7 @@ int main() {
     int valores[] = {1000, 300, 250, 200, 350, 2000, 3000, 3500, 3200, 1500, 1250, 1100, 1200, 1700, 1300, 100};
     int n = sizeof(valores) / sizeof(valores[0]);
 
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < 6; i++) {
         insercao(&raiz, criarNo(valores[i]));
     }
 
@@ -216,10 +232,11 @@ int main() {
 
     printf("\n");
 
-    raiz = removeNo(raiz, 2000);
+    /* raiz = removeNo(raiz, 2000);
 
     printf("\nárvore depois da remoção:\n");
     imprimirArvore(raiz, 0);
+    */
 
     printf("\n");
 

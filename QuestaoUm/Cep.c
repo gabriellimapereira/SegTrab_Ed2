@@ -18,6 +18,22 @@ CEP* alocarCep(int numCep)
     return aux;
 }
 
+CEP* buscaCep(CEP *raiz, int valor) 
+{
+    CEP *no;
+
+    if (raiz->info == valor) 
+        no = raiz;
+    else if (raiz->info > valor)
+        no = buscaCep(raiz->esq, valor);
+    else if (raiz->info < valor)
+        no = buscaCep(raiz->dir, valor);
+    else 
+        no = NULL;
+    
+    return no;
+}
+
 int corCep(CEP *raiz)
 {
     int cor = preto;
