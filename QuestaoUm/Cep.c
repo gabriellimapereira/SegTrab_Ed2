@@ -56,7 +56,8 @@ void trocaCorCep(CEP **raiz)
     (**raiz).dir->cor = !((**raiz).dir->cor);
 }
 
-void balanceamentoCep(CEP **raiz) {
+void balanceamentoCep(CEP **raiz) 
+{
     if (corCep((**raiz).esq) == preto && corCep((**raiz).dir) == vermelho) rotEsqCep(raiz);
 
     if (corCep((**raiz).esq) == vermelho) if (corCep((**raiz).esq->esq) == vermelho) rotDirCep(raiz);
@@ -102,6 +103,7 @@ void exibirCeps(CEP *raiz)
         exibirCeps(raiz->dir);
     }
 }
+
 void liberarCeps(CEP **raiz)
 {
     if (*raiz)
