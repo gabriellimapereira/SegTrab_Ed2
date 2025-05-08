@@ -117,10 +117,12 @@ int insereNo(ArvRN **r, ArvRN *novoNo) {
     return inseriu;
 }
 
-void insercao(ArvRN **r, ArvRN *novoNo) {
+int insercao(ArvRN **r, ArvRN *novoNo) {
     int inseriu = insereNo(r, novoNo);
 
     if (inseriu) (**r).cor = preto;
+
+    return inseriu;
 }
 
 ArvRN* moveTwoEsqRed(ArvRN *r) {
