@@ -78,3 +78,8 @@ void exibirCeps(CEP *raiz);
 void liberarCeps(CEP **raiz);
 
 //Pessoas
+
+//Questões
+Estado* estadoMaisPopuloso(Estado *raiz);
+void populacaoDaCapital(Cidade *raiz, int capital, int populacao);
+void cidadeMaisPopulosa(Cidade *raiz, int capital, Cidade *cidade);
