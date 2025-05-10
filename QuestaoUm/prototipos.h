@@ -61,6 +61,17 @@ void exibirEstados(Estado *lista);
 void liberarLista(Estado **lista);
 
 //Cidades
+InfoCidade lerInfoCidade();
+Cidade *alocarCidade(InfoCidade info);
+int insercaoCidade(Cidade **raiz, Cidade *novoNo);
+int inserirCidade(Cidade **raiz, Cidade *novoNo);
+void balanceamentoCidade(Cidade **raiz);
+int corCidade(Cidade *raiz);
+void rotEsqCidade(Cidade **raiz);
+void rotDirCidade(Cidade **raiz);
+void trocaCorCidade(Cidade **raiz);
+void exibirCidades(Cidade *raiz);
+void liberarCidades(Cidade *raiz);
 
 //Ceps
 int lerCep();
@@ -78,6 +89,18 @@ void exibirCeps(CEP *raiz);
 void liberarCeps(CEP **raiz);
 
 //Pessoas
+InfoPessoa lerInfoPessoa();
+Pessoa *alocarPessoa(InfoPessoa info);
+int insercaoPessoa(Pessoa **raiz, Pessoa *novoNo);
+int inserirPessoa(Pessoa **raiz, Pessoa *novoNo);
+int corPessoa(Pessoa *raiz);
+void rotEsqPessoa(Pessoa **raiz);
+void rotDirPessoa(Pessoa **raiz);
+void trocaCorPessoa(Pessoa **raiz);
+void balanceamentoPessoa(Pessoa **raiz);
+int removerPessoa(Pessoa **raiz, int CPF);
+void exibirPessoas(Pessoa *raiz);
+void liberarPessoas(Pessoa *raiz);
 
 //Questões
 Estado* estadoMaisPopuloso(Estado *raiz);

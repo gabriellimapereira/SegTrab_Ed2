@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "prototipos.h"
 #include <stdlib.h>
 
@@ -9,11 +10,14 @@ InfoEstado lerInfoEstado()
 Estado *alocarEstado(InfoEstado info) 
 {
     Estado *no = (Estado*) malloc(sizeof(Estado));
-
+    if(no == NULL)
+    {
+        printf("Erro de alocacao.\n");
+        exit(1);
+    }
     no->ant = NULL;
     no->prox = NULL;
     no->info = info;
-
     return no;
 }
 
