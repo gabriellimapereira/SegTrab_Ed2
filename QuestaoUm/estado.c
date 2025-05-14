@@ -56,7 +56,7 @@ void liberarLista(Estado **lista)
     Estado *aux;
     while(aux != NULL)
     {   
-        aux = lista;
+        aux = *lista;
         *lista = (*lista)->prox;
         free(aux);
     }
@@ -79,22 +79,3 @@ Estado* estadoMaisPopuloso(Estado *raiz)
     return estado;
 }
 
-void populacaoDaCapital(Cidade *raiz, int capital, int populacao) 
-{
-    if (raiz)
-    {
-        if (raiz->info.nome == capital) if (raiz->info.populacao > populacao) populacao = raiz->info.populacao;
-        populacaoDaCapital(raiz->esq, capital, populacao);
-        populacaoDaCapital(raiz->dir, capital, populacao);
-    }
-}
-
-void cidadeMaisPopulosa(Cidade *raiz, int capital, Cidade *cidade) 
-{
-    if (raiz)
-    {
-        if (raiz->info.nome != capital) if (raiz->info.populacao > cidade->info.populacao) cidade = raiz;
-        populacaoDaCapital(raiz->esq, capital, cidade);
-        populacaoDaCapital(raiz->dir, capital, cidade);
-    }
-}

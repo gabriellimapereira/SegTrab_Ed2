@@ -11,32 +11,18 @@ typedef struct InfoPessoa
     int dataNasc;
 } InfoPessoa;
 
-typedef struct Pessoa {
-    InfoPessoa info;
-    int cor;
-    struct Pessoa *esq, *dir;
-} Pessoa;
-
-typedef struct CEP
-{
-    int info;
-    int cor;
-    struct CEP *esq, *dir;
-} CEP;
-
 typedef struct InfoCidade 
 {
     int nome;
     int populacao;
-    CEP *ceps;
+    struct ArvRubNeg *ceps;
 } InfoCidade;
 
-typedef struct Cidade
-{
-    InfoCidade info;
-    int cor;
-    struct Cidade *esq, *dir;
-} Cidade;
+typedef union {
+    int cep;
+    InfoCidade cidade;
+    InfoPessoa pessoa;
+} Dados;
 
 typedef struct InfoEstado 
 {
@@ -44,7 +30,7 @@ typedef struct InfoEstado
     int capital;
     int quantCidades;
     int populacao;
-    Cidade *cidades;
+    struct ArvRubNeg *cidades;
 } InfoEstado;
 
 typedef struct Estado 
@@ -53,56 +39,56 @@ typedef struct Estado
     struct Estado *ant, *prox;
 } Estado;
 
+typedef struct ArvRubNeg {
+    Dados info;
+    int cor;
+    struct ArvRubNeg *esq, *dir;
+} ArvRubNeg;
+
+//Rubro-Negra
+ArvRubNeg* criarNo(Dados dado);
+void imprimirArvore(ArvRubNeg *raiz, int espaco);
+void liberarArvore(ArvRubNeg *raiz);
+ArvRubNeg* buscaNo(ArvRubNeg *raiz, int valor) ;
+int cor(ArvRubNeg *raiz);
+void rotEsq(ArvRubNeg **raiz);
+void rotDir(ArvRubNeg **raiz);
+void trocaCor(ArvRubNeg **raiz);
+void balanceamento(ArvRubNeg **raiz);
+int insereNo(ArvRubNeg **raiz, ArvRubNeg *novoNo);
+int  insercao(ArvRubNeg **raiz, ArvRubNeg *novoNo);
+ArvRubNeg* moveTwoEsqRed(ArvRubNeg *raiz);
+ArvRubNeg* moveTwoDirRed(ArvRubNeg *raiz);
+ArvRubNeg *removeMenor(ArvRubNeg *raiz);
+ArvRubNeg* procuraMenor(ArvRubNeg *raiz);
+ArvRubNeg* removeNo(ArvRubNeg *raiz, int valor);
+
 //Estados
 InfoEstado lerInfoEstado();
 Estado* alocarEstado(InfoEstado info);
 int inserirEstado(Estado **lista, Estado *novoNo);
 void exibirEstados(Estado *lista);
 void liberarLista(Estado **lista);
-
-//Cidades
-InfoCidade lerInfoCidade();
-Cidade *alocarCidade(InfoCidade info);
-int insercaoCidade(Cidade **raiz, Cidade *novoNo);
-int inserirCidade(Cidade **raiz, Cidade *novoNo);
-void balanceamentoCidade(Cidade **raiz);
-int corCidade(Cidade *raiz);
-void rotEsqCidade(Cidade **raiz);
-void rotDirCidade(Cidade **raiz);
-void trocaCorCidade(Cidade **raiz);
-void exibirCidades(Cidade *raiz);
-void liberarCidades(Cidade *raiz);
-
-//Ceps
-int lerCep();
-CEP* alocarCep(int numCep);
-CEP* buscaCep(CEP *raiz, int valor);
-int corCep(CEP *raiz);
-void rotEsqCep(CEP **raiz);
-void rotDirCep(CEP **raiz);
-void trocaCorCep(CEP **raiz);
-void balanceamentoCep(CEP **raiz);
-int inserirCep(CEP **raiz, CEP *novoNo);
-int insercaoCep(CEP **raiz, CEP *novoNo); 
-int removerCep(CEP **raiz, int numCep);
-void exibirCeps(CEP *raiz);
-void liberarCeps(CEP **raiz);
-
-//Pessoas
-InfoPessoa lerInfoPessoa();
-Pessoa *alocarPessoa(InfoPessoa info);
-int insercaoPessoa(Pessoa **raiz, Pessoa *novoNo);
-int inserirPessoa(Pessoa **raiz, Pessoa *novoNo);
-int corPessoa(Pessoa *raiz);
-void rotEsqPessoa(Pessoa **raiz);
-void rotDirPessoa(Pessoa **raiz);
-void trocaCorPessoa(Pessoa **raiz);
-void balanceamentoPessoa(Pessoa **raiz);
-int removerPessoa(Pessoa **raiz, int CPF);
-void exibirPessoas(Pessoa *raiz);
-void liberarPessoas(Pessoa *raiz);
+Estado* estadoMaisPopuloso(Estado *raiz);
 
 //Questões
-Estado* estadoMaisPopuloso(Estado *raiz);
-void populacaoDaCapital(Cidade *raiz, int capital, int populacao);
-void cidadeMaisPopulosa(Cidade *raiz, int capital, Cidade *cidade);
+/*
+void populacaoDaCapital(Cidade *raiz, int capital, int populacao) 
+{
+    if (raiz)
+    {
+        if (raiz->info.nome == capital) if (raiz->info.populacao > populacao) populacao = raiz->info.populacao;
+        populacaoDaCapital(raiz->esq, capital, populacao);
+        populacaoDaCapital(raiz->dir, capital, populacao);
+    }
+}
+
+void cidadeMaisPopulosa(Cidade *raiz, int capital, Cidade *cidade) 
+{
+    if (raiz)
+    {
+        if (raiz->info.nome != capital) if (raiz->info.populacao > cidade->info.populacao) cidade = raiz;
+        populacaoDaCapital(raiz->esq, capital, cidade);
+        populacaoDaCapital(raiz->dir, capital, cidade);
+    }
+} */

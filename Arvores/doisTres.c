@@ -88,11 +88,20 @@ DoisTres* insere(DoisTres **raiz, DoisTres *pai, int info, int *sobe)
             }
             else 
             {
-                maiorNo = quebraNo(raiz, info, sobe);
+                maiorNo = quebraNo(raiz, info, sobe, NULL);
                 if (pai == NULL)
                 {
                     *raiz = criaNo(*sobe, *raiz, maiorNo);
                     maiorNo = NULL;
+                }
+                else 
+                {
+                    if (info < (*raiz)->infoUm)
+                        maiorNo = insere(&((*raiz)->esq), info, *raiz, sobe);
+                    else if ((*raiz)->quantInfo == 1 || info < (*raiz)->infoDois)
+                        maiorNo = insere(&((*raiz)->cen), info, *raiz, sobe);
+                    else if (info > (*raiz)->infoDois)
+                        maiorNo = insere(&((*raiz)->dir), info, *raiz, sobe);
                 }
             }
         }

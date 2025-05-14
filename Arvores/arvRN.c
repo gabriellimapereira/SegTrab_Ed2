@@ -4,14 +4,14 @@
 #define preto 0
 #define vermelho 1
 
-typedef struct ArvRN {
+typedef struct ArvRubNeg {
     int info;
     int cor;
-    struct ArvRN *esq, *dir;
-} ArvRN;
+    struct ArvRubNeg *esq, *dir;
+} ArvRubNeg;
 
-ArvRN* criarNo(int dado) {
-    ArvRN *novoNo = (ArvRN*) malloc(sizeof(ArvRN));
+ArvRubNeg* criarNo(int dado) {
+    ArvRubNeg *novoNo = (ArvRubNeg*) malloc(sizeof(ArvRubNeg));
     if (novoNo != NULL) {
         novoNo->info = dado;
         novoNo->esq = NULL;
@@ -21,7 +21,7 @@ ArvRN* criarNo(int dado) {
     return novoNo;
 }
 
-void imprimirArvore(ArvRN *r, int espaco) {
+void imprimirArvore(ArvRubNeg *r, int espaco) {
     if (r == NULL) return;
 
     const int DISTANCIA = 5;
@@ -38,7 +38,7 @@ void imprimirArvore(ArvRN *r, int espaco) {
     imprimirArvore(r->esq, espaco);
 }
 
-void liberarArvore(ArvRN *r) {
+void liberarArvore(ArvRubNeg *r) {
     if (r != NULL) {
         liberarArvore(r->esq);
         liberarArvore(r->dir);
@@ -46,9 +46,9 @@ void liberarArvore(ArvRN *r) {
     }
 }
 
-ArvRN* buscaNo(ArvRN *r, int valor) 
+ArvRubNeg* buscaNo(ArvRubNeg *r, int valor) 
 {
-    ArvRN *no;
+    ArvRubNeg *no;
 
     if (r->info == valor) 
         no = r;
@@ -62,7 +62,7 @@ ArvRN* buscaNo(ArvRN *r, int valor)
     return no;
 }
 
-int cor(ArvRN *r) {
+int cor(ArvRubNeg *r) {
     int cor = preto;
 
     if (r) {
@@ -72,8 +72,8 @@ int cor(ArvRN *r) {
     return cor;
 }
 
-void rotEsq(ArvRN **r) {
-    ArvRN *aux = (**r).dir;
+void rotEsq(ArvRubNeg **r) {
+    ArvRubNeg *aux = (**r).dir;
 
     (**r).dir = (*aux).esq;
     (*aux).esq = *r;
@@ -82,8 +82,8 @@ void rotEsq(ArvRN **r) {
     (*r) = aux;
 }
 
-void rotDir(ArvRN **r) {
-    ArvRN *aux = (**r).esq;
+void rotDir(ArvRubNeg **r) {
+    ArvRubNeg *aux = (**r).esq;
 
     (**r).esq = (*aux).dir;
     (*aux).dir = *r;
@@ -92,13 +92,13 @@ void rotDir(ArvRN **r) {
     (*r) = aux;
 }
 
-void trocaCor(ArvRN **r) {
+void trocaCor(ArvRubNeg **r) {
     (**r).cor = !((**r).cor);
     (**r).esq->cor = !((**r).esq->cor);
     (**r).dir->cor = !((**r).dir->cor);
 }
 
-void balanceamento(ArvRN **r) 
+void balanceamento(ArvRubNeg **r) 
 {
     if (cor((**r).esq) == preto && cor((**r).dir) == vermelho)
     {
@@ -116,7 +116,7 @@ void balanceamento(ArvRN **r)
     } 
 }
 
-int insereNo(ArvRN **r, ArvRN *novoNo) {
+int insereNo(ArvRubNeg **r, ArvRubNeg *novoNo) {
     int inseriu = 1;
 
     if (*r == NULL) 
@@ -133,7 +133,7 @@ int insereNo(ArvRN **r, ArvRN *novoNo) {
     return inseriu;
 }
 
-int  insercao(ArvRN **r, ArvRN *novoNo) {
+int  insercao(ArvRubNeg **r, ArvRubNeg *novoNo) {
     int inseriu = insereNo(r, novoNo);
 
     if (inseriu) (**r).cor = preto;
@@ -141,7 +141,7 @@ int  insercao(ArvRN **r, ArvRN *novoNo) {
     return inseriu;
 }
 
-ArvRN* moveTwoEsqRed(ArvRN *r) {
+ArvRubNeg* moveTwoEsqRed(ArvRubNeg *r) {
     trocaCor(&r);
 
     if (cor((*r).dir->esq) == vermelho) {
@@ -153,7 +153,7 @@ ArvRN* moveTwoEsqRed(ArvRN *r) {
     return r;
 }
 
-ArvRN* moveTwoDirRed(ArvRN *r) {
+ArvRubNeg* moveTwoDirRed(ArvRubNeg *r) {
     trocaCor(&r);
 
     if (cor((*r).esq->esq) == vermelho) {
@@ -164,7 +164,7 @@ ArvRN* moveTwoDirRed(ArvRN *r) {
     return r;
 }
 
-ArvRN *removeMenor(ArvRN *r) {
+ArvRubNeg *removeMenor(ArvRubNeg *r) {
     if ((*r).esq == NULL) {
         free (r);
         return NULL;
@@ -178,15 +178,15 @@ ArvRN *removeMenor(ArvRN *r) {
     return r;
 }
 
-ArvRN* procuraMenor(ArvRN *r) {
-    ArvRN *aux = r;
+ArvRubNeg* procuraMenor(ArvRubNeg *r) {
+    ArvRubNeg *aux = r;
 
     while (aux->esq != NULL) aux = aux->esq;
 
     return aux;
 }
 
-ArvRN* removeNo(ArvRN *r, int valor) {
+ArvRubNeg* removeNo(ArvRubNeg *r, int valor) {
     if (valor < (*r).info) {
         if (cor((*r).esq) == preto && cor((*r).dir) == preto) r = moveTwoEsqRed(r);
         
@@ -203,7 +203,7 @@ ArvRN* removeNo(ArvRN *r, int valor) {
         if (cor((*r).dir) == preto && cor((*r).dir->esq) == preto) r = moveTwoDirRed(r);
 
         if (valor == (*r).info) {
-            ArvRN *menor = procuraMenor((*r).dir);
+            ArvRubNeg *menor = procuraMenor((*r).dir);
             (*r).info = (*menor).info;
             (*r).dir = removeMenor((*r).dir);
         } else 
@@ -218,7 +218,7 @@ ArvRN* removeNo(ArvRN *r, int valor) {
 int main() {
     printf("inicializando a main...\n");
 
-    ArvRN *raiz = NULL;
+    ArvRubNeg *raiz = NULL;
 
     int valores[] = {1000, 300, 250, 200, 350, 2000, 3000, 3500, 3200, 1500, 1250, 1100, 1200, 1700, 1300, 100};
     int n = sizeof(valores) / sizeof(valores[0]);
