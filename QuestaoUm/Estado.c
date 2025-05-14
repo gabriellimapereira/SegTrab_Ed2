@@ -46,7 +46,8 @@ void exibirEstados(Estado *lista)
 
     while (aux != NULL)
     {
-        printf("Estado: %d\n", aux->info.nome);
+        printf("\nEstado: %d\n ", aux->info.nome);
+        exibirCidades(aux->info.cidades);
         aux = aux->prox;
     }
 }

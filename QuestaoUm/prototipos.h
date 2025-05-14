@@ -62,8 +62,11 @@ ArvRubNeg* moveTwoDirRed(ArvRubNeg *raiz);
 ArvRubNeg *removeMenor(ArvRubNeg *raiz);
 ArvRubNeg* procuraMenor(ArvRubNeg *raiz);
 ArvRubNeg* removeNo(ArvRubNeg *raiz, int valor);
+void exibirCeps(ArvRubNeg *raiz);
+void exibirCidades(ArvRubNeg *raiz);
+void exibirPessoas(ArvRubNeg *raiz);
 
-//Estados
+//Estados-DuplaEncadeada
 InfoEstado lerInfoEstado();
 Estado* alocarEstado(InfoEstado info);
 int inserirEstado(Estado **lista, Estado *novoNo);

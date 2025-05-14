@@ -133,7 +133,6 @@ int  insercao(ArvRubNeg **raiz, ArvRubNeg *novoNo) {
     return inseriu;
 }
 
-
 ArvRubNeg* moveTwoEsqRed(ArvRubNeg *raiz) {
     trocaCor(&raiz);
 
@@ -207,3 +206,34 @@ ArvRubNeg* removeNo(ArvRubNeg *raiz, int valor) {
 
     return raiz;
 } 
+
+void exibirCeps(ArvRubNeg *raiz) 
+{
+    if (raiz) 
+    {
+        exibirCeps(raiz->esq);
+        printf("Cep: %d\n", raiz->info.cep);
+        exibirCeps(raiz->dir);
+    }
+}
+
+void exibirCidades(ArvRubNeg *raiz) 
+{
+    if (raiz) 
+    {
+        exibirCidades(raiz->esq);
+        printf("Cidade: %d\n", raiz->info.cidade.nome);
+        exibirCeps(raiz->info.cidade.ceps);
+        exibirCidades(raiz->dir);
+    }
+}
+
+void exibirPessoas(ArvRubNeg *raiz) 
+{
+    if (raiz) 
+    {
+        exibirPessoas(raiz->esq);
+        printf("CPF: %d\n", raiz->info.pessoa.cpf);
+        exibirPessoas(raiz->dir);
+    }
+}
