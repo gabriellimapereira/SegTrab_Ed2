@@ -66,6 +66,11 @@ void exibirCeps(ArvRubNeg *raiz);
 void exibirCidades(ArvRubNeg *raiz);
 void exibirPessoas(ArvRubNeg *raiz);
 
+InfoEstado lerInfoEstado();
+InfoCidade lerInfoCidade();
+int lerCep();
+InfoPessoa lerInfoPessoa();
+
 //Estados-DuplaEncadeada
 InfoEstado lerInfoEstado();
 Estado* alocarEstado(InfoEstado info);

@@ -64,7 +64,6 @@ int inserePessoas(ArvRubNeg **raiz) {
     return 0;
 }
 
-
 void menu() {
     printf("\n=========== MENU ===========\n");
     printf("1 - Cadastrar Estado\n");
@@ -88,12 +87,12 @@ void menu() {
 int main() {
     Estado *estados = NULL;
     ArvRubNeg *pessoas = NULL;
-    int opcao;
+    int opcao, dado, inseriu;
     insereEstados(&estados);
     //estados->info.cidades = NULL;
     insereCidades(&(estados->info.cidades));
     //estados->info.cidades->info.cidade.ceps = NULL;
-    insereCidades(&(estados->info.cidades->info.cidade.ceps));
+    insereCeps(&(estados->info.cidades->info.cidade.ceps));
 
     inserePessoas(&pessoas);
     
@@ -104,7 +103,9 @@ int main() {
 
         switch (opcao) {
             case 1:
-                //cadastrarEstado();
+                printf("Digite o nome do estado: ");
+                scanf("%d", &dado);
+                //lerDado();
                 break;
             case 2:
                 //cadastrarCidade();
@@ -155,9 +156,10 @@ int main() {
         }
     } while (opcao != 0);
 
-    liberarLista(&estados);
-    liberarArvore(estados->info.cidades);
     liberarArvore(estados->info.cidades->info.cidade.ceps);
+    liberarArvore(estados->info.cidades);
+    liberarLista(&estados);
+    
     liberarArvore(pessoas);
 
     return 0;

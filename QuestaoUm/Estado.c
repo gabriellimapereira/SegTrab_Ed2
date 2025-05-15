@@ -52,16 +52,16 @@ void exibirEstados(Estado *lista)
     }
 }
 
-void liberarLista(Estado **lista)
-{
-    Estado *aux;
-    while(aux != NULL)
-    {   
-        aux = *lista;
-        *lista = (*lista)->prox;
-        free(aux);
+void liberarLista(Estado **lista) {
+    Estado *aux = *lista;
+    while (aux != NULL) {
+        Estado *temp = aux;
+        aux = aux->prox;
+        free(temp);
     }
+    *lista = NULL;  // opcional, mas limpa o ponteiro original
 }
+
 
 Estado* estadoMaisPopuloso(Estado *raiz) 
 {

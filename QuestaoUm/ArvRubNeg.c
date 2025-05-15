@@ -31,7 +31,7 @@ void imprimirArvore(ArvRubNeg *r, int espaco) {
 }
 
 void liberarArvore(ArvRubNeg *r) {
-    if (r != NULL) {
+    if (r) {
         liberarArvore(r->esq);
         liberarArvore(r->dir);
         free(r);
