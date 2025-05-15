@@ -4,14 +4,14 @@
 #define preto 0
 #define vermelho 1
 
-typedef struct ArvRubNeg {
+typedef struct ArvDoisTres {
     int info;
     int cor;
-    struct ArvRubNeg *esq, *dir;
-} ArvRubNeg;
+    struct ArvDoisTres *esq, *dir;
+} ArvDoisTres;
 
-ArvRubNeg* criarNo(int dado) {
-    ArvRubNeg *novoNo = (ArvRubNeg*) malloc(sizeof(ArvRubNeg));
+ArvDoisTres* criarNo(int dado) {
+    ArvDoisTres *novoNo = (ArvDoisTres*) malloc(sizeof(ArvDoisTres));
     if (novoNo != NULL) {
         novoNo->info = dado;
         novoNo->esq = NULL;
@@ -21,7 +21,7 @@ ArvRubNeg* criarNo(int dado) {
     return novoNo;
 }
 
-void imprimirArvore(ArvRubNeg *r, int espaco) {
+void imprimirArvore(ArvDoisTres *r, int espaco) {
     if (r == NULL) return;
 
     const int DISTANCIA = 5;
@@ -38,7 +38,7 @@ void imprimirArvore(ArvRubNeg *r, int espaco) {
     imprimirArvore(r->esq, espaco);
 }
 
-void liberarArvore(ArvRubNeg *r) {
+void liberarArvore(ArvDoisTres *r) {
     if (r != NULL) {
         liberarArvore(r->esq);
         liberarArvore(r->dir);
@@ -46,9 +46,9 @@ void liberarArvore(ArvRubNeg *r) {
     }
 }
 
-ArvRubNeg* buscaNo(ArvRubNeg *r, int valor) 
+ArvDoisTres* buscaNo(ArvDoisTres *r, int valor) 
 {
-    ArvRubNeg *no;
+    ArvDoisTres *no;
 
     if (r->info == valor) 
         no = r;
@@ -62,7 +62,7 @@ ArvRubNeg* buscaNo(ArvRubNeg *r, int valor)
     return no;
 }
 
-int cor(ArvRubNeg *r) {
+int cor(ArvDoisTres *r) {
     int cor = preto;
 
     if (r) {
@@ -72,8 +72,8 @@ int cor(ArvRubNeg *r) {
     return cor;
 }
 
-void rotEsq(ArvRubNeg **r) {
-    ArvRubNeg *aux = (**r).dir;
+void rotEsq(ArvDoisTres **r) {
+    ArvDoisTres *aux = (**r).dir;
 
     (**r).dir = (*aux).esq;
     (*aux).esq = *r;
@@ -82,8 +82,8 @@ void rotEsq(ArvRubNeg **r) {
     (*r) = aux;
 }
 
-void rotDir(ArvRubNeg **r) {
-    ArvRubNeg *aux = (**r).esq;
+void rotDir(ArvDoisTres **r) {
+    ArvDoisTres *aux = (**r).esq;
 
     (**r).esq = (*aux).dir;
     (*aux).dir = *r;
@@ -92,13 +92,13 @@ void rotDir(ArvRubNeg **r) {
     (*r) = aux;
 }
 
-void trocaCor(ArvRubNeg **r) {
+void trocaCor(ArvDoisTres **r) {
     (**r).cor = !((**r).cor);
     (**r).esq->cor = !((**r).esq->cor);
     (**r).dir->cor = !((**r).dir->cor);
 }
 
-void balanceamento(ArvRubNeg **r) 
+void balanceamento(ArvDoisTres **r) 
 {
     if (cor((**r).esq) == preto && cor((**r).dir) == vermelho)
     {
@@ -116,7 +116,7 @@ void balanceamento(ArvRubNeg **r)
     } 
 }
 
-int insereNo(ArvRubNeg **r, ArvRubNeg *novoNo) {
+int insereNo(ArvDoisTres **r, ArvDoisTres *novoNo) {
     int inseriu = 1;
 
     if (*r == NULL) 
@@ -133,7 +133,7 @@ int insereNo(ArvRubNeg **r, ArvRubNeg *novoNo) {
     return inseriu;
 }
 
-int  insercao(ArvRubNeg **r, ArvRubNeg *novoNo) {
+int  insercao(ArvDoisTres **r, ArvDoisTres *novoNo) {
     int inseriu = insereNo(r, novoNo);
 
     if (inseriu) (**r).cor = preto;
@@ -141,7 +141,7 @@ int  insercao(ArvRubNeg **r, ArvRubNeg *novoNo) {
     return inseriu;
 }
 
-ArvRubNeg* moveTwoEsqRed(ArvRubNeg *r) {
+ArvDoisTres* moveTwoEsqRed(ArvDoisTres *r) {
     trocaCor(&r);
 
     if (cor((*r).dir->esq) == vermelho) {
@@ -153,7 +153,7 @@ ArvRubNeg* moveTwoEsqRed(ArvRubNeg *r) {
     return r;
 }
 
-ArvRubNeg* moveTwoDirRed(ArvRubNeg *r) {
+ArvDoisTres* moveTwoDirRed(ArvDoisTres *r) {
     trocaCor(&r);
 
     if (cor((*r).esq->esq) == vermelho) {
@@ -164,7 +164,7 @@ ArvRubNeg* moveTwoDirRed(ArvRubNeg *r) {
     return r;
 }
 
-ArvRubNeg *removeMenor(ArvRubNeg *r) {
+ArvDoisTres *removeMenor(ArvDoisTres *r) {
     if ((*r).esq == NULL) {
         free (r);
         return NULL;
@@ -178,15 +178,15 @@ ArvRubNeg *removeMenor(ArvRubNeg *r) {
     return r;
 }
 
-ArvRubNeg* procuraMenor(ArvRubNeg *r) {
-    ArvRubNeg *aux = r;
+ArvDoisTres* procuraMenor(ArvDoisTres *r) {
+    ArvDoisTres *aux = r;
 
     while (aux->esq != NULL) aux = aux->esq;
 
     return aux;
 }
 
-ArvRubNeg* removeNo(ArvRubNeg *r, int valor) {
+ArvDoisTres* removeNo(ArvDoisTres *r, int valor) {
     if (valor < (*r).info) {
         if (cor((*r).esq) == preto && cor((*r).dir) == preto) r = moveTwoEsqRed(r);
         
@@ -203,7 +203,7 @@ ArvRubNeg* removeNo(ArvRubNeg *r, int valor) {
         if (cor((*r).dir) == preto && cor((*r).dir->esq) == preto) r = moveTwoDirRed(r);
 
         if (valor == (*r).info) {
-            ArvRubNeg *menor = procuraMenor((*r).dir);
+            ArvDoisTres *menor = procuraMenor((*r).dir);
             (*r).info = (*menor).info;
             (*r).dir = removeMenor((*r).dir);
         } else 
@@ -218,7 +218,7 @@ ArvRubNeg* removeNo(ArvRubNeg *r, int valor) {
 int main() {
     printf("inicializando a main...\n");
 
-    ArvRubNeg *raiz = NULL;
+    ArvDoisTres *raiz = NULL;
 
     int valores[] = {1000, 300, 250, 200, 350, 2000, 3000, 3500, 3200, 1500, 1250, 1100, 1200, 1700, 1300, 100};
     int n = sizeof(valores) / sizeof(valores[0]);
