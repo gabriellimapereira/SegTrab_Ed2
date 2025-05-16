@@ -25,11 +25,11 @@ int insereCidades(ArvDoisTres **raiz) {
     int n = sizeof(valores) / sizeof(valores[0]);
 
     for (int i = 0; i < n; i++) {
+        Dados sobe;
         Dados dado;
         dado.cidade.nome = valores[i];  // apenas o campo nome da cidade é usado
         dado.cidade.ceps = NULL;
-        ArvDoisTres *novoNo = criarNo(dado);
-        insercao(raiz, novoNo);
+        inserirNo(raiz, NULL, dado, &sobe);
     }
 
     return 0;
@@ -41,10 +41,10 @@ int insereCeps(ArvDoisTres **raiz) {
     int n = sizeof(valores) / sizeof(valores[0]);
 
     for (int i = 0; i < n; i++) {
+        Dados sobe;
         Dados dado;
         dado.cep = valores[i]; 
-        ArvDoisTres *novoNo = criarNo(dado);
-        insercao(raiz, novoNo);
+        inserirNo(raiz, NULL, dado, &sobe);
     }
 
     return 0;
@@ -55,10 +55,10 @@ int inserePessoas(ArvDoisTres **raiz) {
     int n = sizeof(valores) / sizeof(valores[0]);
 
     for (int i = 0; i < n; i++) {
+        Dados sobe;
         Dados dado;
         dado.pessoa.cpf = valores[i]; 
-        ArvDoisTres *novoNo = criarNo(dado);
-        insercao(raiz, novoNo);
+        inserirNo(raiz, NULL, dado, &sobe);
     }
 
     return 0;
@@ -79,7 +79,7 @@ void menu() {
     printf("11 - Cidade natal de uma pessoa pelo CEP de natalidade\n");
     printf("12 - Quantas pessoas nascidas em uma cidade não moram nela\n");
     printf("13 - Quantas pessoas que moram em uma cidade não nasceram nela\n");
-    printf("14 - Visualizar todas as árvores");
+    printf("14 - Visualizar todas as árvores\n");
     printf("0 - Sair\n");
     printf("============================\n");
 }
@@ -92,7 +92,7 @@ int main() {
     //estados->info.cidades = NULL;
     insereCidades(&(estados->info.cidades));
     //estados->info.cidades->info.cidade.ceps = NULL;
-    insereCeps(&(estados->info.cidades->info.cidade.ceps));
+    insereCeps(&(estados->info.cidades->infoUm.cidade.ceps));
 
     inserePessoas(&pessoas);
     
@@ -156,11 +156,11 @@ int main() {
         }
     } while (opcao != 0);
 
-    liberarArvore(estados->info.cidades->info.cidade.ceps);
-    liberarArvore(estados->info.cidades);
+    liberarArv(&(estados->info.cidades->infoUm.cidade.ceps));
+    liberarArv(&(estados->info.cidades));
     liberarLista(&estados);
     
-    liberarArvore(pessoas);
+    liberarArv(&(pessoas));
 
     return 0;
 }

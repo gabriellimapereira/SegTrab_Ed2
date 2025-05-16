@@ -71,7 +71,7 @@ InfoCidade lerInfoCidade();
 int lerCep();
 InfoPessoa lerInfoPessoa();
 
-//Estados-DuplaEncadeada
+//Estados - DuplaEncadeada
 InfoEstado lerInfoEstado();
 Estado* alocarEstado(InfoEstado info);
 int inserirEstado(Estado **lista, Estado *novoNo);

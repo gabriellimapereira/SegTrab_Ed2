@@ -45,9 +45,26 @@ typedef struct ArvDoisTres {
 } ArvDoisTres;
 
 //Dois-Três
-ArvDoisTres* criarNo(int info, ArvDoisTres *fEsq, ArvDoisTres *fCen);
+ArvDoisTres* criarNo(Dados info, ArvDoisTres *fEsq, ArvDoisTres *fCen);
 void imprimirArv(ArvDoisTres *raiz, int nivel);
 void liberarArv(ArvDoisTres **raiz);
 void adicionarInfo(ArvDoisTres **no, Dados info, ArvDoisTres *subArvInfo);
-ArvDoisTres* quebrarNo(ArvDoisTres **no, Dados info, Dados sobe, ArvDoisTres *filhoDir);
+ArvDoisTres* quebrarNo(ArvDoisTres **no, Dados info, Dados *sobe, ArvDoisTres *filhoDir);
 ArvDoisTres* inserirNo(ArvDoisTres **raiz, ArvDoisTres *pai, Dados info, Dados *sobe);
+
+void exibirCeps(ArvDoisTres *raiz);
+void exibirCidades(ArvDoisTres *raiz);
+void exibirPessoas(ArvDoisTres *raiz);
+
+InfoEstado lerInfoEstado();
+InfoCidade lerInfoCidade();
+int lerCep();
+InfoPessoa lerInfoPessoa();
+
+//Estados - DuplaEncadeada
+InfoEstado lerInfoEstado();
+Estado* alocarEstado(InfoEstado info);
+int inserirEstado(Estado **lista, Estado *novoNo);
+void exibirEstados(Estado *lista);
+void liberarLista(Estado **lista);
+Estado* estadoMaisPopuloso(Estado *raiz);
