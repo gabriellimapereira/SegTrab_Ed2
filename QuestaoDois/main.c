@@ -19,7 +19,7 @@ int insereEstados(Estado **raiz) {
     return 0;
 } 
 
-int insereCidades(ArvDoisTres **raiz) {
+int insereCidades(ArvRubNeg **raiz) {
 
     int valores[] = {1000, 300, 250, 200, 350, 2000, 3000, 3500, 3200, 1500, 1250, 1100, 1200, 1700, 1300, 100};
     int n = sizeof(valores) / sizeof(valores[0]);
@@ -35,7 +35,7 @@ int insereCidades(ArvDoisTres **raiz) {
     return 0;
 } 
 
-int insereCeps(ArvDoisTres **raiz) {
+int insereCeps(ArvRubNeg **raiz) {
 
     int valores[] = {10000, 3000, 2500, 2000, 3500, 20000, 30000, 35000, 32000, 15000, 12500, 11000, 12000, 17000, 13000, 1000};
     int n = sizeof(valores) / sizeof(valores[0]);
@@ -50,7 +50,7 @@ int insereCeps(ArvDoisTres **raiz) {
     return 0;
 } 
 
-int inserePessoas(ArvDoisTres **raiz) {
+int inserePessoas(ArvRubNeg **raiz) {
     int valores[] = {1000, 300, 250, 200, 350, 2000, 3000, 3500, 3200, 1500, 1250, 1100, 1200, 1700, 1300, 100};
     int n = sizeof(valores) / sizeof(valores[0]);
 
@@ -86,7 +86,7 @@ void menu() {
 
 int main() {
     Estado *estados = NULL;
-    ArvDoisTres *pessoas = NULL;
+    ArvRubNeg *pessoas = NULL;
     int opcao, dado, inseriu;
     insereEstados(&estados);
     //estados->info.cidades = NULL;

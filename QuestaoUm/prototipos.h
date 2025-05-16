@@ -15,7 +15,7 @@ typedef struct InfoCidade
 {
     int nome;
     int populacao;
-    struct ArvDoisTres *ceps;
+    struct ArvRubNeg *ceps;
 } InfoCidade;
 
 typedef union {
@@ -30,7 +30,7 @@ typedef struct InfoEstado
     int capital;
     int quantCidades;
     int populacao;
-    struct ArvDoisTres *cidades;
+    struct ArvRubNeg *cidades;
 } InfoEstado;
 
 typedef struct Estado 
@@ -39,32 +39,32 @@ typedef struct Estado
     struct Estado *ant, *prox;
 } Estado;
 
-typedef struct ArvDoisTres {
+typedef struct ArvRubNeg {
     Dados info;
     int cor;
-    struct ArvDoisTres *esq, *dir;
-} ArvDoisTres;
+    struct ArvRubNeg *esq, *dir;
+} ArvRubNeg;
 
 //Rubro-Negra
-ArvDoisTres* criarNo(Dados dado);
-void imprimirArvore(ArvDoisTres *raiz, int espaco);
-void liberarArvore(ArvDoisTres *raiz);
-ArvDoisTres* buscaNo(ArvDoisTres *raiz, int valor) ;
-int cor(ArvDoisTres *raiz);
-void rotEsq(ArvDoisTres **raiz);
-void rotDir(ArvDoisTres **raiz);
-void trocaCor(ArvDoisTres **raiz);
-void balanceamento(ArvDoisTres **raiz);
-int insereNo(ArvDoisTres **raiz, ArvDoisTres *novoNo);
-int  insercao(ArvDoisTres **raiz, ArvDoisTres *novoNo);
-ArvDoisTres* moveTwoEsqRed(ArvDoisTres *raiz);
-ArvDoisTres* moveTwoDirRed(ArvDoisTres *raiz);
-ArvDoisTres *removeMenor(ArvDoisTres *raiz);
-ArvDoisTres* procuraMenor(ArvDoisTres *raiz);
-ArvDoisTres* removeNo(ArvDoisTres *raiz, int valor);
-void exibirCeps(ArvDoisTres *raiz);
-void exibirCidades(ArvDoisTres *raiz);
-void exibirPessoas(ArvDoisTres *raiz);
+ArvRubNeg* criarNo(Dados dado);
+void imprimirArvore(ArvRubNeg *raiz, int espaco);
+void liberarArvore(ArvRubNeg *raiz);
+ArvRubNeg* buscaNo(ArvRubNeg *raiz, int valor) ;
+int cor(ArvRubNeg *raiz);
+void rotEsq(ArvRubNeg **raiz);
+void rotDir(ArvRubNeg **raiz);
+void trocaCor(ArvRubNeg **raiz);
+void balanceamento(ArvRubNeg **raiz);
+int insereNo(ArvRubNeg **raiz, ArvRubNeg *novoNo);
+int  insercao(ArvRubNeg **raiz, ArvRubNeg *novoNo);
+ArvRubNeg* moveTwoEsqRed(ArvRubNeg *raiz);
+ArvRubNeg* moveTwoDirRed(ArvRubNeg *raiz);
+ArvRubNeg *removeMenor(ArvRubNeg *raiz);
+ArvRubNeg* procuraMenor(ArvRubNeg *raiz);
+ArvRubNeg* removeNo(ArvRubNeg *raiz, int valor);
+void exibirCeps(ArvRubNeg *raiz);
+void exibirCidades(ArvRubNeg *raiz);
+void exibirPessoas(ArvRubNeg *raiz);
 
 InfoEstado lerInfoEstado();
 InfoCidade lerInfoCidade();
@@ -74,7 +74,7 @@ InfoPessoa lerInfoPessoa();
 //Estados - DuplaEncadeada
 InfoEstado lerInfoEstado();
 Estado* alocarEstado(InfoEstado info);
-int inserirEstado(Estado **lista, Estado *novoNo);
+int inserirEstado(Estado** inicio, Estado *novoNo);
 void exibirEstados(Estado *lista);
 void liberarLista(Estado **lista);
 Estado* estadoMaisPopuloso(Estado *raiz);

@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include "prototipos.h"
 
-ArvDoisTres* criarNo(Dados info, ArvDoisTres *fEsq, ArvDoisTres *fCen) {
-    ArvDoisTres *no = malloc(sizeof(ArvDoisTres));
+ArvRubNeg* criarNo(Dados info, ArvRubNeg *fEsq, ArvRubNeg *fCen) {
+    ArvRubNeg *no = malloc(sizeof(ArvRubNeg));
     if (no) {
         no->infoUm.cep = info.cep;
         no->quantInfo = 1;
@@ -14,7 +14,7 @@ ArvDoisTres* criarNo(Dados info, ArvDoisTres *fEsq, ArvDoisTres *fCen) {
     return no;
 }
 
-void imprimirArv(ArvDoisTres *raiz, int nivel) {
+void imprimirArv(ArvRubNeg *raiz, int nivel) {
     if (raiz == NULL) return;
 
     imprimirArv(raiz->dir, nivel + 1);
@@ -31,7 +31,7 @@ void imprimirArv(ArvDoisTres *raiz, int nivel) {
     imprimirArv(raiz->esq, nivel + 1);
 }
 
-void liberarArv(ArvDoisTres **raiz) {
+void liberarArv(ArvRubNeg **raiz) {
     if (*raiz) {
         liberarArv(&(*raiz)->esq);
         liberarArv(&(*raiz)->cen);
@@ -42,7 +42,7 @@ void liberarArv(ArvDoisTres **raiz) {
     }
 }
 
-void adicionarInfo(ArvDoisTres **no, Dados info, ArvDoisTres *subArvInfo) {
+void adicionarInfo(ArvRubNeg **no, Dados info, ArvRubNeg *subArvInfo) {
     if (info.cep > (*no)->infoUm.cep) {
         (*no)->infoDois = info;
         (*no)->dir = subArvInfo;
@@ -55,8 +55,8 @@ void adicionarInfo(ArvDoisTres **no, Dados info, ArvDoisTres *subArvInfo) {
     (*no)->quantInfo = 2;
 }
 
-ArvDoisTres* quebrarNo(ArvDoisTres **no, Dados info, Dados *sobe, ArvDoisTres *filhoDir) {
-    ArvDoisTres *maior;
+ArvRubNeg* quebrarNo(ArvRubNeg **no, Dados info, Dados *sobe, ArvRubNeg *filhoDir) {
+    ArvRubNeg *maior;
 
     if (info.cep > (*no)->infoDois.cep) {
         *sobe = (*no)->infoDois;
@@ -77,8 +77,8 @@ ArvDoisTres* quebrarNo(ArvDoisTres **no, Dados info, Dados *sobe, ArvDoisTres *f
     return maior;
 }
 
-ArvDoisTres* inserirNo(ArvDoisTres **raiz, ArvDoisTres *pai, Dados info, Dados *sobe) {
-    ArvDoisTres *maiorNo = NULL;
+ArvRubNeg* inserirNo(ArvRubNeg **raiz, ArvRubNeg *pai, Dados info, Dados *sobe) {
+    ArvRubNeg *maiorNo = NULL;
 
     if (*raiz == NULL) {
         *raiz = criarNo(info, NULL, NULL);
@@ -120,7 +120,7 @@ ArvDoisTres* inserirNo(ArvDoisTres **raiz, ArvDoisTres *pai, Dados info, Dados *
     return maiorNo;
 }
 
-void exibirCeps(ArvDoisTres *raiz) 
+void exibirCeps(ArvRubNeg *raiz) 
 {
     if (raiz) 
     {
@@ -134,7 +134,7 @@ void exibirCeps(ArvDoisTres *raiz)
     }
 }
 
-void exibirCidades(ArvDoisTres *raiz) 
+void exibirCidades(ArvRubNeg *raiz) 
 {
     if (raiz) 
     {
@@ -150,7 +150,7 @@ void exibirCidades(ArvDoisTres *raiz)
     }
 }
 
-void exibirPessoas(ArvDoisTres *raiz) 
+void exibirPessoas(ArvRubNeg *raiz) 
 {
     if (raiz) 
     {

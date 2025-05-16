@@ -19,7 +19,7 @@ int insereEstados(Estado **raiz) {
     return 0;
 } 
 
-int insereCidades(ArvDoisTres **raiz) {
+int insereCidades(ArvRubNeg **raiz) {
 
     int valores[] = {1000, 300, 250, 200, 350, 2000, 3000, 3500, 3200, 1500, 1250, 1100, 1200, 1700, 1300, 100};
     int n = sizeof(valores) / sizeof(valores[0]);
@@ -28,14 +28,14 @@ int insereCidades(ArvDoisTres **raiz) {
         Dados dado;
         dado.cidade.nome = valores[i];  // apenas o campo nome da cidade é usado
         dado.cidade.ceps = NULL;
-        ArvDoisTres *novoNo = criarNo(dado);
+        ArvRubNeg *novoNo = criarNo(dado);
         insercao(raiz, novoNo);
     }
 
     return 0;
 } 
 
-int insereCeps(ArvDoisTres **raiz) {
+int insereCeps(ArvRubNeg **raiz) {
 
     int valores[] = {10000, 3000, 2500, 2000, 3500, 20000, 30000, 35000, 32000, 15000, 12500, 11000, 12000, 17000, 13000, 1000};
     int n = sizeof(valores) / sizeof(valores[0]);
@@ -43,21 +43,21 @@ int insereCeps(ArvDoisTres **raiz) {
     for (int i = 0; i < n; i++) {
         Dados dado;
         dado.cep = valores[i]; 
-        ArvDoisTres *novoNo = criarNo(dado);
+        ArvRubNeg *novoNo = criarNo(dado);
         insercao(raiz, novoNo);
     }
 
     return 0;
 } 
 
-int inserePessoas(ArvDoisTres **raiz) {
+int inserePessoas(ArvRubNeg **raiz) {
     int valores[] = {1000, 300, 250, 200, 350, 2000, 3000, 3500, 3200, 1500, 1250, 1100, 1200, 1700, 1300, 100};
     int n = sizeof(valores) / sizeof(valores[0]);
 
     for (int i = 0; i < n; i++) {
         Dados dado;
         dado.pessoa.cpf = valores[i]; 
-        ArvDoisTres *novoNo = criarNo(dado);
+        ArvRubNeg *novoNo = criarNo(dado);
         insercao(raiz, novoNo);
     }
 
@@ -79,15 +79,20 @@ void menu() {
     printf("11 - Cidade natal de uma pessoa pelo CEP de natalidade\n");
     printf("12 - Quantas pessoas nascidas em uma cidade não moram nela\n");
     printf("13 - Quantas pessoas que moram em uma cidade não nasceram nela\n");
-    printf("14 - Visualizar todas as árvores");
+    printf("14 - Visualizar todas as árvores\n");
     printf("0 - Sair\n");
     printf("============================\n");
 }
 
 int main() {
-    Estado *estados = NULL;
-    ArvDoisTres *pessoas = NULL;
+    Estado *estados = NULL, *est = NULL;
+    ArvRubNeg *pessoas = NULL;
     int opcao, dado, inseriu;
+    InfoEstado dadosEstado;
+    InfoCidade dadosCidade;
+    Dados dadosQuaisquer;
+
+
     insereEstados(&estados);
     //estados->info.cidades = NULL;
     insereCidades(&(estados->info.cidades));
@@ -103,9 +108,15 @@ int main() {
 
         switch (opcao) {
             case 1:
-                printf("Digite o nome do estado: ");
-                scanf("%d", &dado);
-                //lerDado();
+                dadosEstado = lerInfoEstado(&dadosCidade);
+                est = alocarEstado(dadosEstado);
+                inseriu = inserirEstado(&estados, est);
+                if (inseriu) {
+                    printf("Estado inserido com sucesso!\n");
+                    dadosQuaisquer.cidade = dadosCidade;
+                    insereNo(&(est->info.cidades), criarNo(dadosQuaisquer));
+                } else 
+                    printf("O estado já existe! Não houve inserção.\n");
                 break;
             case 2:
                 //cadastrarCidade();

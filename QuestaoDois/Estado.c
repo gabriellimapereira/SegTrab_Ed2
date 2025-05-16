@@ -4,7 +4,7 @@
 
 InfoEstado lerInfoEstado() 
 {
-    //dispensável por hora já que estão sendo usados valores inteiros
+    
 }
 
 Estado *alocarEstado(InfoEstado info) 
@@ -21,23 +21,36 @@ Estado *alocarEstado(InfoEstado info)
     return no;
 }
 
-int inserirEstado(Estado **lista, Estado *novoNo) 
-{
+int inserirEstado(Estado** inicio, Estado *novoNo) {
     int inseriu = 1;
 
-    if (*lista == NULL) 
-        *lista = novoNo;
-    else if ((*lista)->info.nome == novoNo->info.nome)
-        inseriu = 0; 
-    else if ((*lista)->prox == NULL) 
-    {
-        (*lista)->prox = novoNo;
-        novoNo->ant = *lista;
-    } 
-    else 
-        inseriu = inserirEstado(&(*lista)->prox, novoNo);
+    if (*inicio == NULL)
+        *inicio = novoNo;
+    else {
+        Estado* atual = *inicio;
 
-    return 1;
+        if (novoNo->info.nome == atual->info.nome) 
+            inseriu = 0;
+        else if (novoNo->info.nome < atual->info.nome) {
+            novoNo->prox = atual;
+            atual->ant = novoNo;
+            *inicio = novoNo;
+        } else {
+
+            while (atual->prox != NULL && atual->prox->info.nome < novoNo->info.nome) atual = atual->prox;
+
+            if ((atual->prox != NULL && atual->prox->info.nome == novoNo->info.nome) || atual->info.nome == novoNo->info.nome)
+                inseriu = 0;
+            else {
+                novoNo->prox = atual->prox;
+                novoNo->ant = atual;
+                if (atual->prox != NULL) atual->prox->ant = novoNo;
+                atual->prox = novoNo;
+            }
+        }
+    }
+
+    return inseriu;
 }
 
 void exibirEstados(Estado *lista) 

@@ -2,8 +2,8 @@
 #include <stdio.h>
 #include "prototipos.h"
 
-ArvDoisTres* criarNo(Dados dado) {
-    ArvDoisTres *novoNo = (ArvDoisTres*) malloc(sizeof(ArvDoisTres));
+ArvRubNeg* criarNo(Dados dado) {
+    ArvRubNeg *novoNo = (ArvRubNeg*) malloc(sizeof(ArvRubNeg));
     if (novoNo != NULL) {
         novoNo->info = dado;
         novoNo->esq = NULL;
@@ -13,7 +13,7 @@ ArvDoisTres* criarNo(Dados dado) {
     return novoNo;
 }
 
-void imprimirArvore(ArvDoisTres *r, int espaco) {
+void imprimirArvore(ArvRubNeg *r, int espaco) {
     if (r == NULL) return;
 
     const int DISTANCIA = 5;
@@ -30,7 +30,7 @@ void imprimirArvore(ArvDoisTres *r, int espaco) {
     imprimirArvore(r->esq, espaco);
 }
 
-void liberarArvore(ArvDoisTres *r) {
+void liberarArvore(ArvRubNeg *r) {
     if (r) {
         liberarArvore(r->esq);
         liberarArvore(r->dir);
@@ -38,9 +38,9 @@ void liberarArvore(ArvDoisTres *r) {
     }
 }
 
-ArvDoisTres* buscaNo(ArvDoisTres *r, int valor) 
+ArvRubNeg* buscaNo(ArvRubNeg *r, int valor) 
 {
-    ArvDoisTres *no;
+    ArvRubNeg *no;
 
     if (r->info.cep == valor) 
         no = r;
@@ -54,7 +54,7 @@ ArvDoisTres* buscaNo(ArvDoisTres *r, int valor)
     return no;
 }
 
-int cor(ArvDoisTres *raiz) {
+int cor(ArvRubNeg *raiz) {
     int cor = preto;
 
     if (raiz) {
@@ -64,8 +64,8 @@ int cor(ArvDoisTres *raiz) {
     return cor;
 }
 
-void rotEsq(ArvDoisTres **raiz) {
-    ArvDoisTres *aux = (**raiz).dir;
+void rotEsq(ArvRubNeg **raiz) {
+    ArvRubNeg *aux = (**raiz).dir;
 
     (**raiz).dir = (*aux).esq;
     (*aux).esq = *raiz;
@@ -74,8 +74,8 @@ void rotEsq(ArvDoisTres **raiz) {
     (*raiz) = aux;
 }
 
-void rotDir(ArvDoisTres **raiz) {
-    ArvDoisTres *aux = (**raiz).esq;
+void rotDir(ArvRubNeg **raiz) {
+    ArvRubNeg *aux = (**raiz).esq;
 
     (**raiz).esq = (*aux).dir;
     (*aux).dir = *raiz;
@@ -84,13 +84,13 @@ void rotDir(ArvDoisTres **raiz) {
     (*raiz) = aux;
 }
 
-void trocaCor(ArvDoisTres **raiz) {
+void trocaCor(ArvRubNeg **raiz) {
     (**raiz).cor = !((**raiz).cor);
     (**raiz).esq->cor = !((**raiz).esq->cor);
     (**raiz).dir->cor = !((**raiz).dir->cor);
 }
 
-void balanceamento(ArvDoisTres **raiz) 
+void balanceamento(ArvRubNeg **raiz) 
 {
     if (cor((**raiz).esq) == preto && cor((**raiz).dir) == vermelho)
     {
@@ -108,7 +108,7 @@ void balanceamento(ArvDoisTres **raiz)
     } 
 }
 
-int insereNo(ArvDoisTres **raiz, ArvDoisTres *novoNo) {
+int insereNo(ArvRubNeg **raiz, ArvRubNeg *novoNo) {
     int inseriu = 1;
 
     if (*raiz == NULL) 
@@ -125,7 +125,7 @@ int insereNo(ArvDoisTres **raiz, ArvDoisTres *novoNo) {
     return inseriu;
 }
 
-int  insercao(ArvDoisTres **raiz, ArvDoisTres *novoNo) {
+int  insercao(ArvRubNeg **raiz, ArvRubNeg *novoNo) {
     int inseriu = insereNo(raiz, novoNo);
 
     if (inseriu) (**raiz).cor = preto;
@@ -133,7 +133,7 @@ int  insercao(ArvDoisTres **raiz, ArvDoisTres *novoNo) {
     return inseriu;
 }
 
-ArvDoisTres* moveTwoEsqRed(ArvDoisTres *raiz) {
+ArvRubNeg* moveTwoEsqRed(ArvRubNeg *raiz) {
     trocaCor(&raiz);
 
     if (cor((*raiz).dir->esq) == vermelho) {
@@ -145,7 +145,7 @@ ArvDoisTres* moveTwoEsqRed(ArvDoisTres *raiz) {
     return raiz;
 }
 
-ArvDoisTres* moveTwoDirRed(ArvDoisTres *raiz) {
+ArvRubNeg* moveTwoDirRed(ArvRubNeg *raiz) {
     trocaCor(&raiz);
 
     if (cor((*raiz).esq->esq) == vermelho) {
@@ -156,7 +156,7 @@ ArvDoisTres* moveTwoDirRed(ArvDoisTres *raiz) {
     return raiz;
 }
 
-ArvDoisTres *removeMenor(ArvDoisTres *raiz) {
+ArvRubNeg *removeMenor(ArvRubNeg *raiz) {
     if ((*raiz).esq == NULL) {
         free (raiz);
         return NULL;
@@ -170,15 +170,15 @@ ArvDoisTres *removeMenor(ArvDoisTres *raiz) {
     return raiz;
 }
 
-ArvDoisTres* procuraMenor(ArvDoisTres *raiz) {
-    ArvDoisTres *aux = raiz;
+ArvRubNeg* procuraMenor(ArvRubNeg *raiz) {
+    ArvRubNeg *aux = raiz;
 
     while (aux->esq != NULL) aux = aux->esq;
 
     return aux;
 }
 
-ArvDoisTres* removeNo(ArvDoisTres *raiz, int valor) {
+ArvRubNeg* removeNo(ArvRubNeg *raiz, int valor) {
     if (valor < (*raiz).info.cep) {
         if (cor((*raiz).esq) == preto && cor((*raiz).dir) == preto) raiz = moveTwoEsqRed(raiz);
         
@@ -195,7 +195,7 @@ ArvDoisTres* removeNo(ArvDoisTres *raiz, int valor) {
         if (cor((*raiz).dir) == preto && cor((*raiz).dir->esq) == preto) raiz = moveTwoDirRed(raiz);
 
         if (valor == (*raiz).info.cep) {
-            ArvDoisTres *menor = procuraMenor((*raiz).dir);
+            ArvRubNeg *menor = procuraMenor((*raiz).dir);
             (*raiz).info = (*menor).info;
             (*raiz).dir = removeMenor((*raiz).dir);
         } else 
@@ -207,7 +207,7 @@ ArvDoisTres* removeNo(ArvDoisTres *raiz, int valor) {
     return raiz;
 } 
 
-void exibirCeps(ArvDoisTres *raiz) 
+void exibirCeps(ArvRubNeg *raiz) 
 {
     if (raiz) 
     {
@@ -217,7 +217,7 @@ void exibirCeps(ArvDoisTres *raiz)
     }
 }
 
-void exibirCidades(ArvDoisTres *raiz) 
+void exibirCidades(ArvRubNeg *raiz) 
 {
     if (raiz) 
     {
@@ -228,7 +228,7 @@ void exibirCidades(ArvDoisTres *raiz)
     }
 }
 
-void exibirPessoas(ArvDoisTres *raiz) 
+void exibirPessoas(ArvRubNeg *raiz) 
 {
     if (raiz) 
     {

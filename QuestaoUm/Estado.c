@@ -2,9 +2,23 @@
 #include "prototipos.h"
 #include <stdlib.h>
 
-InfoEstado lerInfoEstado() 
+InfoEstado lerInfoEstado(InfoCidade *capital) 
 {
-    //dispensável por hora já que estão sendo usados valores inteiros
+    InfoEstado info; 
+    printf("Digite o nome do estado: \n");
+    scanf("%d", &info.nome);
+    printf("Digite o nome da capital: ");
+    scanf("%d", &capital->nome);
+    printf("Digite a população da capital: ");
+    scanf("%d", &capital->populacao);
+
+    capital->ceps = NULL;
+    info.capital = capital->nome;
+    info.populacao = capital->populacao;
+    info.quantCidades = 1;
+    info.cidades = NULL; 
+
+    return info;
 }
 
 Estado *alocarEstado(InfoEstado info) 
@@ -21,7 +35,7 @@ Estado *alocarEstado(InfoEstado info)
     return no;
 }
 
-int inserirEstado(Estado **lista, Estado *novoNo) 
+/*int inserirEstado(Estado **lista, Estado *novoNo) 
 {
     int inseriu = 1;
 
@@ -38,7 +52,40 @@ int inserirEstado(Estado **lista, Estado *novoNo)
         inseriu = inserirEstado(&(*lista)->prox, novoNo);
 
     return 1;
+} */
+
+int inserirEstado(Estado** inicio, Estado *novoNo) {
+    int inseriu = 1;
+
+    if (*inicio == NULL)
+        *inicio = novoNo;
+    else {
+        Estado* atual = *inicio;
+
+        if (novoNo->info.nome == atual->info.nome) 
+            inseriu = 0;
+        else if (novoNo->info.nome < atual->info.nome) {
+            novoNo->prox = atual;
+            atual->ant = novoNo;
+            *inicio = novoNo;
+        } else {
+
+            while (atual->prox != NULL && atual->prox->info.nome < novoNo->info.nome) atual = atual->prox;
+
+            if ((atual->prox != NULL && atual->prox->info.nome == novoNo->info.nome) || atual->info.nome == novoNo->info.nome)
+                inseriu = 0;
+            else {
+                novoNo->prox = atual->prox;
+                novoNo->ant = atual;
+                if (atual->prox != NULL) atual->prox->ant = novoNo;
+                atual->prox = novoNo;
+            }
+        }
+    }
+
+    return inseriu;
 }
+
 
 void exibirEstados(Estado *lista) 
 {

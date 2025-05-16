@@ -13,7 +13,7 @@ typedef struct InfoCidade
 {
     int nome;
     int populacao;
-    struct ArvDoisTres *ceps;
+    struct ArvRubNeg *ceps;
 } InfoCidade;
 
 typedef union {
@@ -28,7 +28,7 @@ typedef struct InfoEstado
     int capital;
     int quantCidades;
     int populacao;
-    struct ArvDoisTres *cidades;
+    struct ArvRubNeg *cidades;
 } InfoEstado;
 
 typedef struct Estado 
@@ -37,24 +37,24 @@ typedef struct Estado
     struct Estado *ant, *prox;
 } Estado;
 
-typedef struct ArvDoisTres {
+typedef struct ArvRubNeg {
     Dados infoUm;
     Dados infoDois;
     int quantInfo;
-    struct ArvDoisTres *esq, *cen, *dir;
-} ArvDoisTres;
+    struct ArvRubNeg *esq, *cen, *dir;
+} ArvRubNeg;
 
 //Dois-Três
-ArvDoisTres* criarNo(Dados info, ArvDoisTres *fEsq, ArvDoisTres *fCen);
-void imprimirArv(ArvDoisTres *raiz, int nivel);
-void liberarArv(ArvDoisTres **raiz);
-void adicionarInfo(ArvDoisTres **no, Dados info, ArvDoisTres *subArvInfo);
-ArvDoisTres* quebrarNo(ArvDoisTres **no, Dados info, Dados *sobe, ArvDoisTres *filhoDir);
-ArvDoisTres* inserirNo(ArvDoisTres **raiz, ArvDoisTres *pai, Dados info, Dados *sobe);
+ArvRubNeg* criarNo(Dados info, ArvRubNeg *fEsq, ArvRubNeg *fCen);
+void imprimirArv(ArvRubNeg *raiz, int nivel);
+void liberarArv(ArvRubNeg **raiz);
+void adicionarInfo(ArvRubNeg **no, Dados info, ArvRubNeg *subArvInfo);
+ArvRubNeg* quebrarNo(ArvRubNeg **no, Dados info, Dados *sobe, ArvRubNeg *filhoDir);
+ArvRubNeg* inserirNo(ArvRubNeg **raiz, ArvRubNeg *pai, Dados info, Dados *sobe);
 
-void exibirCeps(ArvDoisTres *raiz);
-void exibirCidades(ArvDoisTres *raiz);
-void exibirPessoas(ArvDoisTres *raiz);
+void exibirCeps(ArvRubNeg *raiz);
+void exibirCidades(ArvRubNeg *raiz);
+void exibirPessoas(ArvRubNeg *raiz);
 
 InfoEstado lerInfoEstado();
 InfoCidade lerInfoCidade();
@@ -64,7 +64,7 @@ InfoPessoa lerInfoPessoa();
 //Estados - DuplaEncadeada
 InfoEstado lerInfoEstado();
 Estado* alocarEstado(InfoEstado info);
-int inserirEstado(Estado **lista, Estado *novoNo);
+int inserirEstado(Estado** inicio, Estado *novoNo);
 void exibirEstados(Estado *lista);
 void liberarLista(Estado **lista);
 Estado* estadoMaisPopuloso(Estado *raiz);
