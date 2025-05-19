@@ -88,7 +88,7 @@ int main()
     ArvRubNeg *pessoas = NULL;
     ArvRubNeg *No = NULL;
     ArvRubNeg *noCidade = NULL;
-    int opcao, dado, inseriu, nome;
+    int opcao, dado, inseriu, nome, existe;
     InfoEstado dadosEstado; // informaçoes de estado para preencher
     InfoCidade dadosCidade; // informaçoes de cidade para preencher
     Dados dadosQuaisquer;
@@ -132,7 +132,7 @@ int main()
                     dadosCidade = lerInfoCidade();
                     dadosQuaisquer.cidade = dadosCidade;
                     No = criarNo(dadosQuaisquer);
-                    inseriu = insercao(&NoEstado->cidades, No);
+                    inseriu = insercao(&NoEstado->info.cidades, No);
                     if(inseriu)
                     {
                         printf("Cidade inserida com sucesso!\n");
@@ -155,13 +155,13 @@ int main()
                 if(NoEstado)
                 {
                     printf("Digite o nome da cidade: "); scanf("%d", &nome);
-                    noCidade = buscaNo(estados->cidades, nome);
+                    noCidade = buscaNo(estados->info.cidades, nome);
                     if(noCidade)
                     {
                         dado = lerCep();
                         dadosQuaisquer.cep = dado;
                         No = criarNo(dadosQuaisquer);
-                        inseriu = insercao(&noCidade->ceps, No);
+                        inseriu = insercao(&noCidade->info.cidade.ceps, No);
                         if(inseriu)
                         {
                             printf("Cep inserido com sucesso!\n");
@@ -184,10 +184,33 @@ int main()
                 break;
             case 4:
                 //cadastrarPessoa();
-                
+      
                 break;
             case 5:
                 //removerCEP();
+                printf("Digite o nome do estado: "); scanf("%d", &nome);
+                NoEstado = buscarEstado(estados, nome);
+                if(NoEstado)
+                {
+                    printf("Digite o nome da cidade: "); scanf("%d", &nome);
+                    noCidade = buscaNo(estados->info.cidades, nome);
+                    if(noCidade)
+                    {
+                        printf("Digite o CEP a ser removido: \n"); scanf("%d", &dado);
+                        existe = verificaCep(noCidade->info.cidade.ceps, dado);
+                        if (existe)
+                        {
+                            noCidade->info.cidade.ceps = removeNo(noCidade->info.cidade.ceps, dado);
+                            printf("CEP removido!\n");
+                        } 
+                        else 
+                            printf("CEP não encontrado!");
+                    }
+                    else
+                        printf("Cidade não encontrada!\n");
+                }
+                else
+                    printf("Estado não encontrado!\n");
                 break;
             case 6:
                 //removerPessoa();

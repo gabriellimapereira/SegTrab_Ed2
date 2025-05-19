@@ -27,7 +27,7 @@ InfoCidade lerInfoCidade()
 int lerCep() 
 {
     int info;
-    printf("Digite o CEP: \n"); scanf("%d", info);
+    printf("Digite o CEP: \n"); scanf("%d", &info);
 
     return info;
 }
@@ -55,16 +55,13 @@ int verificaCep(ArvRubNeg *ceps, int cep)
 int verificaCepCidade(ArvRubNeg *cidades, int cep)
 {
     int existe = 0;
-    if(cidades)
+    if (cidades)
     {
         existe = verificaCep(cidades->info.cidade.ceps, cep);
-        if (existe ==0)
+        if (existe == 0)
         {
             existe = verificaCepCidade(cidades->esq, cep);
-            if(existe == 0) 
-            {
-                existe = verificaCepCidade(cidades->dir, cep);
-            }
+            if (existe == 0) existe = verificaCepCidade(cidades->dir, cep);
         }
     }
     return existe;
@@ -76,10 +73,7 @@ int verificaCepEstado(Estado *inicio, int cep)
     if(inicio) 
     {
         existe = verificaCepCidade(inicio->info.cidades, cep);
-        if(existe == 0)
-        {
-            verificaCepEstado(inicio->prox, cep);
-        }
+        if(existe == 0) verificaCepEstado(inicio->prox, cep);
     } 
     return existe;
 }
@@ -135,32 +129,21 @@ void liberarArvore(ArvRubNeg *r)
 ArvRubNeg* buscaNo(ArvRubNeg *r, int valor) 
 {
     ArvRubNeg *no;
-    if(r->info.cep == valor) 
-    {
+    if (r->info.cep == valor) 
         no = r;
-    }
     else if(r->info.cep > valor)
-    {
         no = buscaNo(r->esq, valor);
-    }
     else if(r->info.cep < valor)
-    {
         no = buscaNo(r->dir, valor);
-    }
     else
-    {
        no = NULL; 
-    }
     return no;
 }
 
 int cor(ArvRubNeg *raiz) 
 {
     int cor = preto;
-    if(raiz)
-    {
-        cor = (*raiz).cor;
-    }
+    if(raiz) cor = (*raiz).cor;
     return cor;
 }
 
@@ -194,17 +177,11 @@ void trocaCor(ArvRubNeg **raiz)
 void balanceamento(ArvRubNeg **raiz) 
 {
     if(cor((**raiz).esq) == preto && cor((**raiz).dir) == vermelho)
-    {
         rotEsq(raiz);
-    } 
     if(cor((**raiz).esq) == vermelho && cor((**raiz).esq->esq) == vermelho)
-    {
         rotDir(raiz);
-    } 
     if(cor((**raiz).esq) == vermelho && cor((**raiz).dir) == vermelho)
-    {
         trocaCor(raiz); 
-    } 
 }
 
 int insereNo(ArvRubNeg **raiz, ArvRubNeg *novoNo) 
@@ -217,21 +194,13 @@ int insereNo(ArvRubNeg **raiz, ArvRubNeg *novoNo)
     else 
     {
         if((**raiz).info.cep > (*novoNo).info.cep) 
-        {
             inseriu = insereNo(&((**raiz).esq), novoNo);
-        }
         else if((**raiz).info.cep < (*novoNo).info.cep)
-        {
             inseriu = insereNo(&((**raiz).dir), novoNo);
-        }
         else 
-        {
-        inseriu = 0; 
-        }
+            inseriu = 0; 
         if(inseriu)
-        {
             balanceamento(raiz);
-        }
     }
     return inseriu;
 }
@@ -239,10 +208,7 @@ int insereNo(ArvRubNeg **raiz, ArvRubNeg *novoNo)
 int  insercao(ArvRubNeg **raiz, ArvRubNeg *novoNo) 
 {
     int inseriu = insereNo(raiz, novoNo);
-    if(inseriu)
-    {
-        (**raiz).cor = preto;
-    }
+    if(inseriu) (**raiz).cor = preto;
     return inseriu;
 }
 
@@ -288,10 +254,7 @@ ArvRubNeg *removeMenor(ArvRubNeg *raiz)
 ArvRubNeg* procuraMenor(ArvRubNeg *raiz) 
 {
     ArvRubNeg *aux = raiz;
-    while (aux->esq != NULL)
-    {
-       aux = aux->esq; 
-    } 
+    while (aux->esq != NULL) aux = aux->esq; 
     return aux;
 }
 
@@ -299,10 +262,7 @@ ArvRubNeg* removeNo(ArvRubNeg *raiz, int valor)
 {
     if(valor < (*raiz).info.cep) 
     {
-        if(cor((*raiz).esq) == preto && cor((*raiz).dir) == preto)
-        {
-            raiz = moveTwoEsqRed(raiz);  
-        } 
+        if(cor((*raiz).esq) == preto && cor((*raiz).dir) == preto) raiz = moveTwoEsqRed(raiz);  
         (*raiz).esq = removeNo((*raiz).esq, valor);
 
     } 
