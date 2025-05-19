@@ -18,7 +18,8 @@ typedef struct InfoCidade
     struct ArvRubNeg *ceps;
 } InfoCidade;
 
-typedef union {
+typedef union 
+{
     int cep;
     InfoCidade cidade;
     InfoPessoa pessoa;
@@ -39,7 +40,8 @@ typedef struct Estado
     struct Estado *ant, *prox;
 } Estado;
 
-typedef struct ArvRubNeg {
+typedef struct ArvRubNeg 
+{
     Dados info;
     int cor;
     struct ArvRubNeg *esq, *dir;

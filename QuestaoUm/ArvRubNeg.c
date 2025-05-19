@@ -2,9 +2,11 @@
 #include <stdio.h>
 #include "prototipos.h"
 
-ArvRubNeg* criarNo(Dados dado) {
+ArvRubNeg* criarNo(Dados dado) 
+{
     ArvRubNeg *novoNo = (ArvRubNeg*) malloc(sizeof(ArvRubNeg));
-    if (novoNo != NULL) {
+    if (novoNo != NULL) 
+    {
         novoNo->info = dado;
         novoNo->esq = NULL;
         novoNo->dir = NULL;
@@ -13,25 +15,34 @@ ArvRubNeg* criarNo(Dados dado) {
     return novoNo;
 }
 
-void imprimirArvore(ArvRubNeg *r, int espaco) {
-    if (r == NULL) return;
+InfoCidade lerInfoCidade()
+{
+    InfoCidade info;
+    printf("Digite o nome da cidade: "); scanf("%d", &info.nome);
+    printf("Digite a populacao da cidade: "); scanf("%d", &info.populacao);
+    info.ceps = NULL;
+    return info;
+}
 
+void imprimirArvore(ArvRubNeg *r, int espaco) 
+{
+    if (r == NULL) return;
     const int DISTANCIA = 5;
     espaco += DISTANCIA;
-
     imprimirArvore(r->dir, espaco);
-
     printf("\n");
     for (int i = DISTANCIA; i < espaco; i++)
+    {
         printf(" ");
-    
+    }
     printf("%d (%s)\n", r->info.cep, r->cor == 0 ? "P" : "V");
-
     imprimirArvore(r->esq, espaco);
 }
 
-void liberarArvore(ArvRubNeg *r) {
-    if (r) {
+void liberarArvore(ArvRubNeg *r) 
+{
+    if(r) 
+    {
         liberarArvore(r->esq);
         liberarArvore(r->dir);
         free(r);
@@ -41,32 +52,38 @@ void liberarArvore(ArvRubNeg *r) {
 ArvRubNeg* buscaNo(ArvRubNeg *r, int valor) 
 {
     ArvRubNeg *no;
-
-    if (r->info.cep == valor) 
+    if(r->info.cep == valor) 
+    {
         no = r;
-    else if (r->info.cep > valor)
+    }
+    else if(r->info.cep > valor)
+    {
         no = buscaNo(r->esq, valor);
-    else if (r->info.cep < valor)
+    }
+    else if(r->info.cep < valor)
+    {
         no = buscaNo(r->dir, valor);
-    else 
-        no = NULL;
-    
+    }
+    else
+    {
+       no = NULL; 
+    }
     return no;
 }
 
-int cor(ArvRubNeg *raiz) {
+int cor(ArvRubNeg *raiz) 
+{
     int cor = preto;
-
-    if (raiz) {
+    if(raiz)
+    {
         cor = (*raiz).cor;
     }
-
     return cor;
 }
 
-void rotEsq(ArvRubNeg **raiz) {
+void rotEsq(ArvRubNeg **raiz) 
+{
     ArvRubNeg *aux = (**raiz).dir;
-
     (**raiz).dir = (*aux).esq;
     (*aux).esq = *raiz;
     (*aux).cor = (**raiz).cor;
@@ -74,9 +91,9 @@ void rotEsq(ArvRubNeg **raiz) {
     (*raiz) = aux;
 }
 
-void rotDir(ArvRubNeg **raiz) {
+void rotDir(ArvRubNeg **raiz) 
+{
     ArvRubNeg *aux = (**raiz).esq;
-
     (**raiz).esq = (*aux).dir;
     (*aux).dir = *raiz;
     (*aux).cor = (**raiz).cor;
@@ -84,7 +101,8 @@ void rotDir(ArvRubNeg **raiz) {
     (*raiz) = aux;
 }
 
-void trocaCor(ArvRubNeg **raiz) {
+void trocaCor(ArvRubNeg **raiz) 
+{
     (**raiz).cor = !((**raiz).cor);
     (**raiz).esq->cor = !((**raiz).esq->cor);
     (**raiz).dir->cor = !((**raiz).dir->cor);
@@ -92,124 +110,152 @@ void trocaCor(ArvRubNeg **raiz) {
 
 void balanceamento(ArvRubNeg **raiz) 
 {
-    if (cor((**raiz).esq) == preto && cor((**raiz).dir) == vermelho)
+    if(cor((**raiz).esq) == preto && cor((**raiz).dir) == vermelho)
     {
         rotEsq(raiz);
     } 
-
-    if (cor((**raiz).esq) == vermelho) if (cor((**raiz).esq->esq) == vermelho)
+    if(cor((**raiz).esq) == vermelho && cor((**raiz).esq->esq) == vermelho)
     {
         rotDir(raiz);
     } 
-
-    if (cor((**raiz).esq) == vermelho && cor((**raiz).dir) == vermelho)
+    if(cor((**raiz).esq) == vermelho && cor((**raiz).dir) == vermelho)
     {
         trocaCor(raiz); 
     } 
 }
 
-int insereNo(ArvRubNeg **raiz, ArvRubNeg *novoNo) {
+int insereNo(ArvRubNeg **raiz, ArvRubNeg *novoNo) 
+{
     int inseriu = 1;
-
-    if (*raiz == NULL) 
+    if(*raiz == NULL)
+    {
         *raiz = novoNo;
-    else if ((**raiz).info.cep > (*novoNo).info.cep) 
-        inseriu = insereNo(&((**raiz).esq), novoNo);
-    else if ((**raiz).info.cep < (*novoNo).info.cep) 
-        inseriu = insereNo(&((**raiz).dir), novoNo);
+    }
     else 
-        inseriu = 0;
-    
-    if (*raiz && inseriu) balanceamento(raiz);
-
+    {
+        if((**raiz).info.cep > (*novoNo).info.cep) 
+        {
+            inseriu = insereNo(&((**raiz).esq), novoNo);
+        }
+        else if((**raiz).info.cep < (*novoNo).info.cep)
+        {
+            inseriu = insereNo(&((**raiz).dir), novoNo);
+        }
+        else 
+        {
+        inseriu = 0; 
+        }
+        if(inseriu)
+        {
+            balanceamento(raiz);
+        }
+    }
     return inseriu;
 }
 
-int  insercao(ArvRubNeg **raiz, ArvRubNeg *novoNo) {
+int  insercao(ArvRubNeg **raiz, ArvRubNeg *novoNo) 
+{
     int inseriu = insereNo(raiz, novoNo);
-
-    if (inseriu) (**raiz).cor = preto;
-
+    if(inseriu)
+    {
+        (**raiz).cor = preto;
+    }
     return inseriu;
 }
 
-ArvRubNeg* moveTwoEsqRed(ArvRubNeg *raiz) {
+ArvRubNeg* moveTwoEsqRed(ArvRubNeg *raiz) 
+{
     trocaCor(&raiz);
-
-    if (cor((*raiz).dir->esq) == vermelho) {
+    if(cor((*raiz).dir->esq) == vermelho) 
+    {
         rotDir(&((*raiz).dir));
         rotEsq(&raiz);
         trocaCor(&raiz);
     }
-
     return raiz;
 }
 
-ArvRubNeg* moveTwoDirRed(ArvRubNeg *raiz) {
+ArvRubNeg* moveTwoDirRed(ArvRubNeg *raiz) 
+{
     trocaCor(&raiz);
-
-    if (cor((*raiz).esq->esq) == vermelho) {
+    if(cor((*raiz).esq->esq) == vermelho) 
+    {
         rotDir(&raiz);
         trocaCor(&raiz);
     }
-
     return raiz;
 }
 
-ArvRubNeg *removeMenor(ArvRubNeg *raiz) {
-    if ((*raiz).esq == NULL) {
+ArvRubNeg *removeMenor(ArvRubNeg *raiz) 
+{
+    if((*raiz).esq == NULL) 
+    {
         free (raiz);
         return NULL;
     }
-
-    if (cor((*raiz).esq) == preto && cor((*raiz).esq->esq) == preto) raiz =  moveTwoEsqRed((*raiz).esq);
-
+    if(cor((*raiz).esq) == preto && cor((*raiz).esq->esq) == preto)
+    {
+        raiz =  moveTwoEsqRed((*raiz).esq);
+    }
     (*raiz).esq = removeMenor((*raiz).esq);
     balanceamento(&raiz);
-
     return raiz;
 }
 
-ArvRubNeg* procuraMenor(ArvRubNeg *raiz) {
+ArvRubNeg* procuraMenor(ArvRubNeg *raiz) 
+{
     ArvRubNeg *aux = raiz;
-
-    while (aux->esq != NULL) aux = aux->esq;
-
+    while (aux->esq != NULL)
+    {
+       aux = aux->esq; 
+    } 
     return aux;
 }
 
-ArvRubNeg* removeNo(ArvRubNeg *raiz, int valor) {
-    if (valor < (*raiz).info.cep) {
-        if (cor((*raiz).esq) == preto && cor((*raiz).dir) == preto) raiz = moveTwoEsqRed(raiz);
-        
+ArvRubNeg* removeNo(ArvRubNeg *raiz, int valor) 
+{
+    if(valor < (*raiz).info.cep) 
+    {
+        if(cor((*raiz).esq) == preto && cor((*raiz).dir) == preto)
+        {
+            raiz = moveTwoEsqRed(raiz);  
+        } 
         (*raiz).esq = removeNo((*raiz).esq, valor);
 
-    } else {
-        if (cor((*raiz).esq) == vermelho) rotDir(&raiz);
-
-        if (valor == (*raiz).info.cep && ((*raiz).dir) == NULL) {
+    } 
+    else 
+    {
+        if(cor((*raiz).esq) == vermelho) 
+        {
+            rotDir(&raiz);
+        }
+        if(valor == (*raiz).info.cep && ((*raiz).dir) == NULL) 
+        {
             free(raiz);
             return NULL;
         }
-
-        if (cor((*raiz).dir) == preto && cor((*raiz).dir->esq) == preto) raiz = moveTwoDirRed(raiz);
-
-        if (valor == (*raiz).info.cep) {
+        if (cor((*raiz).dir) == preto && cor((*raiz).dir->esq) == preto) 
+        {
+            raiz = moveTwoDirRed(raiz);
+        }
+        if (valor == (*raiz).info.cep) 
+        {
             ArvRubNeg *menor = procuraMenor((*raiz).dir);
             (*raiz).info = (*menor).info;
             (*raiz).dir = removeMenor((*raiz).dir);
-        } else 
+        } 
+        else 
+        {
             (*raiz).dir = removeNo((*raiz).dir, valor);
+        }
     }
-
     balanceamento(&raiz);
-
     return raiz;
 } 
 
 void exibirCeps(ArvRubNeg *raiz) 
 {
-    if (raiz) 
+    if(raiz) 
     {
         exibirCeps(raiz->esq);
         printf("Cep: %d\n", raiz->info.cep);
@@ -219,7 +265,7 @@ void exibirCeps(ArvRubNeg *raiz)
 
 void exibirCidades(ArvRubNeg *raiz) 
 {
-    if (raiz) 
+    if(raiz) 
     {
         exibirCidades(raiz->esq);
         printf("Cidade: %d\n", raiz->info.cidade.nome);
@@ -230,7 +276,7 @@ void exibirCidades(ArvRubNeg *raiz)
 
 void exibirPessoas(ArvRubNeg *raiz) 
 {
-    if (raiz) 
+    if(raiz) 
     {
         exibirPessoas(raiz->esq);
         printf("CPF: %d\n", raiz->info.pessoa.cpf);

@@ -5,19 +5,14 @@
 InfoEstado lerInfoEstado(InfoCidade *capital) 
 {
     InfoEstado info; 
-    printf("Digite o nome do estado: \n");
-    scanf("%d", &info.nome);
-    printf("Digite o nome da capital: ");
-    scanf("%d", &capital->nome);
-    printf("Digite a população da capital: ");
-    scanf("%d", &capital->populacao);
-
+    printf("Digite o nome do estado: \n"); scanf("%d", &info.nome);
+    printf("Digite o nome da capital: "); scanf("%d", &capital->nome);
+    printf("Digite a população da capital: "); scanf("%d", &capital->populacao);
     capital->ceps = NULL;
     info.capital = capital->nome;
     info.populacao = capital->populacao;
     info.quantCidades = 1;
     info.cidades = NULL; 
-
     return info;
 }
 
@@ -99,7 +94,8 @@ void exibirEstados(Estado *lista)
     }
 }
 
-void liberarLista(Estado **lista) {
+void liberarLista(Estado **lista) 
+{
     Estado *aux = *lista;
     while (aux != NULL) {
         Estado *temp = aux;
