@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "prototipos.h"
+#include "prototiposDois.h"
 #include <stdlib.h>
 
 InfoEstado lerInfoEstado() 

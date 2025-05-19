@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include "prototipos.h"
+#include "prototiposUm.h"
 
 ArvRubNeg* criarNo(Dados dado) 
 {
@@ -21,6 +21,89 @@ InfoCidade lerInfoCidade()
     printf("Digite o nome da cidade: "); scanf("%d", &info.nome);
     printf("Digite a populacao da cidade: "); scanf("%d", &info.populacao);
     info.ceps = NULL;
+    return info;
+}
+
+int lerCep() 
+{
+    int info;
+    printf("Digite o CEP: \n"); scanf("%d", info);
+
+    return info;
+}
+
+int verificaCep(ArvRubNeg *ceps, int cep) 
+{
+    int existe = 0;
+
+    if (ceps) 
+    {
+        if (ceps->info.cep == cep) 
+            existe = 1;
+        else 
+        {
+            if (cep < ceps->info.cep) 
+                existe = verificaCep(ceps->esq, cep);
+            else 
+                existe = verificaCep(ceps->dir, cep);
+        }
+    }
+
+    return existe;
+}
+
+int verificaCepCidade(ArvRubNeg *cidades, int cep)
+{
+    int existe = 0;
+    if(cidades)
+    {
+        existe = verificaCep(cidades->info.cidade.ceps, cep);
+        if (existe ==0)
+        {
+            existe = verificaCepCidade(cidades->esq, cep);
+            if(existe == 0) 
+            {
+                existe = verificaCepCidade(cidades->dir, cep);
+            }
+        }
+    }
+    return existe;
+}
+
+int verificaCepEstado(Estado *inicio, int cep) 
+{
+    int existe = 0;
+    if(inicio) 
+    {
+        existe = verificaCepCidade(inicio->info.cidades, cep);
+        if(existe == 0)
+        {
+            verificaCepEstado(inicio->prox, cep);
+        }
+    } 
+    return existe;
+}
+
+InfoPessoa lerInfoPessoa(Estado *raiz) 
+{
+    InfoPessoa info;
+    int existe;
+    printf("Digite o nome da pessoa: \n"); scanf("%d", &info.nome);
+    printf("Digite o cpf: \n"); scanf("%d", &info.cpf);
+    printf("Digite a data de nascimento: "); scanf("%d", &info.dataNasc);
+    do 
+    {
+        printf("Digite o cep atual: \n"); scanf("%d", &info.cepAtual);
+        existe = verificaCepEstado(raiz, info.cepAtual);
+        if(existe == 0) printf("Digite um cep válido!\n");
+    } while(existe != 0);
+
+    do 
+    {
+        printf("Digite o cep natal: \n"); scanf("%d", &info.cepNatal);
+        existe = verificaCepEstado(raiz, info.cepNatal);
+        if(existe == 0) printf("Digite um cep válido!\n");
+    } while(existe != 0);
     return info;
 }
 

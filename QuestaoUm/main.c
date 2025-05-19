@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include "prototipos.h"
+#include "prototiposUm.h"
 
 int insereEstados(Estado **raiz) 
 {
@@ -87,7 +87,8 @@ int main()
     Estado *estados = NULL, *NoEstado = NULL;
     ArvRubNeg *pessoas = NULL;
     ArvRubNeg *No = NULL;
-    int opcao, dado, inseriu;
+    ArvRubNeg *noCidade = NULL;
+    int opcao, dado, inseriu, nome;
     InfoEstado dadosEstado; // informaçoes de estado para preencher
     InfoCidade dadosCidade; // informaçoes de cidade para preencher
     Dados dadosQuaisquer;
@@ -103,7 +104,7 @@ int main()
     do 
     {
         menu();
-        printf("Escolha uma opção: ");
+        printf("Escolha uma opcao: ");
         scanf("%d", &opcao);
         switch (opcao) 
         {
@@ -124,24 +125,66 @@ int main()
                 break;
             case 2:
                 //cadastrarCidade();
-                dadosCidade = lerInfoCidade();
-                dadosQuaisquer.cidade = dadosCidade;
-                No = criarNo(dadosQuaisquer);
-                inseriu = insercao(&estados->info.cidades, No);
-                if(inseriu)
+                printf("Digite o nome do estado: "); scanf("%d", &nome);
+                NoEstado = buscarEstado(estados, nome);
+                if(NoEstado)
                 {
-                    printf("Cidade inserida com sucesso!\n");
+                    dadosCidade = lerInfoCidade();
+                    dadosQuaisquer.cidade = dadosCidade;
+                    No = criarNo(dadosQuaisquer);
+                    inseriu = insercao(&NoEstado->cidades, No);
+                    if(inseriu)
+                    {
+                        printf("Cidade inserida com sucesso!\n");
+                    }
+                    else
+                    {
+                        printf("A cidade ja existe! Nao houve insercao.\n");
+                        free(No);
+                    }
                 }
                 else
                 {
-                    printf("A cidade ja existe! Nao houve insercao.\n");
+                    printf("Estado nao encontrado!\n");
                 }
                 break;
             case 3:
                 //cadastrarCEP();
+                printf("Digite o nome do estado: "); scanf("%d", &nome);
+                NoEstado = buscarEstado(estados, nome);
+                if(NoEstado)
+                {
+                    printf("Digite o nome da cidade: "); scanf("%d", &nome);
+                    noCidade = buscaNo(estados->cidades, nome);
+                    if(noCidade)
+                    {
+                        dado = lerCep();
+                        dadosQuaisquer.cep = dado;
+                        No = criarNo(dadosQuaisquer);
+                        inseriu = insercao(&noCidade->ceps, No);
+                        if(inseriu)
+                        {
+                            printf("Cep inserido com sucesso!\n");
+                        }
+                        else
+                        {
+                            printf("O cep ja existe! Nao houve insercao.\n");
+                            free(No);
+                        }
+                    }
+                    else
+                    {
+                        printf("Cidade nao encontrada!\n");
+                    }
+                }
+                else
+                {
+                    printf("Estado nao encontrado!\n");
+                }
                 break;
             case 4:
                 //cadastrarPessoa();
+                
                 break;
             case 5:
                 //removerCEP();

@@ -1,18 +1,23 @@
 #include <stdio.h>
-#include "prototipos.h"
+#include "prototiposUm.h"
 #include <stdlib.h>
 
 InfoEstado lerInfoEstado(InfoCidade *capital) 
 {
     InfoEstado info; 
-    printf("Digite o nome do estado: \n"); scanf("%d", &info.nome);
-    printf("Digite o nome da capital: "); scanf("%d", &capital->nome);
-    printf("Digite a população da capital: "); scanf("%d", &capital->populacao);
+    printf("Digite o nome do estado: \n");
+    scanf("%d", &info.nome);
+    printf("Digite o nome da capital: ");
+    scanf("%d", &capital->nome);
+    printf("Digite a população da capital: ");
+    scanf("%d", &capital->populacao);
+
     capital->ceps = NULL;
     info.capital = capital->nome;
     info.populacao = capital->populacao;
     info.quantCidades = 1;
     info.cidades = NULL; 
+
     return info;
 }
 
@@ -94,8 +99,7 @@ void exibirEstados(Estado *lista)
     }
 }
 
-void liberarLista(Estado **lista) 
-{
+void liberarLista(Estado **lista) {
     Estado *aux = *lista;
     while (aux != NULL) {
         Estado *temp = aux;
@@ -104,7 +108,6 @@ void liberarLista(Estado **lista)
     }
     *lista = NULL;  // opcional, mas limpa o ponteiro original
 }
-
 
 Estado* estadoMaisPopuloso(Estado *raiz) 
 {
@@ -123,3 +126,17 @@ Estado* estadoMaisPopuloso(Estado *raiz)
     return estado;
 }
 
+Estado *buscarEstado(Estado *raiz, int nome)
+{
+    Estado *aux;
+    aux = NULL; 
+    if(raiz != NULL)
+    {
+        aux = raiz;
+        while(aux->info.nome != nome && aux != NULL)
+        {
+            aux = aux->prox;
+        }
+    }
+    return aux;
+}

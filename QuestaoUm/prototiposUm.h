@@ -71,12 +71,15 @@ void exibirPessoas(ArvRubNeg *raiz);
 InfoEstado lerInfoEstado();
 InfoCidade lerInfoCidade();
 int lerCep();
-InfoPessoa lerInfoPessoa();
+int verificaCep(ArvRubNeg *ceps, int cep);
+int verificaCepCidade(ArvRubNeg *cidades, int cep);
+InfoPessoa lerInfoPessoa(Estado *raiz);
 
 //Estados - DuplaEncadeada
 InfoEstado lerInfoEstado();
 Estado* alocarEstado(InfoEstado info);
-int inserirEstado(Estado** inicio, Estado *novoNo);
+int inserirEstado(Estado **inicio, Estado *novoNo);
+Estado *buscarEstado(Estado *raiz, int nome);
 void exibirEstados(Estado *lista);
 void liberarLista(Estado **lista);
 Estado* estadoMaisPopuloso(Estado *raiz);

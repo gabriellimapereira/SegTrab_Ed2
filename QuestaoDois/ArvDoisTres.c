@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "prototipos.h"
+#include "prototiposDois.h"
 
 ArvRubNeg* criarNo(Dados info, ArvRubNeg *fEsq, ArvRubNeg *fCen) {
     ArvRubNeg *no = malloc(sizeof(ArvRubNeg));
