@@ -89,14 +89,20 @@ InfoPessoa lerInfoPessoa(Estado *raiz)
     {
         printf("Digite o cep atual: \n"); scanf("%d", &info.cepAtual);
         existe = verificaCepEstado(raiz, info.cepAtual);
-        if(existe == 0) printf("Digite um cep válido!\n");
+        if(existe == 0)
+        {
+            printf("Digite um cep válido!\n");
+        }
     } while(existe != 0);
 
     do 
     {
         printf("Digite o cep natal: \n"); scanf("%d", &info.cepNatal);
         existe = verificaCepEstado(raiz, info.cepNatal);
-        if(existe == 0) printf("Digite um cep válido!\n");
+        if(existe == 0)
+        {
+          printf("Digite um cep válido!\n");  
+        }
     } while(existe != 0);
     return info;
 }

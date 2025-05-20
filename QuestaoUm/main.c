@@ -91,6 +91,7 @@ int main()
     int opcao, dado, inseriu, nome, existe;
     InfoEstado dadosEstado; // informaçoes de estado para preencher
     InfoCidade dadosCidade; // informaçoes de cidade para preencher
+    InfoPessoa dadosPessoa; // informaçoes de pessoa para preencher
     Dados dadosQuaisquer;
 
     insereEstados(&estados);
@@ -184,7 +185,19 @@ int main()
                 break;
             case 4:
                 //cadastrarPessoa();
-      
+                dadosPessoa = lerInfoPessoa(estados);
+                dadosQuaisquer.pessoa = dadosPessoa;
+                No = criarNo(dadosQuaisquer);
+                inseriu = insercao(&pessoas, No);
+                if(inseriu)
+                {
+                    printf("Pessoa inserida com sucesso!\n");
+                }
+                else
+                {
+                    printf("A pessoa ja existe! Nao houve insercao.\n");
+                    free(No);
+                }
                 break;
             case 5:
                 //removerCEP();
@@ -198,7 +211,7 @@ int main()
                     {
                         printf("Digite o CEP a ser removido: \n"); scanf("%d", &dado);
                         existe = verificaCep(noCidade->info.cidade.ceps, dado);
-                        if (existe)
+                        if(existe)
                         {
                             noCidade->info.cidade.ceps = removeNo(noCidade->info.cidade.ceps, dado);
                             printf("CEP removido!\n");
