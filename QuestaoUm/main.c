@@ -88,7 +88,7 @@ int main()
     ArvRubNeg *pessoas = NULL;
     ArvRubNeg *No = NULL;
     ArvRubNeg *noCidade = NULL;
-    int opcao, dado, inseriu, nome, existe;
+    int opcao, dado, inseriu, nome, existe, cep;
     InfoEstado dadosEstado; // informaçoes de estado para preencher
     InfoCidade dadosCidade; // informaçoes de cidade para preencher
     InfoPessoa dadosPessoa; // informaçoes de pessoa para preencher
@@ -230,24 +230,103 @@ int main()
                 break;
             case 7:
                 //estadoMaisPopuloso();
+                NoEstado = estadoMaisPopuloso(estados);
+                if(NoEstado)
+                {
+                    printf("Estado mais populoso: %d\n", NoEstado->info.nome);
+                }
+                else
+                {
+                    printf("Sem estados cadastrados!\n");
+                }
                 break;
             case 8:
                 //populacaoCapital();
+                dado = 0;
+                printf("Digite o nome da capital: "); scanf("%d", &nome);
+                populacaoDaCapital(estados, nome, &dado);
+                if(dado)
+                {
+                    printf("Populacao da capital %d: %d", nome, dado);
+                }
                 break;
             case 9:
                 //cidadeMaisPopulosaExcetoCapital();
+                printf("Digite o nome do estado: "); scanf("%d", &nome);
+                NoEstado = buscarEstado(estados, nome);
+                if(NoEstado)
+                {
+                    noCidade = NULL;
+                    cidadeMaisPopulosa(NoEstado->info.cidades, NoEstado->info.capital, &noCidade);
+                    if(noCidade)
+                    {
+                        printf("Cidade mais populosa: %d\n", noCidade->info.cidade.nome);
+                    }
+                    else
+                    {
+                        printf("A cidade mais populosa eh a capital!\n");
+                    }
+                }
                 break;
             case 10:
-                //pessoasForaCidadeNatal();
+                //pessoasForaCepNatal();
+                dado = 0;
+                pessoasForaCepNatal(pessoas, &dado);
+                if(dado)
+                {
+                    printf("%d pessoas moram fora da cidade natal!\n", dado);
+                }
+                else
+                {
+                    printf("Sem cidades cadastradas!\n");
+                }
                 break;
             case 11:
                 //cidadeNatalPorCep();
                 break;
             case 12:
                 //nascidosQueNaoMoram();
+                printf("Digite o cep: "); scanf("%d", &cep);
+                existe = verificaCepEstado(estados, cep);
+                if(existe)
+                {
+                    dado = 0;
+                    nascidosQueNaoMoram(pessoas, &dado, cep);
+                    if(dado)
+                    {
+                        printf("%d pessoas nao moram na cidade natal %d.\n", dado, cep);
+                    }
+                    else
+                    {
+                        printf("Todos moram na cidade natal!\n");
+                    }
+                }
+                else
+                {
+                    printf("Cep invalido!\n");
+                }
                 break;
             case 13:
                 //moradoresNaoNascidos();
+                printf("Digite o cep: "); scanf("%d", &cep);
+                existe = verificaCepEstado(estados, cep);
+                if(existe)
+                {
+                    dado = 0;
+                    moradoresNaoNascidos(pessoas, &dado, cep);
+                    if(dado)
+                    {
+                        printf("%d pessoas nao nasceram na cidade %d.\n", dado, cep);
+                    }
+                    else
+                    {
+                        printf("Todos nasceram na cidade!\n");
+                    }
+                }
+                else
+                {
+                    printf("Cep invalido!\n");
+                }
                 break;
             case 14:
                 exibirEstados(estados);

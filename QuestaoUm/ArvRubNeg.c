@@ -5,7 +5,7 @@
 ArvRubNeg* criarNo(Dados dado) 
 {
     ArvRubNeg *novoNo = (ArvRubNeg*) malloc(sizeof(ArvRubNeg));
-    if (novoNo != NULL) 
+    if(novoNo != NULL) 
     {
         novoNo->info = dado;
         novoNo->esq = NULL;
@@ -28,27 +28,30 @@ int lerCep()
 {
     int info;
     printf("Digite o CEP: \n"); scanf("%d", &info);
-
     return info;
 }
 
 int verificaCep(ArvRubNeg *ceps, int cep) 
 {
     int existe = 0;
-
     if (ceps) 
     {
-        if (ceps->info.cep == cep) 
+        if(ceps->info.cep == cep) 
+        {
             existe = 1;
+        }
         else 
         {
-            if (cep < ceps->info.cep) 
+            if(cep < ceps->info.cep) 
+            {
                 existe = verificaCep(ceps->esq, cep);
+            }
             else 
+            {
                 existe = verificaCep(ceps->dir, cep);
+            }
         }
     }
-
     return existe;
 }
 
@@ -58,10 +61,13 @@ int verificaCepCidade(ArvRubNeg *cidades, int cep)
     if (cidades)
     {
         existe = verificaCep(cidades->info.cidade.ceps, cep);
-        if (existe == 0)
+        if(existe == 0)
         {
             existe = verificaCepCidade(cidades->esq, cep);
-            if (existe == 0) existe = verificaCepCidade(cidades->dir, cep);
+            if (existe == 0)
+            {
+                existe = verificaCepCidade(cidades->dir, cep);
+            }
         }
     }
     return existe;
@@ -73,7 +79,10 @@ int verificaCepEstado(Estado *inicio, int cep)
     if(inicio) 
     {
         existe = verificaCepCidade(inicio->info.cidades, cep);
-        if(existe == 0) verificaCepEstado(inicio->prox, cep);
+        if(existe == 0)
+        {
+            verificaCepEstado(inicio->prox, cep);
+        }
     } 
     return existe;
 }
@@ -94,7 +103,6 @@ InfoPessoa lerInfoPessoa(Estado *raiz)
             printf("Digite um cep válido!\n");
         }
     } while(existe != 0);
-
     do 
     {
         printf("Digite o cep natal: \n"); scanf("%d", &info.cepNatal);
@@ -135,21 +143,32 @@ void liberarArvore(ArvRubNeg *r)
 ArvRubNeg* buscaNo(ArvRubNeg *r, int valor) 
 {
     ArvRubNeg *no;
-    if (r->info.cep == valor) 
+    if (r->info.cep == valor)
+    {
         no = r;
+    }
     else if(r->info.cep > valor)
+    {
         no = buscaNo(r->esq, valor);
+    }
     else if(r->info.cep < valor)
+    {
         no = buscaNo(r->dir, valor);
+    }
     else
-       no = NULL; 
+    {
+        no = NULL;  
+    }
     return no;
 }
 
 int cor(ArvRubNeg *raiz) 
 {
     int cor = preto;
-    if(raiz) cor = (*raiz).cor;
+    if(raiz)
+    {
+        cor = (*raiz).cor;  
+    } 
     return cor;
 }
 
@@ -183,11 +202,17 @@ void trocaCor(ArvRubNeg **raiz)
 void balanceamento(ArvRubNeg **raiz) 
 {
     if(cor((**raiz).esq) == preto && cor((**raiz).dir) == vermelho)
+    {
         rotEsq(raiz);
+    }
     if(cor((**raiz).esq) == vermelho && cor((**raiz).esq->esq) == vermelho)
+    {
         rotDir(raiz);
+    }
     if(cor((**raiz).esq) == vermelho && cor((**raiz).dir) == vermelho)
-        trocaCor(raiz); 
+    {
+        trocaCor(raiz);  
+    }
 }
 
 int insereNo(ArvRubNeg **raiz, ArvRubNeg *novoNo) 
@@ -200,13 +225,21 @@ int insereNo(ArvRubNeg **raiz, ArvRubNeg *novoNo)
     else 
     {
         if((**raiz).info.cep > (*novoNo).info.cep) 
+        {
             inseriu = insereNo(&((**raiz).esq), novoNo);
+        }
         else if((**raiz).info.cep < (*novoNo).info.cep)
+        {
             inseriu = insereNo(&((**raiz).dir), novoNo);
-        else 
+        }
+        else
+        {
             inseriu = 0; 
+        }
         if(inseriu)
+        {
             balanceamento(raiz);
+        }
     }
     return inseriu;
 }
@@ -214,7 +247,10 @@ int insereNo(ArvRubNeg **raiz, ArvRubNeg *novoNo)
 int  insercao(ArvRubNeg **raiz, ArvRubNeg *novoNo) 
 {
     int inseriu = insereNo(raiz, novoNo);
-    if(inseriu) (**raiz).cor = preto;
+    if(inseriu)
+    {
+        (**raiz).cor = preto;
+    }
     return inseriu;
 }
 

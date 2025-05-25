@@ -3,16 +3,35 @@
 #include <stdlib.h>
 
 //Questões
+//questao 1: Qual o estado mais populoso?
+Estado* estadoMaisPopuloso(Estado *raiz) 
+{
+    Estado *aux = raiz;
+    Estado *estado = raiz;
+    if(raiz)
+    {
+        while(aux != NULL)
+        { 
+            if(aux->info.populacao > estado->info.populacao) 
+            {
+                estado = aux;
+            }
+            aux = aux->prox;
+        }
+    }
+    return estado;
+}
+
 //questao 2: Qual a população da Capital de um determinado estado? 
-void populacaoDaCapital(ArvRubNeg *raiz, int capital, int populacao) //ARRUMAR A RAIZ PARA O UNION
+void populacaoDaCapital(ArvRubNeg *raiz, int capital, int *populacao) 
 {
     if (raiz)
     {
         if(raiz->info.cidade.nome == capital) 
         {
-            if(raiz->info.cidade.populacao > populacao)
+            if(raiz->info.cidade.populacao > *populacao)
             {
-                populacao = raiz->info.cidade.populacao;
+                *populacao = raiz->info.cidade.populacao;
             }
         }
         populacaoDaCapital(raiz->esq, capital, populacao);
@@ -21,15 +40,15 @@ void populacaoDaCapital(ArvRubNeg *raiz, int capital, int populacao) //ARRUMAR A
 }
 
 //questao 3: Qual a cidade mais populosa de um estado sem ser a Capital? 
-void cidadeMaisPopulosa(ArvRubNeg *raiz, int capital, ArvRubNeg *cidade) //ARRUMAR A RAIZ PARA O UNION
+void cidadeMaisPopulosa(ArvRubNeg *raiz, int capital, ArvRubNeg **cidade) 
 {
     if (raiz)
     {
-        if (raiz->info.cidade.nome != capital)
+        if(raiz->info.cidade.nome != capital)
         {
-            if (raiz->info.cidade.populacao > cidade->info.cidade.nome) 
+            if(cidade == NULL || raiz->info.cidade.populacao > (*cidade)->info.cidade.populacao) 
             {
-                cidade = raiz;
+                *cidade = raiz;
             }
         }
         cidadeMaisPopulosa(raiz->esq, capital, cidade);
@@ -38,7 +57,7 @@ void cidadeMaisPopulosa(ArvRubNeg *raiz, int capital, ArvRubNeg *cidade) //ARRUM
 } 
 
 //questao 4: Quantas pessoas não moram na cidade natal. 
-void quantidadePessoasCepAtual(ArvRubNeg *pessoas, int *quantidade)
+void pessoasForaCepNatal(ArvRubNeg *pessoas, int *quantidade)
 {
     if(pessoas)
     {
@@ -46,8 +65,8 @@ void quantidadePessoasCepAtual(ArvRubNeg *pessoas, int *quantidade)
         {
             (*quantidade)++;
         }
-        quantidadePessoasCepAtual(pessoas->esq, quantidade);
-        quantidadePessoasCepAtual(pessoas->dir, quantidade);
+        pessoasForaCepNatal(pessoas->esq, quantidade);
+        pessoasForaCepNatal(pessoas->dir, quantidade);
     }
 }
 
@@ -72,7 +91,7 @@ void quantidadePessoasCepAtual(ArvRubNeg *pessoas, int *quantidade)
     }
 }*/
 
-/*void quantidadePessoasCepNatal(ArvRubNeg *pessoas, int *quantidade, int cepCidade) (versao 2)
+void nascidosQueNaoMoram(ArvRubNeg *pessoas, int *quantidade, int cepCidade) 
 {
     if (pessoas)
     {
@@ -83,13 +102,13 @@ void quantidadePessoasCepAtual(ArvRubNeg *pessoas, int *quantidade)
                 (*quantidade)++;
             }
         }
-        quantidadePessoasCepNatal(pessoas->esq, quantidade, cepCidade);
-        quantidadePessoasCepNatal(pessoas->dir, quantidade, cepCidade);
+        nascidosQueNaoMoram(pessoas->esq, quantidade, cepCidade);
+        nascidosQueNaoMoram(pessoas->dir, quantidade, cepCidade);
     }
-}*/
+}
 
 //questao 7:Quantas pessoas que moram em uma determinada cidade não nasceram na cidade?
-/*void quantidadePessoasCepAtual(ArvRubNeg *pessoas, int *quantidade, int cepCidade) (versao 2)
+void moradoresNaoNascidos(ArvRubNeg *pessoas, int *quantidade, int cepCidade) 
 {
     if (pessoas)
     {
@@ -100,7 +119,7 @@ void quantidadePessoasCepAtual(ArvRubNeg *pessoas, int *quantidade)
                 (*quantidade)++;
             }
         }
-        quantidadePessoasCepAtual(pessoas->esq, quantidade, cepCidade);
-        quantidadePessoasCepAtual(pessoas->dir, quantidade, cepCidade);
+        moradoresNaoNascidos(pessoas->esq, quantidade, cepCidade);
+        moradoresNaoNascidos(pessoas->dir, quantidade, cepCidade);
     }
-}*/
+}

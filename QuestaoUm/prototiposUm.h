@@ -73,6 +73,7 @@ InfoCidade lerInfoCidade();
 int lerCep();
 int verificaCep(ArvRubNeg *ceps, int cep);
 int verificaCepCidade(ArvRubNeg *cidades, int cep);
+int verificaCepEstado(Estado *inicio, int cep);
 InfoPessoa lerInfoPessoa(Estado *raiz);
 
 //Estados - DuplaEncadeada
@@ -83,3 +84,11 @@ Estado *buscarEstado(Estado *raiz, int nome);
 void exibirEstados(Estado *lista);
 void liberarLista(Estado **lista);
 Estado* estadoMaisPopuloso(Estado *raiz);
+
+//questoes
+Estado* estadoMaisPopuloso(Estado *raiz);//1
+void populacaoDaCapital(ArvRubNeg *raiz, int capital, int *populacao); //2
+void cidadeMaisPopulosa(ArvRubNeg *raiz, int capital, ArvRubNeg *cidade);//3
+void pessoasForaCepNatal(ArvRubNeg *pessoas, int *quantidade);//4
+void nascidosQueNaoMoram(ArvRubNeg *pessoas, int *quantidade, int cepCidade);//6
+void moradoresNaoNascidos(ArvRubNeg *pessoas, int *quantidade, int cepCidade);//7
