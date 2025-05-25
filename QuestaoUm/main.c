@@ -278,7 +278,7 @@ int main()
                 }
                 else
                 {
-                    printf("Sem cidades cadastradas!\n");
+                    printf("Todos moram na cidade natal\n");
                 }
                 break;
             case 11:
