@@ -115,6 +115,27 @@ InfoPessoa lerInfoPessoa(Estado *raiz)
     return info;
 }
 
+int verificaPessoa(ArvRubNeg *raiz, int nome)
+{
+    int existe = 0;
+    if(raiz)
+    {
+        if(raiz->info.pessoa.nome == nome)
+        {
+            existe = 1;
+        }
+        else
+        {
+            existe = verificaPessoa(raiz->esq, nome);
+            if(!existe)
+            {
+                existe = verificaPessoa(raiz->dir, nome);
+            }  
+        }
+    }
+    return existe;
+}
+
 void imprimirArvore(ArvRubNeg *r, int espaco) 
 {
     if (r == NULL) return;

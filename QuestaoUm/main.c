@@ -227,6 +227,17 @@ int main()
                 break;
             case 6:
                 //removerPessoa();
+                printf("Digite o nome da pessoa para remover: "); scanf("%d", &nome);
+                existe = verificaPessoa(pessoas, nome);
+                if(existe)
+                {
+                    pessoas = removeNo(pessoas, nome);
+                    printf("Pessoa removida com sucesso!\n");
+                }
+                else
+                {
+                    printf("Pessoa nao cadastrada!\n");
+                }
                 break;
             case 7:
                 //estadoMaisPopuloso();
@@ -242,12 +253,20 @@ int main()
                 break;
             case 8:
                 //populacaoCapital();
-                dado = 0;
-                printf("Digite o nome da capital: "); scanf("%d", &nome);
-                populacaoDaCapital(estados, nome, &dado);
-                if(dado)
+                printf("Digite o nome do estado: "); scanf("%d", &nome);
+                NoEstado = buscarEstado(estados, nome);
+                if(NoEstado)
                 {
-                    printf("Populacao da capital %d: %d", nome, dado);
+                    dado = 0;
+                    populacaoDaCapital(NoEstado->info.cidades, NoEstado->info.capital, &dado);
+                    if(dado)
+                    {
+                        printf("Populacao da capital %d: %d\n", NoEstado->info.capital, dado);
+                    }
+                }
+                else
+                {
+                    printf("Estado nao cadastrado!\n");
                 }
                 break;
             case 9:
