@@ -192,15 +192,11 @@ int remover(DoisTres **raiz, DoisTres *pai, int valor)
             {
                 if((*raiz)->quantInfo == 2) //2 infos
                 {
-                    if((*raiz)->infoDois == valor) //valor na info 2
+                    (*raiz)->quantInfo = 1; 
+                    if ((*raiz)->infoUm == valor)
                     {
-                        (*raiz)->quantInfo = 1; 
-                    } 
-                    else // valor na info 1
-                    {
-                        (*raiz)->quantInfo = 1;
                         (*raiz)->infoUm = (*raiz)->infoDois;
-                    }
+                    }   
                 } 
                 else // folha com uma info
                 { 
@@ -215,30 +211,52 @@ int remover(DoisTres **raiz, DoisTres *pai, int valor)
                     {
                         if((*raiz)->dir->quantInfo == 2) //confere a dir com 2 infos
                         {
-
+                            (*raiz)->infoDois = (*raiz)->dir->infoUm;
+                            (*raiz)->dir->infoUm = (*raiz)->dir->infoDois;
+                            (*raiz)->dir->quantInfo = 1;
                         }
                         else if((*raiz)->dir->quantInfo == 1 && (*raiz)->cen->quantInfo == 2) //confere a dir com 1 info e o centro com 2 infos
                         {
-                            
+                            (*raiz)->infoDois = (*raiz)->cen->infoDois;
+                            (*raiz)->cen->quantInfo = 1;
                         }
                         else if((*raiz)->dir->quantInfo == 1 && (*raiz)->cen->quantInfo == 1) //confere a dir e o centro com 1 info 
                         {
-                            
+                            (*raiz)->cen->infoDois = (*raiz)->dir->infoUm;
+                            DoisTres *aux = (*raiz)->dir;
+                            free(aux);
+                            (*raiz)->dir = NULL;
+                            (*raiz)->quantInfo = 1;
+                            (*raiz)->cen->quantInfo = 2;
                         }
                     }
                     else //remover info 1
                     {
                         if((*raiz)->cen->quantInfo == 2)// confere centro com 2 info
                         {
-                            
+                            (*raiz)->infoUm = (*raiz)->cen->infoUm;
+                            (*raiz)->cen->infoUm = (*raiz)->cen->infoDois;
+                            (*raiz)->cen->quantInfo = 1;
                         } 
                         else if((*raiz)->cen->quantInfo == 1 && (*raiz)->dir->quantInfo == 2) //centro com 1 e dir com 2
                         {
-                            
+                            (*raiz)->infoUm = (*raiz)->cen->infoUm;
+                            (*raiz)->cen->infoUm = (*raiz)->infoDois;
+                            (*raiz)->infoDois = (*raiz)->dir->infoUm;
+                            (*raiz)->dir->infoUm = (*raiz)->dir->infoDois;
+                            (*raiz)->dir->quantInfo = 1;
                         }
                         else if((*raiz)->cen->quantInfo == 1 && (*raiz)->dir->quantInfo == 1) //centro e dir com 1 info
                         {
-                            
+                            (*raiz)->infoUm = (*raiz)->cen->infoUm;
+                            (*raiz)->cen->infoUm = (*raiz)->infoDois;
+                            (*raiz)->cen->infoDois = (*raiz)->dir->infoUm;
+                            (*raiz)->cen->quantInfo = 2;
+                            (*raiz)->quantInfo = 1;
+                            DoisTres *aux;
+                            aux = (*raiz)->dir;
+                            (*raiz)->dir = NULL;
+                            free(aux);
                         }
                     }
                 }
