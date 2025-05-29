@@ -29,10 +29,7 @@ void populacaoDaCapital(ArvRubNeg *raiz, int capital, int *populacao)
     {
         if(raiz->info.cidade.nome == capital) 
         {
-            if(raiz->info.cidade.populacao > *populacao)
-            {
                 *populacao = raiz->info.cidade.populacao;
-            }
         }
         populacaoDaCapital(raiz->esq, capital, populacao);
         populacaoDaCapital(raiz->dir, capital, populacao);

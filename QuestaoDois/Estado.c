@@ -74,22 +74,3 @@ void liberarLista(Estado **lista) {
     }
     *lista = NULL;  // opcional, mas limpa o ponteiro original
 }
-
-
-Estado* estadoMaisPopuloso(Estado *raiz) 
-{
-    Estado *aux = raiz;
-    Estado *estado = raiz;
-
-    if (raiz)
-    {
-        while (aux != NULL)
-        { 
-            if (aux->info.populacao > estado->info.populacao) estado = aux;
-            aux = aux->prox;
-        }
-    }
-
-    return estado;
-}
-
