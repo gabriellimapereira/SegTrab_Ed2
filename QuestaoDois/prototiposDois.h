@@ -71,4 +71,9 @@ Estado *buscarEstado(Estado *raiz, int nome);
 int inserirEstado(Estado** inicio, Estado *novoNo);
 void exibirEstados(Estado *lista);
 void liberarLista(Estado **lista);
-Estado* estadoMaisPopuloso(Estado *raiz);
+
+
+//Questoes
+Estado* estadoMaisPopuloso(Estado *raiz);//1
+void populacaoDaCapital(ArvDoisTres *raiz, int capital, int *populacao);//2
+void cidadeMaisPopulosa(ArvDoisTres *raiz, int capital, ArvDoisTres**cidade); //3
