@@ -188,7 +188,7 @@ ArvRubNeg* procuraMenor(ArvRubNeg *r) {
 
 ArvRubNeg* removeNo(ArvRubNeg *r, int valor) {
     if (valor < (*r).info) {
-        if (cor((*r).esq) == preto && cor((*r).dir) == preto) r = moveTwoEsqRed(r);
+        if (cor((*r).esq) == preto && cor((*r).esq->esq) == preto) r = moveTwoEsqRed(r);
         
         (*r).esq = removeNo((*r).esq, valor);
 
@@ -220,10 +220,10 @@ int main() {
 
     ArvRubNeg *raiz = NULL;
 
-    int valores[] = {1000, 300, 250, 200, 350, 2000, 3000, 3500, 3200, 1500, 1250, 1100, 1200, 1700, 1300, 100};
+    int valores[] = {1000, 300, 250, 200, 350, 2000, 3000, 3500, 3200, 1500, 1250, 1700, 1300, 100};
     int n = sizeof(valores) / sizeof(valores[0]);
 
-    for (int i = 0; i < 6; i++) {
+    for (int i = 0; i < 14; i++) {
         insercao(&raiz, criarNo(valores[i]));
     }
 
@@ -232,11 +232,10 @@ int main() {
 
     printf("\n");
 
-    /* raiz = removeNo(raiz, 2000);
+    raiz = removeNo(raiz, 200);
 
     printf("\nárvore depois da remoção:\n");
     imprimirArvore(raiz, 0);
-    */
 
     printf("\n");
 

@@ -325,7 +325,7 @@ ArvRubNeg* removeNo(ArvRubNeg *raiz, int valor)
 {
     if(valor < (*raiz).info.cep) 
     {
-        if(cor((*raiz).esq) == preto && cor((*raiz).dir) == preto) raiz = moveTwoEsqRed(raiz);  
+        if(cor((*raiz).esq) == preto && cor((*raiz).esq->esq) == preto) raiz = moveTwoEsqRed(raiz);  
         (*raiz).esq = removeNo((*raiz).esq, valor);
 
     } 
