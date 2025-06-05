@@ -121,7 +121,7 @@ Estado *buscarEstado(Estado *raiz, int nome)
     if(raiz != NULL)
     {
         aux = raiz;
-        while(aux->info.nome != nome && aux != NULL)
+        while(aux != NULL && aux->info.nome != nome)
         {
             aux = aux->prox;
         }

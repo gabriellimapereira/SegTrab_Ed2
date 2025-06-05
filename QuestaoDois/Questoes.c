@@ -20,7 +20,7 @@ Estado* estadoMaisPopuloso(Estado *raiz)
 }
 
 //questao 2: Qual a população da Capital de um determinado estado? 
-void populacaoDaCapital(ArvRubNeg *raiz, int capital, int *populacao) 
+void populacaoDaCapital(ArvDoisTres *raiz, int capital, int *populacao) 
 {
     if (raiz)
     {

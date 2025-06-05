@@ -156,7 +156,7 @@ int main()
                 if(NoEstado)
                 {
                     printf("Digite o nome da cidade: "); scanf("%d", &nome);
-                    noCidade = buscaNo(estados->info.cidades, nome);
+                    noCidade = buscaNo(NoEstado->info.cidades, nome);
                     if(noCidade)
                     {
                         dado = lerCep();

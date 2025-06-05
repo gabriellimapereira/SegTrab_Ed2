@@ -51,7 +51,7 @@ typedef struct ArvRubNeg
 ArvRubNeg* criarNo(Dados dado);
 void imprimirArvore(ArvRubNeg *raiz, int espaco);
 void liberarArvore(ArvRubNeg *raiz);
-ArvRubNeg* buscaNo(ArvRubNeg *raiz, int valor) ;
+ArvRubNeg* buscaNo(ArvRubNeg *raiz, int valor);
 int cor(ArvRubNeg *raiz);
 void rotEsq(ArvRubNeg **raiz);
 void rotDir(ArvRubNeg **raiz);

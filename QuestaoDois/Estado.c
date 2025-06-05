@@ -2,9 +2,18 @@
 #include "prototiposDois.h"
 #include <stdlib.h>
 
-InfoEstado lerInfoEstado() 
+InfoEstado lerInfoEstado(InfoCidade *capital) 
 {
-    
+    InfoEstado info; 
+    printf("Digite o nome do estado: \n"); scanf("%d", &info.nome);
+    printf("Digite o nome da capital: "); scanf("%d", &capital->nome);
+    printf("Digite a população da capital: "); scanf("%d", &capital->populacao);
+    capital->ceps = NULL;
+    info.capital = capital->nome;
+    info.populacao = capital->populacao;
+    info.quantCidades = 1;
+    info.cidades = NULL; 
+    return info;
 }
 
 Estado *alocarEstado(InfoEstado info) 
@@ -19,6 +28,21 @@ Estado *alocarEstado(InfoEstado info)
     no->prox = NULL;
     no->info = info;
     return no;
+}
+
+Estado *buscarEstado(Estado *raiz, int nome)
+{
+    Estado *aux;
+    aux = NULL; 
+    if(raiz != NULL)
+    {
+        aux = raiz;
+        while(aux != NULL && aux->info.nome != nome )
+        {
+            aux = aux->prox;
+        }
+    }
+    return aux;
 }
 
 int inserirEstado(Estado** inicio, Estado *novoNo) {

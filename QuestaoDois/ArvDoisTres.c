@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include "prototiposDois.h"
 
-ArvRubNeg* criarNo(Dados info, ArvRubNeg *fEsq, ArvRubNeg *fCen) {
-    ArvRubNeg *no = malloc(sizeof(ArvRubNeg));
+ArvDoisTres* criarNo(Dados info, ArvDoisTres *fEsq, ArvDoisTres *fCen) {
+    ArvDoisTres *no = malloc(sizeof(ArvDoisTres));
     if (no) {
         no->infoUm.cep = info.cep;
         no->quantInfo = 1;
@@ -14,7 +14,108 @@ ArvRubNeg* criarNo(Dados info, ArvRubNeg *fEsq, ArvRubNeg *fCen) {
     return no;
 }
 
-void imprimirArv(ArvRubNeg *raiz, int nivel) {
+InfoCidade lerInfoCidade()
+{
+    InfoCidade info;
+    printf("Digite o nome da cidade: "); scanf("%d", &info.nome);
+    printf("Digite a populacao da cidade: "); scanf("%d", &info.populacao);
+    info.ceps = NULL;
+    return info;
+}
+
+int lerCep() 
+{
+    int info;
+    printf("Digite o CEP: \n"); scanf("%d", &info);
+    return info;
+}
+
+int verificaCep(ArvDoisTres *raiz, int cep) {
+    int existe = 0;
+
+    if (raiz != NULL) {
+        if (cep == raiz->infoUm.cep || (raiz->quantInfo == 2 && cep == raiz->infoDois.cep)) {
+            existe = 1;
+        } else {
+            if (cep < raiz->infoUm.cep) {
+                existe = verificaCep(raiz->esq, cep);
+            } else if (raiz->quantInfo == 1 || cep < raiz->infoDois.cep) {
+                existe = verificaCep(raiz->cen, cep);
+            } else {
+                existe = verificaCep(raiz->dir, cep);
+            }
+        }
+    }
+
+    return existe;
+}
+
+int verificaCepCidade(ArvDoisTres *cidades, int cep) {
+    int existe = 0;
+
+    if (cidades != NULL) {
+        if (verificaCep(cidades->infoUm.cidade.ceps, cep)) {
+            existe = 1;
+        } else if (cidades->quantInfo == 2 && verificaCep(cidades->infoDois.cidade.ceps, cep)) {
+            existe = 1;
+        } else {
+            existe = verificaCepCidade(cidades->esq, cep);
+            if (existe == 0)
+                existe = verificaCepCidade(cidades->cen, cep);
+            if (existe == 0)
+                existe = verificaCepCidade(cidades->dir, cep);
+        }
+    }
+
+    return existe;
+}
+
+int verificaCepEstado(Estado *inicio, int cep) {
+    int existe = 0;
+
+    while (inicio != NULL && existe == 0) {
+        existe = verificaCepCidade(inicio->info.cidades, cep);
+        inicio = inicio->prox;
+    }
+
+    return existe;
+}
+
+InfoPessoa lerInfoPessoa(Estado *raiz) {
+    InfoPessoa info;
+    int valido = 0;
+
+    printf("Digite o nome da pessoa:\n");
+    scanf("%d", &info.nome);
+
+    printf("Digite o CPF:\n");
+    scanf("%d", &info.cpf);
+
+    printf("Digite a data de nascimento:\n");
+    scanf("%d", &info.dataNasc);
+
+    do {
+        printf("Digite o CEP atual:\n");
+        scanf("%d", &info.cepAtual);
+        valido = (verificaCepEstado(raiz, info.cepAtual));
+        if (!valido) {
+            printf("Digite um CEP válido!\n");
+        }
+    } while (!valido);
+
+    do {
+        printf("Digite o CEP natal:\n");
+        scanf("%d", &info.cepNatal);
+        valido = (verificaCepEstado(raiz, info.cepNatal));
+        if (!valido) {
+            printf("Digite um CEP válido!\n");
+        }
+    } while (!valido);
+
+    return info;
+}
+
+void imprimirArv(ArvDoisTres *raiz, int nivel) {
     if (raiz == NULL) return;
 
     imprimirArv(raiz->dir, nivel + 1);
@@ -31,7 +132,7 @@ void imprimirArv(ArvRubNeg *raiz, int nivel) {
     imprimirArv(raiz->esq, nivel + 1);
 }
 
-void liberarArv(ArvRubNeg **raiz) {
+void liberarArv(ArvDoisTres **raiz) {
     if (*raiz) {
         liberarArv(&(*raiz)->esq);
         liberarArv(&(*raiz)->cen);
@@ -42,7 +143,7 @@ void liberarArv(ArvRubNeg **raiz) {
     }
 }
 
-void adicionarInfo(ArvRubNeg **no, Dados info, ArvRubNeg *subArvInfo) {
+void adicionarInfo(ArvDoisTres **no, Dados info, ArvDoisTres *subArvInfo) {
     if (info.cep > (*no)->infoUm.cep) {
         (*no)->infoDois = info;
         (*no)->dir = subArvInfo;
@@ -55,8 +156,8 @@ void adicionarInfo(ArvRubNeg **no, Dados info, ArvRubNeg *subArvInfo) {
     (*no)->quantInfo = 2;
 }
 
-ArvRubNeg* quebrarNo(ArvRubNeg **no, Dados info, Dados *sobe, ArvRubNeg *filhoDir) {
-    ArvRubNeg *maior;
+ArvDoisTres* quebrarNo(ArvDoisTres **no, Dados info, Dados *sobe, ArvDoisTres *filhoDir) {
+    ArvDoisTres *maior;
 
     if (info.cep > (*no)->infoDois.cep) {
         *sobe = (*no)->infoDois;
@@ -77,8 +178,8 @@ ArvRubNeg* quebrarNo(ArvRubNeg **no, Dados info, Dados *sobe, ArvRubNeg *filhoDi
     return maior;
 }
 
-ArvRubNeg* inserirNo(ArvRubNeg **raiz, ArvRubNeg *pai, Dados info, Dados *sobe) {
-    ArvRubNeg *maiorNo = NULL;
+ArvDoisTres* inserirNo(ArvDoisTres **raiz, ArvDoisTres *pai, Dados info, Dados *sobe) {
+    ArvDoisTres *maiorNo = NULL;
 
     if (*raiz == NULL) {
         *raiz = criarNo(info, NULL, NULL);
@@ -120,7 +221,28 @@ ArvRubNeg* inserirNo(ArvRubNeg **raiz, ArvRubNeg *pai, Dados info, Dados *sobe) 
     return maiorNo;
 }
 
-void exibirCeps(ArvRubNeg *raiz) 
+ArvDoisTres* buscaNo(ArvDoisTres *raiz, int cep) {
+    ArvDoisTres *no = NULL;
+
+    if (raiz != NULL) {
+        if (cep == raiz->infoUm.cep || (raiz->quantInfo == 2 && cep == raiz->infoDois.cep))
+            no = raiz;
+        else {
+
+            if (cep < raiz->infoUm.cep) {
+                no = buscaNo(raiz->esq, cep);
+            } else if (raiz->quantInfo == 1 || cep < raiz->infoDois.cep) {
+                no = buscaNo(raiz->cen, cep);
+            } else {
+                no = buscaNo(raiz->dir, cep);
+            }
+        }
+    }
+
+    return no;
+}
+
+void exibirCeps(ArvDoisTres *raiz) 
 {
     if (raiz) 
     {
@@ -134,7 +256,7 @@ void exibirCeps(ArvRubNeg *raiz)
     }
 }
 
-void exibirCidades(ArvRubNeg *raiz) 
+void exibirCidades(ArvDoisTres *raiz) 
 {
     if (raiz) 
     {
@@ -150,7 +272,7 @@ void exibirCidades(ArvRubNeg *raiz)
     }
 }
 
-void exibirPessoas(ArvRubNeg *raiz) 
+void exibirPessoas(ArvDoisTres *raiz) 
 {
     if (raiz) 
     {

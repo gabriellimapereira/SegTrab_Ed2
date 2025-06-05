@@ -13,7 +13,7 @@ typedef struct InfoCidade
 {
     int nome;
     int populacao;
-    struct ArvRubNeg *ceps;
+    struct ArvDoisTres *ceps;
 } InfoCidade;
 
 typedef union {
@@ -28,7 +28,7 @@ typedef struct InfoEstado
     int capital;
     int quantCidades;
     int populacao;
-    struct ArvRubNeg *cidades;
+    struct ArvDoisTres *cidades;
 } InfoEstado;
 
 typedef struct Estado 
@@ -37,33 +37,37 @@ typedef struct Estado
     struct Estado *ant, *prox;
 } Estado;
 
-typedef struct ArvRubNeg {
+typedef struct ArvDoisTres {
     Dados infoUm;
     Dados infoDois;
     int quantInfo;
-    struct ArvRubNeg *esq, *cen, *dir;
-} ArvRubNeg;
+    struct ArvDoisTres *esq, *cen, *dir;
+} ArvDoisTres;
 
 //Dois-Três
-ArvRubNeg* criarNo(Dados info, ArvRubNeg *fEsq, ArvRubNeg *fCen);
-void imprimirArv(ArvRubNeg *raiz, int nivel);
-void liberarArv(ArvRubNeg **raiz);
-void adicionarInfo(ArvRubNeg **no, Dados info, ArvRubNeg *subArvInfo);
-ArvRubNeg* quebrarNo(ArvRubNeg **no, Dados info, Dados *sobe, ArvRubNeg *filhoDir);
-ArvRubNeg* inserirNo(ArvRubNeg **raiz, ArvRubNeg *pai, Dados info, Dados *sobe);
+ArvDoisTres* criarNo(Dados info, ArvDoisTres *fEsq, ArvDoisTres *fCen);
+void imprimirArv(ArvDoisTres *raiz, int nivel);
+void liberarArv(ArvDoisTres **raiz);
+void adicionarInfo(ArvDoisTres **no, Dados info, ArvDoisTres *subArvInfo);
+ArvDoisTres* quebrarNo(ArvDoisTres **no, Dados info, Dados *sobe, ArvDoisTres *filhoDir);
+ArvDoisTres* inserirNo(ArvDoisTres **raiz, ArvDoisTres *pai, Dados info, Dados *sobe);
+ArvDoisTres* buscaNo(ArvDoisTres *raiz, int valor);
 
-void exibirCeps(ArvRubNeg *raiz);
-void exibirCidades(ArvRubNeg *raiz);
-void exibirPessoas(ArvRubNeg *raiz);
+void exibirCeps(ArvDoisTres *raiz);
+void exibirCidades(ArvDoisTres *raiz);
+void exibirPessoas(ArvDoisTres *raiz);
 
-InfoEstado lerInfoEstado();
 InfoCidade lerInfoCidade();
 int lerCep();
-InfoPessoa lerInfoPessoa();
+int verificaCep(ArvDoisTres *ceps, int cep);
+int verificaCepCidade(ArvDoisTres *cidades, int cep);
+int verificaCepEstado(Estado *inicio, int cep);
+InfoPessoa lerInfoPessoa(Estado *raiz);
 
 //Estados - DuplaEncadeada
-InfoEstado lerInfoEstado();
+InfoEstado lerInfoEstado(InfoCidade *capital);
 Estado* alocarEstado(InfoEstado info);
+Estado *buscarEstado(Estado *raiz, int nome);
 int inserirEstado(Estado** inicio, Estado *novoNo);
 void exibirEstados(Estado *lista);
 void liberarLista(Estado **lista);

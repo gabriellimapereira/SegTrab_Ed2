@@ -19,7 +19,7 @@ int insereEstados(Estado **raiz) {
     return 0;
 } 
 
-int insereCidades(ArvRubNeg **raiz) {
+int insereCidades(ArvDoisTres **raiz) {
 
     int valores[] = {1000, 300, 250, 200, 350, 2000, 3000, 3500, 3200, 1500, 1250, 1100, 1200, 1700, 1300, 100};
     int n = sizeof(valores) / sizeof(valores[0]);
@@ -35,7 +35,7 @@ int insereCidades(ArvRubNeg **raiz) {
     return 0;
 } 
 
-int insereCeps(ArvRubNeg **raiz) {
+int insereCeps(ArvDoisTres **raiz) {
 
     int valores[] = {10000, 3000, 2500, 2000, 3500, 20000, 30000, 35000, 32000, 15000, 12500, 11000, 12000, 17000, 13000, 1000};
     int n = sizeof(valores) / sizeof(valores[0]);
@@ -50,7 +50,7 @@ int insereCeps(ArvRubNeg **raiz) {
     return 0;
 } 
 
-int inserePessoas(ArvRubNeg **raiz) {
+int inserePessoas(ArvDoisTres **raiz) {
     int valores[] = {1000, 300, 250, 200, 350, 2000, 3000, 3500, 3200, 1500, 1250, 1100, 1200, 1700, 1300, 100};
     int n = sizeof(valores) / sizeof(valores[0]);
 
@@ -85,9 +85,15 @@ void menu() {
 }
 
 int main() {
-    Estado *estados = NULL;
-    ArvRubNeg *pessoas = NULL;
-    int opcao, dado, inseriu;
+    Estado *estados = NULL, *NoEstado = NULL;
+    ArvDoisTres *pessoas = NULL;
+    ArvDoisTres *No = NULL;
+    ArvDoisTres *noCidade = NULL;
+    int opcao, dado, inseriu, nome, existe, cep;
+    InfoEstado dadosEstado; // informaçoes de estado para preencher
+    InfoCidade dadosCidade; // informaçoes de cidade para preencher
+    InfoPessoa dadosPessoa; // informaçoes de pessoa para preencher
+    Dados dadosQuaisquer, sobe;
     insereEstados(&estados);
     //estados->info.cidades = NULL;
     insereCidades(&(estados->info.cidades));
@@ -103,18 +109,96 @@ int main() {
 
         switch (opcao) {
             case 1:
-                printf("Digite o nome do estado: ");
-                scanf("%d", &dado);
-                //lerDado();
+                dadosEstado = lerInfoEstado(&dadosCidade);
+                NoEstado = alocarEstado(dadosEstado);
+                inseriu = inserirEstado(&estados, NoEstado);
+                if (inseriu) 
+                {
+                    printf("Estado inserido com sucesso!\n");
+                    dadosQuaisquer.cidade = dadosCidade;
+                    inserirNo(&(NoEstado->info.cidades), NULL, dadosQuaisquer, &sobe);
+                } 
+                else 
+                {
+                    printf("O estado ja existe! Nao houve insercao.\n");
+                }
                 break;
             case 2:
                 //cadastrarCidade();
+                printf("Digite o nome do estado: "); scanf("%d", &nome);
+                NoEstado = buscarEstado(estados, nome);
+                if(NoEstado)
+                {
+                    dadosCidade = lerInfoCidade();
+                    dadosQuaisquer.cidade = dadosCidade;
+                    inserirNo(&(NoEstado->info.cidades), NULL, dadosQuaisquer, &sobe);
+
+                    /*if(inseriu)
+                    {
+                        printf("Cidade inserida com sucesso!\n");
+                    }
+                    else
+                    {
+                        printf("A cidade ja existe! Nao houve insercao.\n");
+                        free(No);
+                    }*/
+                }
+                else
+                {
+                    printf("Estado nao encontrado!\n");
+                }
                 break;
             case 3:
                 //cadastrarCEP();
+                printf("Digite o nome do estado: "); scanf("%d", &nome);
+                NoEstado = buscarEstado(estados, nome);
+                if(NoEstado)
+                {
+                    printf("Digite o nome da cidade: "); scanf("%d", &nome);
+                    noCidade = buscaNo(NoEstado->info.cidades, nome);
+                    if(noCidade)
+                    {
+                        dado = lerCep();
+                        dadosQuaisquer.cep = dado;
+                        if (noCidade->infoUm.cidade.nome == nome)
+                            inserirNo(&(noCidade->infoUm.cidade.ceps), NULL, dadosQuaisquer, &sobe);
+                        else 
+                            inserirNo(&(noCidade->infoDois.cidade.ceps), NULL, dadosQuaisquer, &sobe);
+
+                        /*if(inseriu)
+                        {
+                            printf("Cep inserido com sucesso!\n");
+                        }
+                        else
+                        {
+                            printf("O cep ja existe! Nao houve insercao.\n");
+                            free(No);
+                        }*/
+                    }
+                    else
+                    {
+                        printf("Cidade nao encontrada!\n");
+                    }
+                }
+                else
+                {
+                    printf("Estado nao encontrado!\n");
+                }
                 break;
             case 4:
                 //cadastrarPessoa();
+                dadosPessoa = lerInfoPessoa(estados);
+                dadosQuaisquer.pessoa = dadosPessoa;
+                inserirNo(&pessoas, NULL, dadosQuaisquer, &sobe);
+                if(inseriu)
+                {
+                    printf("Pessoa inserida com sucesso!\n");
+                }
+                else
+                {
+                    printf("A pessoa ja existe! Nao houve insercao.\n");
+                    free(No);
+                }
                 break;
             case 5:
                 //removerCEP();
