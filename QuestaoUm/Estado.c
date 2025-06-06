@@ -96,7 +96,8 @@ void exibirEstados(Estado *lista)
     Estado *aux = lista;
     while (aux != NULL)
     {
-        printf("\nEstado: %d\n ", aux->info.nome);
+        printf("\nEstado: %d\n", aux->info.nome);
+        printf(" População: %d\n", aux->info.populacao);
         exibirCidades(aux->info.cidades);
         aux = aux->prox;
     }

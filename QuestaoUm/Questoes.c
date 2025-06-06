@@ -43,10 +43,6 @@ void cidadeMaisPopulosa(ArvRubNeg *raiz, int capital, ArvRubNeg **cidade)
     {
         if(raiz->info.cidade.nome != capital)
         {
-            if(cidade == NULL) 
-            {
-                *cidade = raiz;
-            }
             if(raiz->info.cidade.populacao > (*cidade)->info.cidade.populacao)
             {
                 *cidade = raiz;
@@ -70,8 +66,42 @@ void pessoasForaCepNatal(ArvRubNeg *pessoas, int *quantidade)
         pessoasForaCepNatal(pessoas->dir, quantidade);
     }
 }
+int estadoNatal(Estado *inicio, int cep, int nomeCidade) 
+{
+    int existe = 0;
+    if(inicio) 
+    {
+        existe = cidadeNatal(inicio->info.cidades, cep, nomeCidade);
+        if(existe == 0)
+        {
+           existe = estadoNatal(inicio->prox, cep, nomeCidade);
+        }
+    } 
+    return existe;
+}
 
 //questao 5: Qual cidade natal de uma pessoa dado o CEP da cidade? 
+int cidadeNatal(ArvRubNeg *cidades, int cep, int nomeCidade)
+{
+    int existe = 0;
+    if (cidades)
+    {
+        existe = verificaCep(cidades->info.cidade.ceps, cep);
+        if (existe) 
+        {
+            nomeCidade = cidades->info.cidade.nome;
+        }
+        else
+        {
+            existe = verificaCepCidade(cidades->esq, cep);
+            if (existe == 0)
+            {
+                existe = verificaCepCidade(cidades->dir, cep);
+            }
+        }
+    }
+    return existe;
+}
 
 //questao 6: Quantas pessoas nascidas em uma determinada cidade não mora na cidade natal?
 void nascidosQueNaoMoram(ArvRubNeg *pessoas, int *quantidade, int cepCidade) 

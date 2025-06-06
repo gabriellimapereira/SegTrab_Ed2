@@ -1,10 +1,13 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <time.h>
 #include "prototiposUm.h"
 
 int insereEstados(Estado **raiz) 
-{
+{       
+    srand(time(NULL));
+
     int valores[] = {100, 30, 25, 20, 35, 200, 300, 350, 320, 150, 125, 110, 120, 170, 130, 10};
     int n = sizeof(valores) / sizeof(valores[0]);
     for (int i = 0; i < n; i++) 
@@ -12,6 +15,7 @@ int insereEstados(Estado **raiz)
         InfoEstado dado;
         dado.nome = valores[i];
         dado.cidades = NULL;  // apenas o campo nome do estado é usado
+        dado.populacao = (rand() % 500000) + 1;
         Estado *novoNo = alocarEstado(dado);
         inserirEstado(raiz, novoNo);
     }
@@ -49,12 +53,19 @@ int insereCeps(ArvRubNeg **raiz)
 
 int inserePessoas(ArvRubNeg **raiz) 
 {
+    srand(time(NULL));
+
+    int ceps[] = {10000, 3000, 2500, 2000, 3500, 20000, 30000, 35000, 32000, 15000, 12500, 11000, 12000, 17000, 13000, 1000};
     int valores[] = {1000, 300, 250, 200, 350, 2000, 3000, 3500, 3200, 1500, 1250, 1100, 1200, 1700, 1300, 100};
+
     int n = sizeof(valores) / sizeof(valores[0]);
+
     for (int i = 0; i < n; i++) 
     {
         Dados dado;
         dado.pessoa.cpf = valores[i]; 
+        dado.pessoa.cepAtual = ceps[rand() % 16];
+        dado.pessoa.cepNatal = ceps[rand() % 16];
         ArvRubNeg *novoNo = criarNo(dado);
         insercao(raiz, novoNo);
     }
@@ -275,7 +286,7 @@ int main()
                 NoEstado = buscarEstado(estados, nome);
                 if(NoEstado)
                 {
-                    noCidade = NULL;
+                    noCidade = NoEstado->info.cidades;
                     cidadeMaisPopulosa(NoEstado->info.cidades, NoEstado->info.capital, &noCidade);
                     if(noCidade)
                     {
@@ -285,6 +296,9 @@ int main()
                     {
                         printf("A cidade mais populosa eh a capital!\n");
                     }
+                } else 
+                {
+                    printf("Estado não encontrado!\n");
                 }
                 break;
             case 10:
@@ -301,8 +315,19 @@ int main()
                 }
                 break;
             case 11:
-                //cidadeNatalPorCep();
+                //cidadeNatal();
+                {
+                int nomeCidade;
+                printf("Digite o cep:\n"); scanf("%d", &cep);
+                existe = estadoNatal(estados, cep, nomeCidade);
+                if (existe) {
+                    printf("Cidade natal: %d\n", nomeCidade);
+                } else
+                {
+                    printf("Cep não encontrado!\n");
+                }
                 break;
+                }
             case 12:
                 //nascidosQueNaoMoram();
                 printf("Digite o cep: "); scanf("%d", &cep);
@@ -348,9 +373,11 @@ int main()
                 }
                 break;
             case 14:
+                printf("\nEstados:");
                 exibirEstados(estados);
-                printf("\n");
+                printf("\nPessoas: ");
                 exibirPessoas(pessoas);
+                printf("\n");
                 break;
             case 0:
                 printf("Encerrando programa...\n");

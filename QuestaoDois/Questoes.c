@@ -56,10 +56,6 @@ void cidadeMaisPopulosa(ArvDoisTres *raiz, int capital, ArvDoisTres**cidade)
         {
             if(raiz->infoDois.cidade.nome != capital)
             {
-                if(*cidade == NULL)
-                {
-                    (*cidade)->infoUm = raiz->infoDois;
-                }
                 if(raiz->infoDois.cidade.populacao > (*cidade)->infoUm.cidade.populacao)
                 {
                     (*cidade)->infoUm = raiz->infoDois;
@@ -68,10 +64,6 @@ void cidadeMaisPopulosa(ArvDoisTres *raiz, int capital, ArvDoisTres**cidade)
         }
         if(raiz->infoUm.cidade.nome != capital)
         {
-            if(*cidade == NULL)
-            {
-                (*cidade)->infoUm = raiz->infoUm;
-            }
             if(raiz->infoUm.cidade.populacao > (*cidade)->infoUm.cidade.populacao)
             {
                 (*cidade)->infoUm = raiz->infoUm;
@@ -101,5 +93,107 @@ void pessoasForaCepNatal(ArvDoisTres *pessoas, int *quantidade)
         pessoasForaCepNatal(pessoas->esq, quantidade);
         pessoasForaCepNatal(pessoas->cen, quantidade);
         if(pessoas->quantInfo == 2) pessoasForaCepNatal(pessoas->dir, quantidade);
+    }
+}
+
+//questao 5: Qual cidade natal de uma pessoa dado o CEP da cidade? 
+int cidadeNatal(ArvDoisTres *cidades, int cep, int nomeCidade)
+{
+    int existe = 0;
+    if (cidades)
+    {
+        if(cidades->quantInfo == 2)
+        {
+            existe = verificaCep(cidades->infoDois.cidade.ceps, cep);
+            if(existe)
+            {
+                nomeCidade = cidades->infoDois.cidade.nome;
+            }
+            else
+            {
+                existe = verificaCepCidade(cidades->esq, cep);
+                if (!existe)
+                {
+                    existe = verificaCepCidade(cidades->cen, cep);
+                    if(!existe)
+                    {
+                        existe = verificaCepCidade(cidades->dir, cep);
+                    }
+                }
+            }
+        }
+        if(!existe)
+        {
+            existe = verificaCep(cidades->infoUm.cidade.ceps, cep);
+            if (existe) 
+            {
+                nomeCidade = cidades->infoUm.cidade.nome;
+            }
+            else
+            {
+                existe = verificaCepCidade(cidades->esq, cep);
+                if (!existe)
+                {
+                    existe = verificaCepCidade(cidades->cen, cep);
+                }
+            }
+        }
+    }
+    return existe;
+}
+
+//questao 6: Quantas pessoas nascidas em uma determinada cidade não mora na cidade natal?
+void nascidosQueNaoMoram(ArvDoisTres *pessoas, int *quantidade, int cepCidade) 
+{
+    if (pessoas)
+    {
+        if(pessoas->infoUm.pessoa.cepNatal == cepCidade)
+        {
+            if(pessoas->infoUm.pessoa.cepAtual != cepCidade)
+            {
+                (*quantidade)++;
+            }
+        }
+        if(pessoas->quantInfo == 2)
+        {
+            if(pessoas->infoDois.pessoa.cepNatal == cepCidade)
+            {
+                if(pessoas->infoDois.pessoa.cepAtual != cepCidade)
+                {
+                    (*quantidade)++;
+                }
+            }
+        }
+        nascidosQueNaoMoram(pessoas->esq, quantidade, cepCidade);
+        nascidosQueNaoMoram(pessoas->cen, quantidade, cepCidade);
+        if(pessoas->quantInfo == 2) nascidosQueNaoMoram(pessoas->dir, quantidade, cepCidade);
+    }
+}
+
+//questao 7:Quantas pessoas que moram em uma determinada cidade não nasceram na cidade?
+void moradoresNaoNascidos(ArvDoisTres *pessoas, int *quantidade, int cepCidade) 
+{
+    if (pessoas)
+    {
+        if(pessoas->infoUm.pessoa.cepAtual == cepCidade)
+        {
+            if(pessoas->infoUm.pessoa.cepNatal != cepCidade)
+            {
+                (*quantidade)++;
+            }
+        }
+        if(pessoas->quantInfo == 2)
+        {
+            if(pessoas->infoDois.pessoa.cepAtual == cepCidade)
+            {
+                if(pessoas->infoDois.pessoa.cepNatal != cepCidade)
+                {
+                    (*quantidade)++;
+                }
+            }
+        }
+        moradoresNaoNascidos(pessoas->esq, quantidade, cepCidade);
+        moradoresNaoNascidos(pessoas->cen, quantidade, cepCidade);
+        if(pessoas->quantInfo == 2) moradoresNaoNascidos(pessoas->dir, quantidade, cepCidade);
     }
 }

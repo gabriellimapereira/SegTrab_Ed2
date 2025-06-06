@@ -81,7 +81,7 @@ int verificaCepEstado(Estado *inicio, int cep)
         existe = verificaCepCidade(inicio->info.cidades, cep);
         if(existe == 0)
         {
-            verificaCepEstado(inicio->prox, cep);
+           existe = verificaCepEstado(inicio->prox, cep);
         }
     } 
     return existe;
@@ -102,7 +102,7 @@ InfoPessoa lerInfoPessoa(Estado *raiz)
         {
             printf("Digite um cep válido!\n");
         }
-    } while(existe != 0);
+    } while(existe == 0);
     do 
     {
         printf("Digite o cep natal: \n"); scanf("%d", &info.cepNatal);
@@ -111,7 +111,7 @@ InfoPessoa lerInfoPessoa(Estado *raiz)
         {
           printf("Digite um cep válido!\n");  
         }
-    } while(existe != 0);
+    } while(existe == 0);
     return info;
 }
 
@@ -364,7 +364,7 @@ void exibirCeps(ArvRubNeg *raiz)
     if(raiz) 
     {
         exibirCeps(raiz->esq);
-        printf("Cep: %d\n", raiz->info.cep);
+        printf("   Cep: %d\n", raiz->info.cep);
         exibirCeps(raiz->dir);
     }
 }
@@ -374,8 +374,12 @@ void exibirCidades(ArvRubNeg *raiz)
     if(raiz) 
     {
         exibirCidades(raiz->esq);
-        printf("Cidade: %d\n", raiz->info.cidade.nome);
-        exibirCeps(raiz->info.cidade.ceps);
+        printf("  Cidade: %d\n", raiz->info.cidade.nome);
+        if (raiz->info.cidade.ceps) 
+        {
+            printf("  Árvore de ceps dessa cidade: \n");
+            exibirCeps(raiz->info.cidade.ceps);
+        }
         exibirCidades(raiz->dir);
     }
 }
@@ -385,7 +389,8 @@ void exibirPessoas(ArvRubNeg *raiz)
     if(raiz) 
     {
         exibirPessoas(raiz->esq);
-        printf("CPF: %d\n", raiz->info.pessoa.cpf);
+        printf("\nCPF: %d ", raiz->info.pessoa.cpf);
+        printf("cidade natal: %d cidade atual: %d", raiz->info.pessoa.cepNatal, raiz->info.pessoa.cepAtual);
         exibirPessoas(raiz->dir);
     }
 }
