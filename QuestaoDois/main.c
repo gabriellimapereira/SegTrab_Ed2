@@ -132,16 +132,6 @@ int main() {
                     dadosCidade = lerInfoCidade();
                     dadosQuaisquer.cidade = dadosCidade;
                     inserirNo(&(NoEstado->info.cidades), NULL, dadosQuaisquer, &sobe);
-
-                    /*if(inseriu)
-                    {
-                        printf("Cidade inserida com sucesso!\n");
-                    }
-                    else
-                    {
-                        printf("A cidade ja existe! Nao houve insercao.\n");
-                        free(No);
-                    }*/
                 }
                 else
                 {
@@ -164,16 +154,6 @@ int main() {
                             inserirNo(&(noCidade->infoUm.cidade.ceps), NULL, dadosQuaisquer, &sobe);
                         else 
                             inserirNo(&(noCidade->infoDois.cidade.ceps), NULL, dadosQuaisquer, &sobe);
-
-                        /*if(inseriu)
-                        {
-                            printf("Cep inserido com sucesso!\n");
-                        }
-                        else
-                        {
-                            printf("O cep ja existe! Nao houve insercao.\n");
-                            free(No);
-                        }*/
                     }
                     else
                     {
@@ -190,15 +170,6 @@ int main() {
                 dadosPessoa = lerInfoPessoa(estados);
                 dadosQuaisquer.pessoa = dadosPessoa;
                 inserirNo(&pessoas, NULL, dadosQuaisquer, &sobe);
-                if(inseriu)
-                {
-                    printf("Pessoa inserida com sucesso!\n");
-                }
-                else
-                {
-                    printf("A pessoa ja existe! Nao houve insercao.\n");
-                    free(No);
-                }
                 break;
             case 5:
                 //removerCEP();
