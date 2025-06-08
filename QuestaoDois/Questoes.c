@@ -102,7 +102,7 @@ int estadoNatal(Estado *inicio, int cep, int *nomeCidade)
     int existe = 0;
     if(inicio) 
     {
-        existe = CidadeNatal(inicio->info.cidades, cep, nomeCidade);
+        existe = cidadeNatal(inicio->info.cidades, cep, nomeCidade);
         if(existe == 0)
         {
            existe = estadoNatal(inicio->prox, cep, nomeCidade);
@@ -141,7 +141,7 @@ int cidadeNatal(ArvDoisTres *cidades, int cep, int *nomeCidade)
             existe = verificaCep(cidades->infoUm.cidade.ceps, cep);
             if (existe) 
             {
-                nomeCidade = cidades->infoUm.cidade.nome;
+                *nomeCidade = cidades->infoUm.cidade.nome;
             }
             else
             {
