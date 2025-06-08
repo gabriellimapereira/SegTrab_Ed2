@@ -78,6 +78,7 @@ Estado* estadoMaisPopuloso(Estado *raiz);//1
 void populacaoDaCapital(ArvDoisTres *raiz, int capital, int *populacao);//2
 void cidadeMaisPopulosa(ArvDoisTres *raiz, int capital, ArvDoisTres**cidade); //3
 void pessoasForaCepNatal(ArvDoisTres *pessoas, int *quantidade);//4
-int cidadeNatal(ArvDoisTres *cidades, int cep, int nomeCidade)//5
+int estadoNatal(Estado *inicio, int cep, int *nomeCidade);
+int cidadeNatal(ArvDoisTres *cidades, int cep, int *nomeCidade);//5
 void nascidosQueNaoMoram(ArvDoisTres *pessoas, int *quantidade, int cepCidade);//6
 void moradoresNaoNascidos(ArvDoisTres *pessoas, int *quantidade, int cepCidade);//7

@@ -269,11 +269,16 @@ int main() {
                 break;
             case 11:
                 //cidadeNatal();
-                printf("Digite o nome do estado: "); scanf("%d", nome);
-                NoEstado = buscarEstado(estados, nome);
-                if(NoEstado)
+                int nomeCidade;
+                printf("Digite o cep:\n"); scanf("%d", &cep);
+                existe = estadoNatal(estados, cep, &nomeCidade);
+                if(existe) 
                 {
-                    printf("Digi")
+                    printf("Cidade natal: %d\n", nomeCidade);
+                } 
+                else
+                {
+                    printf("Cep não encontrado!\n");
                 }
                 break;
             case 12:

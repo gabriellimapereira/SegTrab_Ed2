@@ -296,7 +296,8 @@ int main()
                     {
                         printf("A cidade mais populosa eh a capital!\n");
                     }
-                } else 
+                } 
+                else 
                 {
                     printf("Estado não encontrado!\n");
                 }
@@ -316,18 +317,18 @@ int main()
                 break;
             case 11:
                 //cidadeNatal();
-                {
                 int nomeCidade;
                 printf("Digite o cep:\n"); scanf("%d", &cep);
-                existe = estadoNatal(estados, cep, nomeCidade);
-                if (existe) {
+                existe = estadoNatal(estados, cep, &nomeCidade);
+                if(existe) 
+                {
                     printf("Cidade natal: %d\n", nomeCidade);
-                } else
+                } 
+                else
                 {
                     printf("Cep não encontrado!\n");
                 }
                 break;
-                }
             case 12:
                 //nascidosQueNaoMoram();
                 printf("Digite o cep: "); scanf("%d", &cep);

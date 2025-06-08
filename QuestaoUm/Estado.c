@@ -30,25 +30,6 @@ Estado *alocarEstado(InfoEstado info)
     return no;
 }
 
-/*int inserirEstado(Estado **lista, Estado *novoNo) 
-{
-    int inseriu = 1;
-
-    if (*lista == NULL) 
-        *lista = novoNo;
-    else if ((*lista)->info.nome == novoNo->info.nome)
-        inseriu = 0; 
-    else if ((*lista)->prox == NULL) 
-    {
-        (*lista)->prox = novoNo;
-        novoNo->ant = *lista;
-    } 
-    else 
-        inseriu = inserirEstado(&(*lista)->prox, novoNo);
-
-    return 1;
-} */
-
 int inserirEstado(Estado** inicio, Estado *novoNo) 
 {
     int inseriu = 1;

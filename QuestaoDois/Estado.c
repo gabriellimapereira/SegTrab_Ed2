@@ -45,27 +45,32 @@ Estado *buscarEstado(Estado *raiz, int nome)
     return aux;
 }
 
-int inserirEstado(Estado** inicio, Estado *novoNo) {
+int inserirEstado(Estado** inicio, Estado *novoNo) 
+{
     int inseriu = 1;
-
     if (*inicio == NULL)
         *inicio = novoNo;
-    else {
+    else 
+    {
         Estado* atual = *inicio;
-
         if (novoNo->info.nome == atual->info.nome) 
             inseriu = 0;
-        else if (novoNo->info.nome < atual->info.nome) {
+        else if (novoNo->info.nome < atual->info.nome) 
+        {
             novoNo->prox = atual;
             atual->ant = novoNo;
             *inicio = novoNo;
-        } else {
-
-            while (atual->prox != NULL && atual->prox->info.nome < novoNo->info.nome) atual = atual->prox;
-
-            if ((atual->prox != NULL && atual->prox->info.nome == novoNo->info.nome) || atual->info.nome == novoNo->info.nome)
+        } 
+        else 
+        {
+            while (atual->prox != NULL && atual->prox->info.nome < novoNo->info.nome)
+            {
+                atual = atual->prox;
+            }
+            if((atual->prox != NULL && atual->prox->info.nome == novoNo->info.nome) || atual->info.nome == novoNo->info.nome)
                 inseriu = 0;
-            else {
+            else 
+            {
                 novoNo->prox = atual->prox;
                 novoNo->ant = atual;
                 if (atual->prox != NULL) atual->prox->ant = novoNo;
@@ -73,14 +78,12 @@ int inserirEstado(Estado** inicio, Estado *novoNo) {
             }
         }
     }
-
     return inseriu;
 }
 
 void exibirEstados(Estado *lista) 
 {
     Estado *aux = lista;
-
     while (aux != NULL)
     {
         printf("\nEstado: %d\n ", aux->info.nome);
@@ -89,9 +92,11 @@ void exibirEstados(Estado *lista)
     }
 }
 
-void liberarLista(Estado **lista) {
+void liberarLista(Estado **lista) 
+{
     Estado *aux = *lista;
-    while (aux != NULL) {
+    while (aux != NULL) 
+    {
         Estado *temp = aux;
         aux = aux->prox;
         free(temp);

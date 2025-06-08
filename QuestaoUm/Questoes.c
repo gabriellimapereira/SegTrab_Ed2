@@ -66,7 +66,8 @@ void pessoasForaCepNatal(ArvRubNeg *pessoas, int *quantidade)
         pessoasForaCepNatal(pessoas->dir, quantidade);
     }
 }
-int estadoNatal(Estado *inicio, int cep, int nomeCidade) 
+
+int estadoNatal(Estado *inicio, int cep, int *nomeCidade) 
 {
     int existe = 0;
     if(inicio) 
@@ -81,15 +82,15 @@ int estadoNatal(Estado *inicio, int cep, int nomeCidade)
 }
 
 //questao 5: Qual cidade natal de uma pessoa dado o CEP da cidade? 
-int cidadeNatal(ArvRubNeg *cidades, int cep, int nomeCidade)
+int cidadeNatal(ArvRubNeg *cidades, int cep, int *nomeCidade)
 {
     int existe = 0;
     if (cidades)
     {
         existe = verificaCep(cidades->info.cidade.ceps, cep);
-        if (existe) 
+        if(existe) 
         {
-            nomeCidade = cidades->info.cidade.nome;
+            *nomeCidade = cidades->info.cidade.nome;
         }
         else
         {
