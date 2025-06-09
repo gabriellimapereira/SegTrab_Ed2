@@ -238,7 +238,7 @@ int main() {
                     moradoresNaoNascidos(pessoas, &dadoInt, cep);
                     if(dado)
                     {
-                        printf("%s pessoas nao nasceram na cidade %s.\n", dado, cep);
+                        printf("%d pessoas nao nasceram na cidade %s.\n", dadoInt, cep); 
                     }
                     else
                     {
