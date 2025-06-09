@@ -2,30 +2,30 @@
 
 typedef struct InfoPessoa
 {
-    int cpf;
-    int nome;
-    int cepNatal;
-    int cepAtual;
+    char cpf[50];
+    char nome[50];
+    char cepNatal[50];
+    char cepAtual[50];
     int dataNasc;
 } InfoPessoa;
 
 typedef struct InfoCidade 
 {
-    int nome;
+    char nome[50];
     int populacao;
     struct ArvDoisTres *ceps;
 } InfoCidade;
 
 typedef union {
-    int cep;
+    char cep[50];
     InfoCidade cidade;
     InfoPessoa pessoa;
 } Dados;
 
 typedef struct InfoEstado 
 {
-    int nome;
-    int capital;
+    char nome[50];
+    char capital[50];
     int quantCidades;
     int populacao;
     struct ArvDoisTres *cidades;
@@ -51,34 +51,33 @@ void liberarArv(ArvDoisTres **raiz);
 void adicionarInfo(ArvDoisTres **no, Dados info, ArvDoisTres *subArvInfo);
 ArvDoisTres* quebrarNo(ArvDoisTres **no, Dados info, Dados *sobe, ArvDoisTres *filhoDir);
 ArvDoisTres* inserirNo(ArvDoisTres **raiz, ArvDoisTres *pai, Dados info, Dados *sobe);
-ArvDoisTres* buscaNo(ArvDoisTres *raiz, int valor);
+ArvDoisTres* buscaNo(ArvDoisTres *raiz, const char *valor);
 
 void exibirCeps(ArvDoisTres *raiz);
 void exibirCidades(ArvDoisTres *raiz);
 void exibirPessoas(ArvDoisTres *raiz);
 
 InfoCidade lerInfoCidade();
-int lerCep();
-int verificaCep(ArvDoisTres *ceps, int cep);
-int verificaCepCidade(ArvDoisTres *cidades, int cep);
-int verificaCepEstado(Estado *inicio, int cep);
+void lerCep(char *cep);
+int verificaCep(ArvDoisTres *ceps, const char *cep);
+int verificaCepCidade(ArvDoisTres *cidades, const char *cep);
+int verificaCepEstado(Estado *inicio, const char *cep);
 InfoPessoa lerInfoPessoa(Estado *raiz);
 
 //Estados - DuplaEncadeada
 InfoEstado lerInfoEstado(InfoCidade *capital);
 Estado* alocarEstado(InfoEstado info);
-Estado *buscarEstado(Estado *raiz, int nome);
+Estado *buscarEstado(Estado *raiz, const char *nome);
 int inserirEstado(Estado** inicio, Estado *novoNo);
 void exibirEstados(Estado *lista);
 void liberarLista(Estado **lista);
 
-
 //Questoes
 Estado* estadoMaisPopuloso(Estado *raiz);//1
-void populacaoDaCapital(ArvDoisTres *raiz, int capital, int *populacao);//2
-void cidadeMaisPopulosa(ArvDoisTres *raiz, int capital, ArvDoisTres**cidade); //3
+void populacaoDaCapital(ArvDoisTres *raiz, const char *capital, int *populacao);//2
+void cidadeMaisPopulosa(ArvDoisTres *raiz, const char *capital, ArvDoisTres**cidade); //3
 void pessoasForaCepNatal(ArvDoisTres *pessoas, int *quantidade);//4
-int cidadeNatal(ArvDoisTres *cidades, int cep, int *nomeCidade);//5
-int estadoNatal(Estado *inicio, int cep, int *nomeCidade);
-void nascidosQueNaoMoram(ArvDoisTres *pessoas, int *quantidade, int cepCidade);//6
-void moradoresNaoNascidos(ArvDoisTres *pessoas, int *quantidade, int cepCidade);//7
+int cidadeNatal(ArvDoisTres *cidades, const char *cep, char *nomeCidade);//5
+int estadoNatal(Estado *inicio, const char *cep, char *nomeCidade);
+void nascidosQueNaoMoram(ArvDoisTres *pessoas, int *quantidade, const char *cepCidade);//6
+void moradoresNaoNascidos(ArvDoisTres *pessoas, int *quantidade, const char *cepCidade);//7

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "prototiposDois.h"
 
 ArvDoisTres* criarNo(Dados info, ArvDoisTres *fEsq, ArvDoisTres *fCen) 
@@ -19,39 +20,42 @@ ArvDoisTres* criarNo(Dados info, ArvDoisTres *fEsq, ArvDoisTres *fCen)
 InfoCidade lerInfoCidade()
 {
     InfoCidade info;
-    printf("Digite o nome da cidade: "); scanf("%d", &info.nome);
+    printf("Digite o nome da cidade: "); 
+    setbuf(stdin, NULL);
+    scanf("%[^\n]", info.nome);
     printf("Digite a populacao da cidade: "); scanf("%d", &info.populacao);
     info.ceps = NULL;
     return info;
 }
 
-int lerCep() 
+void lerCep(char *cep) 
 {
-    int info;
-    printf("Digite o CEP: \n"); scanf("%d", &info);
-    return info;
+    printf("Digite o CEP: \n"); 
+    setbuf(stdin, NULL);
+    scanf("%[^\n]", cep);
 }
 
-int verificaCep(ArvDoisTres *raiz, int cep) 
+int verificaCep(ArvDoisTres *raiz, const char *cep) 
 {
     int existe = 0;
     if (raiz != NULL) 
     {
-        if (cep == raiz->infoUm.cep || (raiz->quantInfo == 2 && cep == raiz->infoDois.cep))
+        if (strcmp(cep, raiz->infoUm.cep) == 0 || 
+            (raiz->quantInfo == 2 && strcmp(cep, raiz->infoDois.cep) == 0)) 
         {
             existe = 1;
         } 
         else 
         {
-            if (cep < raiz->infoUm.cep) 
+            if (strcmp(cep, raiz->infoUm.cep) < 0) 
             {
                 existe = verificaCep(raiz->esq, cep);
             } 
-            else if (raiz->quantInfo == 1 || cep < raiz->infoDois.cep) 
+            else if (raiz->quantInfo == 1 || strcmp(cep, raiz->infoDois.cep) < 0) 
             {
                 existe = verificaCep(raiz->cen, cep);
             } 
-            else
+            else 
             {
                 existe = verificaCep(raiz->dir, cep);
             }
@@ -59,8 +63,7 @@ int verificaCep(ArvDoisTres *raiz, int cep)
     }
     return existe;
 }
-
-int verificaCepCidade(ArvDoisTres *cidades, int cep) 
+int verificaCepCidade(ArvDoisTres *cidades, const char *cep) 
 {
     int existe = 0;
     if (cidades != NULL) 
@@ -85,29 +88,36 @@ int verificaCepCidade(ArvDoisTres *cidades, int cep)
     return existe;
 }
 
-int verificaCepEstado(Estado *inicio, int cep) 
+int verificaCepEstado(Estado *inicio, const char *cep) 
 {
     int existe = 0;
-    if(inicio) 
+    if (inicio) 
     {
         existe = verificaCepCidade(inicio->info.cidades, cep);
-        if(existe == 0)
+        if (existe == 0)
         {
-           existe = verificaCepEstado(inicio->prox, cep);
+            existe = verificaCepEstado(inicio->prox, cep);
         }
     } 
     return existe;
 }
 
+
 InfoPessoa lerInfoPessoa(Estado *raiz) 
 {
     InfoPessoa info;
     int valido = 0;
-    printf("Digite o nome da pessoa:\n"); scanf("%d", &info.nome);
-    printf("Digite o CPF:\n"); scanf("%d", &info.cpf);
+    printf("Digite o nome da pessoa:\n");
+    setbuf(stdin, NULL);
+    scanf("%[^\n]", info.nome);
+    printf("Digite o CPF:\n");
+    setbuf(stdin, NULL);
+    scanf("%[^\n]", info.cpf);
     printf("Digite a data de nascimento:\n"); scanf("%d", &info.dataNasc);
     do {
-        printf("Digite o CEP atual:\n"); scanf("%d", &info.cepAtual);
+        printf("Digite o CEP atual:\n"); 
+        setbuf(stdin, NULL);
+        scanf("%[^\n]", info.cepAtual);
         valido = (verificaCepEstado(raiz, info.cepAtual));
         if(!valido) 
         {
@@ -115,7 +125,9 @@ InfoPessoa lerInfoPessoa(Estado *raiz)
         }
     } while (!valido);
     do {
-        printf("Digite o CEP natal:\n"); scanf("%d", &info.cepNatal);
+        printf("Digite o CEP natal:\n"); 
+        setbuf(stdin, NULL);
+        scanf("%[^\n]", info.cepNatal);
         valido = (verificaCepEstado(raiz, info.cepNatal));
         if(!valido)
         {
@@ -134,9 +146,9 @@ void imprimirArv(ArvDoisTres *raiz, int nivel)
         printf("   ");
 
     if (raiz->quantInfo == 1)
-        printf("[%d]\n", raiz->infoUm.cep);
+        printf("[%s]\n", raiz->infoUm.cep);
     else
-        printf("[%d|%d]\n", raiz->infoUm.cep, raiz->infoDois.cep);
+        printf("[%s|%s]\n", raiz->infoUm.cep, raiz->infoDois.cep);
 
     imprimirArv(raiz->cen, nivel + 1);
     imprimirArv(raiz->esq, nivel + 1);
@@ -156,10 +168,9 @@ void liberarArv(ArvDoisTres **raiz)
         *raiz = NULL;
     }
 }
-
 void adicionarInfo(ArvDoisTres **no, Dados info, ArvDoisTres *subArvInfo) 
 {
-    if (info.cep > (*no)->infoUm.cep) 
+    if (strcmp(info.cep, (*no)->infoUm.cep) > 0) 
     {
         (*no)->infoDois = info;
         (*no)->dir = subArvInfo;
@@ -177,13 +188,13 @@ void adicionarInfo(ArvDoisTres **no, Dados info, ArvDoisTres *subArvInfo)
 ArvDoisTres* quebrarNo(ArvDoisTres **no, Dados info, Dados *sobe, ArvDoisTres *filhoDir) 
 {
     ArvDoisTres *maior;
-    if (info.cep > (*no)->infoDois.cep) 
+    if (strcmp(info.cep, (*no)->infoDois.cep) > 0) 
     {
         *sobe = (*no)->infoDois;
         maior = criarNo(info, (*no)->dir, filhoDir);
         (*no)->quantInfo = 1;
     } 
-    else if (info.cep > (*no)->infoUm.cep) 
+    else if (strcmp(info.cep, (*no)->infoUm.cep) > 0) 
     {
         *sobe = info;
         maior = criarNo((*no)->infoDois, filhoDir, (*no)->dir);
@@ -199,7 +210,6 @@ ArvDoisTres* quebrarNo(ArvDoisTres **no, Dados info, Dados *sobe, ArvDoisTres *f
     }
     return maior;
 }
-
 ArvDoisTres* inserirNo(ArvDoisTres **raiz, ArvDoisTres *pai, Dados info, Dados *sobe) 
 {
     ArvDoisTres *maiorNo = NULL;
@@ -227,11 +237,11 @@ ArvDoisTres* inserirNo(ArvDoisTres **raiz, ArvDoisTres *pai, Dados info, Dados *
         } 
         else 
         {
-            if (info.cep < (*raiz)->infoUm.cep) 
+            if (strcmp(info.cep, (*raiz)->infoUm.cep) < 0) 
             {
                 maiorNo = inserirNo(&(*raiz)->esq, *raiz, info, sobe);
             } 
-            else if ((*raiz)->quantInfo == 1 || info.cep < (*raiz)->infoDois.cep) 
+            else if ((*raiz)->quantInfo == 1 || strcmp(info.cep, (*raiz)->infoDois.cep) < 0) 
             {
                 maiorNo = inserirNo(&(*raiz)->cen, *raiz, info, sobe);
             } 
@@ -261,21 +271,21 @@ ArvDoisTres* inserirNo(ArvDoisTres **raiz, ArvDoisTres *pai, Dados info, Dados *
     return maiorNo;
 }
 
-ArvDoisTres* buscaNo(ArvDoisTres *raiz, int cep) 
+ArvDoisTres* buscaNo(ArvDoisTres *raiz, const char *valor) 
 {
     ArvDoisTres *no = NULL;
     if (raiz != NULL) 
     {
-        if(cep == raiz->infoUm.cep || (raiz->quantInfo == 2 && cep == raiz->infoDois.cep))
+        if (strcmp(valor, raiz->infoUm.cep) == 0 || (raiz->quantInfo == 2 && strcmp(valor, raiz->infoDois.cep) == 0))
             no = raiz;
         else 
         {
-            if (cep < raiz->infoUm.cep) {
-                no = buscaNo(raiz->esq, cep);
-            } else if (raiz->quantInfo == 1 || cep < raiz->infoDois.cep) {
-                no = buscaNo(raiz->cen, cep);
+            if (strcmp(valor, raiz->infoUm.cep) < 0) {
+                no = buscaNo(raiz->esq, valor);
+            } else if (raiz->quantInfo == 1 || strcmp(valor, raiz->infoDois.cep) < 0) {
+                no = buscaNo(raiz->cen, valor);
             } else {
-                no = buscaNo(raiz->dir, cep);
+                no = buscaNo(raiz->dir, valor);
             }
         }
     }
@@ -287,11 +297,11 @@ void exibirCeps(ArvDoisTres *raiz)
     if (raiz) 
     {
         exibirCeps(raiz->esq);
-        printf("Cep: %d\n", raiz->infoUm.cep);
+        printf("Cep: %s\n", raiz->infoUm.cep);
         exibirCeps(raiz->cen);
         if (raiz->quantInfo == 2) 
         {
-            printf("Cep: %d\n", raiz->infoDois.cep);
+            printf("Cep: %s\n", raiz->infoDois.cep);
             exibirCeps(raiz->dir);
         }
     }
@@ -302,12 +312,12 @@ void exibirCidades(ArvDoisTres *raiz)
     if (raiz) 
     {
         exibirCidades(raiz->esq);
-        printf("Cidade: %d\n", raiz->infoUm.cidade.nome);
+        printf("Cidade: %s\n", raiz->infoUm.cidade.nome);
         exibirCeps(raiz->infoUm.cidade.ceps);
         exibirCeps(raiz->cen);
         if (raiz->quantInfo == 2) 
         {
-            printf("Cidade: %d\n", raiz->infoDois.cidade.nome);    
+            printf("Cidade: %s\n", raiz->infoDois.cidade.nome);    
             exibirCeps(raiz->infoDois.cidade.ceps);
             exibirCidades(raiz->dir);
         }
@@ -319,11 +329,11 @@ void exibirPessoas(ArvDoisTres *raiz)
     if (raiz) 
     {
         exibirPessoas(raiz->esq);
-        printf("CPF: %d\n", raiz->infoUm.pessoa.cpf);
+        printf("CPF: %s\n", raiz->infoUm.pessoa.cpf);
         exibirPessoas(raiz->cen);
         if (raiz->quantInfo == 2) 
         {
-            printf("CPF: %d\n", raiz->infoDois.pessoa.cpf);
+            printf("CPF: %s\n", raiz->infoDois.pessoa.cpf);
             exibirPessoas(raiz->dir);
         }
     }

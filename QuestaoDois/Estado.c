@@ -1,18 +1,27 @@
 #include <stdio.h>
+#include <string.h>
 #include "prototiposDois.h"
 #include <stdlib.h>
 
 InfoEstado lerInfoEstado(InfoCidade *capital) 
 {
-    InfoEstado info; 
-    printf("Digite o nome do estado: \n"); scanf("%d", &info.nome);
-    printf("Digite o nome da capital: "); scanf("%d", &capital->nome);
-    printf("Digite a população da capital: "); scanf("%d", &capital->populacao);
+    InfoEstado info;
+    printf("Digite o nome do estado: \n");
+    setbuf(stdin, NULL);
+    scanf("%[^\n]", info.nome);
+
+    printf("Digite o nome da capital: ");
+    setbuf(stdin, NULL);
+    scanf("%[^\n]", capital->nome);
+
+    printf("Digite a população da capital: ");
+    scanf("%d", &capital->populacao);
+
     capital->ceps = NULL;
-    info.capital = capital->nome;
+    strcpy(info.capital, capital->nome);
     info.populacao = capital->populacao;
     info.quantCidades = 1;
-    info.cidades = NULL; 
+    info.cidades = NULL;
     return info;
 }
 
@@ -30,17 +39,12 @@ Estado *alocarEstado(InfoEstado info)
     return no;
 }
 
-Estado *buscarEstado(Estado *raiz, int nome)
+Estado *buscarEstado(Estado *raiz, const char *nome) 
 {
-    Estado *aux;
-    aux = NULL; 
-    if(raiz != NULL)
+    Estado *aux = raiz;
+    while (aux != NULL && strcmp(aux->info.nome, nome) != 0) 
     {
-        aux = raiz;
-        while(aux != NULL && aux->info.nome != nome )
-        {
-            aux = aux->prox;
-        }
+        aux = aux->prox;
     }
     return aux;
 }
@@ -53,9 +57,9 @@ int inserirEstado(Estado** inicio, Estado *novoNo)
     else 
     {
         Estado* atual = *inicio;
-        if (novoNo->info.nome == atual->info.nome) 
+        if (strcmp(novoNo->info.nome, atual->info.nome) == 0) 
             inseriu = 0;
-        else if (novoNo->info.nome < atual->info.nome) 
+        else if (strcmp(novoNo->info.nome, atual->info.nome) < 0) 
         {
             novoNo->prox = atual;
             atual->ant = novoNo;
@@ -63,11 +67,11 @@ int inserirEstado(Estado** inicio, Estado *novoNo)
         } 
         else 
         {
-            while (atual->prox != NULL && atual->prox->info.nome < novoNo->info.nome)
+            while (atual->prox != NULL && strcmp(atual->prox->info.nome, novoNo->info.nome) < 0)
             {
                 atual = atual->prox;
             }
-            if((atual->prox != NULL && atual->prox->info.nome == novoNo->info.nome) || atual->info.nome == novoNo->info.nome)
+            if((atual->prox != NULL && strcmp(atual->prox->info.nome, novoNo->info.nome) == 0) || strcmp(atual->info.nome, novoNo->info.nome) == 0)
                 inseriu = 0;
             else 
             {
@@ -86,7 +90,7 @@ void exibirEstados(Estado *lista)
     Estado *aux = lista;
     while (aux != NULL)
     {
-        printf("\nEstado: %d\n ", aux->info.nome);
+        printf("\nEstado: %s\n", aux->info.nome);
         exibirCidades(aux->info.cidades);
         aux = aux->prox;
     }
@@ -101,5 +105,5 @@ void liberarLista(Estado **lista)
         aux = aux->prox;
         free(temp);
     }
-    *lista = NULL;  // opcional, mas limpa o ponteiro original
+    *lista = NULL;  
 }

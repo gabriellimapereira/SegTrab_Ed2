@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "prototiposUm.h"
 
 ArvRubNeg* criarNo(Dados dado) 
@@ -18,44 +19,44 @@ ArvRubNeg* criarNo(Dados dado)
 InfoCidade lerInfoCidade()
 {
     InfoCidade info;
-    printf("Digite o nome da cidade: "); scanf("%d", &info.nome);
+    printf("Digite o nome da cidade: "); 
+    setbuf(stdin, NULL);
+    scanf("%[^\n]", info.nome);
     printf("Digite a populacao da cidade: "); scanf("%d", &info.populacao);
     info.ceps = NULL;
     return info;
 }
 
-int lerCep() 
+void lerCep(char *cep) 
 {
-    int info;
-    printf("Digite o CEP: \n"); scanf("%d", &info);
-    return info;
+    printf("Digite o CEP: \n"); 
+    setbuf(stdin, NULL);
+    scanf("%[^\n]", cep);
 }
 
-int verificaCep(ArvRubNeg *ceps, int cep) 
+int verificaCep(ArvRubNeg *ceps, const char *cep) 
 {
     int existe = 0;
     if (ceps) 
     {
-        if(ceps->info.cep == cep) 
+        int cmp = strcmp(cep, ceps->info.cep);
+        if(cmp == 0)
         {
             existe = 1;
         }
-        else 
+        else if(cmp < 0)
         {
-            if(cep < ceps->info.cep) 
-            {
-                existe = verificaCep(ceps->esq, cep);
-            }
-            else 
-            {
-                existe = verificaCep(ceps->dir, cep);
-            }
+            existe = verificaCep(ceps->esq, cep);
+        }
+        else
+        {
+            existe = verificaCep(ceps->dir, cep);
         }
     }
     return existe;
 }
 
-int verificaCepCidade(ArvRubNeg *cidades, int cep)
+int verificaCepCidade(ArvRubNeg *cidades, const char *cep)
 {
     int existe = 0;
     if (cidades)
@@ -73,7 +74,7 @@ int verificaCepCidade(ArvRubNeg *cidades, int cep)
     return existe;
 }
 
-int verificaCepEstado(Estado *inicio, int cep) 
+int verificaCepEstado(Estado *inicio, const char *cep) 
 {
     int existe = 0;
     if(inicio) 
@@ -91,12 +92,18 @@ InfoPessoa lerInfoPessoa(Estado *raiz)
 {
     InfoPessoa info;
     int existe;
-    printf("Digite o nome da pessoa: \n"); scanf("%d", &info.nome);
-    printf("Digite o cpf: \n"); scanf("%d", &info.cpf);
+    printf("Digite o nome da pessoa: \n"); 
+    setbuf(stdin, NULL);
+    scanf("%[^\n]", info.nome);
+    printf("Digite o cpf: \n"); 
+    setbuf(stdin, NULL);
+    scanf("%[^\n]", info.cpf);
     printf("Digite a data de nascimento: "); scanf("%d", &info.dataNasc);
     do 
     {
-        printf("Digite o cep atual: \n"); scanf("%d", &info.cepAtual);
+        printf("Digite o cep atual: \n"); 
+        setbuf(stdin, NULL);
+        scanf("%[^\n]", info.cepAtual);
         existe = verificaCepEstado(raiz, info.cepAtual);
         if(existe == 0)
         {
@@ -105,7 +112,9 @@ InfoPessoa lerInfoPessoa(Estado *raiz)
     } while(existe == 0);
     do 
     {
-        printf("Digite o cep natal: \n"); scanf("%d", &info.cepNatal);
+        printf("Digite o cep natal: \n");
+        setbuf(stdin, NULL);
+        scanf("%[^\n]", info.cepNatal);
         existe = verificaCepEstado(raiz, info.cepNatal);
         if(existe == 0)
         {
@@ -115,22 +124,22 @@ InfoPessoa lerInfoPessoa(Estado *raiz)
     return info;
 }
 
-int verificaPessoa(ArvRubNeg *raiz, int nome)
+int verificaPessoa(ArvRubNeg *raiz, const char *nome)
 {
     int existe = 0;
-    if(raiz)
+    if (raiz)
     {
-        if(raiz->info.pessoa.nome == nome)
+        if (strcmp(raiz->info.pessoa.nome, nome) == 0)
         {
             existe = 1;
         }
         else
         {
             existe = verificaPessoa(raiz->esq, nome);
-            if(!existe)
+            if (!existe)
             {
                 existe = verificaPessoa(raiz->dir, nome);
-            }  
+            }
         }
     }
     return existe;
@@ -147,7 +156,7 @@ void imprimirArvore(ArvRubNeg *r, int espaco)
     {
         printf(" ");
     }
-    printf("%d (%s)\n", r->info.cep, r->cor == 0 ? "P" : "V");
+    printf("%s (%s)\n", r->info.cep, r->cor == 0 ? "P" : "V");
     imprimirArvore(r->esq, espaco);
 }
 
@@ -160,25 +169,24 @@ void liberarArvore(ArvRubNeg *r)
         free(r);
     }
 }
-
-ArvRubNeg* buscaNo(ArvRubNeg *r, int valor) 
+ArvRubNeg* buscaNo(ArvRubNeg *r, const char *valor) 
 {
-    ArvRubNeg *no;
-    if (r->info.cep == valor)
+    ArvRubNeg *no = NULL;
+    if (r)
     {
-        no = r;
-    }
-    else if(r->info.cep > valor)
-    {
-        no = buscaNo(r->esq, valor);
-    }
-    else if(r->info.cep < valor)
-    {
-        no = buscaNo(r->dir, valor);
-    }
-    else
-    {
-        no = NULL;  
+        int cmp = strcmp(r->info.cep, valor);
+        if (cmp == 0)
+        {
+            no = r;
+        }
+        else if (cmp > 0)
+        {
+            no = buscaNo(r->esq, valor);
+        }
+        else // cmp < 0
+        {
+            no = buscaNo(r->dir, valor);
+        }
     }
     return no;
 }
@@ -235,29 +243,29 @@ void balanceamento(ArvRubNeg **raiz)
         trocaCor(raiz);  
     }
 }
-
 int insereNo(ArvRubNeg **raiz, ArvRubNeg *novoNo) 
 {
     int inseriu = 1;
-    if(*raiz == NULL)
+    if (*raiz == NULL)
     {
         *raiz = novoNo;
     }
     else 
     {
-        if((**raiz).info.cep > (*novoNo).info.cep) 
+        int cmp = strcmp((**raiz).info.cep, (*novoNo).info.cep);
+        if (cmp > 0) 
         {
             inseriu = insereNo(&((**raiz).esq), novoNo);
         }
-        else if((**raiz).info.cep < (*novoNo).info.cep)
+        else if (cmp < 0)
         {
             inseriu = insereNo(&((**raiz).dir), novoNo);
         }
         else
         {
-            inseriu = 0; 
+            inseriu = 0;
         }
-        if(inseriu)
+        if (inseriu)
         {
             balanceamento(raiz);
         }
@@ -320,51 +328,46 @@ ArvRubNeg* procuraMenor(ArvRubNeg *raiz)
     while (aux->esq != NULL) aux = aux->esq; 
     return aux;
 }
-
-ArvRubNeg* removeNo(ArvRubNeg *raiz, int valor) 
+ArvRubNeg* removeNo(ArvRubNeg *raiz, const char *valor) 
 {
-    if(valor < (*raiz).info.cep) 
+    if (strcmp(valor, raiz->info.cep) < 0) 
     {
-        if(cor((*raiz).esq) == preto && cor((*raiz).esq->esq) == preto) raiz = moveTwoEsqRed(raiz);  
-        (*raiz).esq = removeNo((*raiz).esq, valor);
-
+        if (cor(raiz->esq) == preto && cor(raiz->esq->esq) == preto) 
+            raiz = moveTwoEsqRed(raiz);
+        raiz->esq = removeNo(raiz->esq, valor);
     } 
     else 
     {
-        if(cor((*raiz).esq) == vermelho) 
-        {
+        if (cor(raiz->esq) == vermelho) 
             rotDir(&raiz);
-        }
-        if(valor == (*raiz).info.cep && ((*raiz).dir) == NULL) 
+        if (strcmp(valor, raiz->info.cep) == 0 && raiz->dir == NULL) 
         {
             free(raiz);
             return NULL;
         }
-        if (cor((*raiz).dir) == preto && cor((*raiz).dir->esq) == preto) 
-        {
+        if (cor(raiz->dir) == preto && cor(raiz->dir->esq) == preto) 
             raiz = moveTwoDirRed(raiz);
-        }
-        if (valor == (*raiz).info.cep) 
+        if (strcmp(valor, raiz->info.cep) == 0) 
         {
-            ArvRubNeg *menor = procuraMenor((*raiz).dir);
-            (*raiz).info = (*menor).info;
-            (*raiz).dir = removeMenor((*raiz).dir);
+            ArvRubNeg *menor = procuraMenor(raiz->dir);
+            raiz->info = menor->info;
+            raiz->dir = removeMenor(raiz->dir);
         } 
         else 
         {
-            (*raiz).dir = removeNo((*raiz).dir, valor);
+            raiz->dir = removeNo(raiz->dir, valor);
         }
     }
     balanceamento(&raiz);
     return raiz;
-} 
+}
 
 void exibirCeps(ArvRubNeg *raiz) 
 {
     if(raiz) 
     {
         exibirCeps(raiz->esq);
-        printf("   Cep: %d\n", raiz->info.cep);
+        printf("   Cep: %s\n", raiz->info.cep);
         exibirCeps(raiz->dir);
     }
 }
@@ -374,7 +377,7 @@ void exibirCidades(ArvRubNeg *raiz)
     if(raiz) 
     {
         exibirCidades(raiz->esq);
-        printf("  Cidade: %d\n", raiz->info.cidade.nome);
+        printf("  Cidade: %s\n", raiz->info.cidade.nome);
         if (raiz->info.cidade.ceps) 
         {
             printf("  Árvore de ceps dessa cidade: \n");
@@ -389,8 +392,8 @@ void exibirPessoas(ArvRubNeg *raiz)
     if(raiz) 
     {
         exibirPessoas(raiz->esq);
-        printf("\nCPF: %d ", raiz->info.pessoa.cpf);
-        printf("cidade natal: %d cidade atual: %d", raiz->info.pessoa.cepNatal, raiz->info.pessoa.cepAtual);
+        printf("\nCPF: %s ", raiz->info.pessoa.cpf);
+        printf("cidade natal: %s cidade atual: %s", raiz->info.pessoa.cepNatal, raiz->info.pessoa.cepAtual);
         exibirPessoas(raiz->dir);
     }
 }

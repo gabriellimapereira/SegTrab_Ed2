@@ -1,9 +1,8 @@
 #include <stdio.h>
 #include "prototiposUm.h"
 #include <stdlib.h>
+#include <string.h>
 
-//Questões
-//questao 1: Qual o estado mais populoso?
 Estado* estadoMaisPopuloso(Estado *raiz) 
 {
     Estado *aux = raiz;
@@ -22,26 +21,24 @@ Estado* estadoMaisPopuloso(Estado *raiz)
     return estado;
 }
 
-//questao 2: Qual a população da Capital de um determinado estado? 
-void populacaoDaCapital(ArvRubNeg *raiz, int capital, int *populacao) 
+void populacaoDaCapital(ArvRubNeg *raiz, const char *capital, int *populacao) 
 {
     if (raiz)
     {
-        if(raiz->info.cidade.nome == capital) 
+        if(strcmp(raiz->info.cidade.nome, capital) == 0) 
         {
-                *populacao = raiz->info.cidade.populacao;
+            *populacao = raiz->info.cidade.populacao;
         }
         populacaoDaCapital(raiz->esq, capital, populacao);
         populacaoDaCapital(raiz->dir, capital, populacao);
     }
 }
 
-//questao 3: Qual a cidade mais populosa de um estado sem ser a Capital? 
-void cidadeMaisPopulosa(ArvRubNeg *raiz, int capital, ArvRubNeg **cidade) 
+void cidadeMaisPopulosa(ArvRubNeg *raiz, const char *capital, ArvRubNeg **cidade) 
 {
     if (raiz)
     {
-        if(raiz->info.cidade.nome != capital)
+        if(strcmp(raiz->info.cidade.nome, capital) != 0)
         {
             if(raiz->info.cidade.populacao > (*cidade)->info.cidade.populacao)
             {
@@ -53,12 +50,11 @@ void cidadeMaisPopulosa(ArvRubNeg *raiz, int capital, ArvRubNeg **cidade)
     }
 } 
 
-//questao 4: Quantas pessoas não moram na cidade natal. 
 void pessoasForaCepNatal(ArvRubNeg *pessoas, int *quantidade)
 {
     if(pessoas)
     {
-        if(pessoas->info.pessoa.cepNatal != pessoas->info.pessoa.cepAtual)
+        if(strcmp(pessoas->info.pessoa.cepNatal, pessoas->info.pessoa.cepAtual) != 0)
         {
             (*quantidade)++;
         }
@@ -67,7 +63,7 @@ void pessoasForaCepNatal(ArvRubNeg *pessoas, int *quantidade)
     }
 }
 
-int estadoNatal(Estado *inicio, int cep, int *nomeCidade) 
+int estadoNatal(Estado *inicio, const char *cep, char *nomeCidade) 
 {
     int existe = 0;
     if(inicio) 
@@ -81,8 +77,7 @@ int estadoNatal(Estado *inicio, int cep, int *nomeCidade)
     return existe;
 }
 
-//questao 5: Qual cidade natal de uma pessoa dado o CEP da cidade? 
-int cidadeNatal(ArvRubNeg *cidades, int cep, int *nomeCidade)
+int cidadeNatal(ArvRubNeg *cidades, const char *cep, char *nomeCidade)
 {
     int existe = 0;
     if (cidades)
@@ -90,28 +85,27 @@ int cidadeNatal(ArvRubNeg *cidades, int cep, int *nomeCidade)
         existe = verificaCep(cidades->info.cidade.ceps, cep);
         if(existe) 
         {
-            *nomeCidade = cidades->info.cidade.nome;
+            strcpy(nomeCidade, cidades->info.cidade.nome);
         }
         else
         {
-            existe = verificaCepCidade(cidades->esq, cep);
+            existe = cidadeNatal(cidades->esq, cep, nomeCidade);
             if (existe == 0)
             {
-                existe = verificaCepCidade(cidades->dir, cep);
+                existe = cidadeNatal(cidades->dir, cep, nomeCidade);
             }
         }
     }
     return existe;
 }
 
-//questao 6: Quantas pessoas nascidas em uma determinada cidade não mora na cidade natal?
-void nascidosQueNaoMoram(ArvRubNeg *pessoas, int *quantidade, int cepCidade) 
+void nascidosQueNaoMoram(ArvRubNeg *pessoas, int *quantidade, const char *cepCidade) 
 {
     if (pessoas)
     {
-        if (pessoas->info.pessoa.cepNatal == cepCidade)
+        if (strcmp(pessoas->info.pessoa.cepNatal, cepCidade) == 0)
         {
-            if (pessoas->info.pessoa.cepAtual != cepCidade)
+            if (strcmp(pessoas->info.pessoa.cepAtual, cepCidade) != 0)
             {
                 (*quantidade)++;
             }
@@ -121,14 +115,13 @@ void nascidosQueNaoMoram(ArvRubNeg *pessoas, int *quantidade, int cepCidade)
     }
 }
 
-//questao 7:Quantas pessoas que moram em uma determinada cidade não nasceram na cidade?
-void moradoresNaoNascidos(ArvRubNeg *pessoas, int *quantidade, int cepCidade) 
+void moradoresNaoNascidos(ArvRubNeg *pessoas, int *quantidade, const char *cepCidade) 
 {
     if (pessoas)
     {
-        if (pessoas->info.pessoa.cepAtual == cepCidade)
+        if (strcmp(pessoas->info.pessoa.cepAtual, cepCidade) == 0)
         {
-            if (pessoas->info.pessoa.cepNatal != cepCidade)
+            if (strcmp(pessoas->info.pessoa.cepNatal, cepCidade) != 0)
             {
                 (*quantidade)++;
             }
