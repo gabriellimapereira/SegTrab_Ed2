@@ -97,20 +97,6 @@ void pessoasForaCepNatal(ArvDoisTres *pessoas, int *quantidade)
 }
 
 //questao 5: Qual cidade natal de uma pessoa dado o CEP da cidade? 
-int estadoNatal(Estado *inicio, int cep, int *nomeCidade) 
-{
-    int existe = 0;
-    if(inicio) 
-    {
-        existe = cidadeNatal(inicio->info.cidades, cep, nomeCidade);
-        if(existe == 0)
-        {
-           existe = estadoNatal(inicio->prox, cep, nomeCidade);
-        }
-    } 
-    return existe;
-}
-
 int cidadeNatal(ArvDoisTres *cidades, int cep, int *nomeCidade)
 {
     int existe = 0;
@@ -153,6 +139,20 @@ int cidadeNatal(ArvDoisTres *cidades, int cep, int *nomeCidade)
             }
         }
     }
+    return existe;
+}
+
+int estadoNatal(Estado *inicio, int cep, int *nomeCidade) 
+{
+    int existe = 0;
+    if(inicio) 
+    {
+        existe = cidadeNatal(inicio->info.cidades, cep, nomeCidade);
+        if(existe == 0)
+        {
+           existe = estadoNatal(inicio->prox, cep, nomeCidade);
+        }
+    } 
     return existe;
 }
 

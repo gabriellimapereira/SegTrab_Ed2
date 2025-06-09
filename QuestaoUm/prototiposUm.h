@@ -76,7 +76,7 @@ int verificaPessoa(ArvRubNeg *raiz, int nome);
 InfoPessoa lerInfoPessoa(Estado *raiz);
 
 //Estados - DuplaEncadeada
-InfoEstado lerInfoEstado();
+InfoEstado lerInfoEstado(InfoCidade *capital);
 Estado* alocarEstado(InfoEstado info);
 int inserirEstado(Estado **inicio, Estado *novoNo);
 Estado *buscarEstado(Estado *raiz, int nome);

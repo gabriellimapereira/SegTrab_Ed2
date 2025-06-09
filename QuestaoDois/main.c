@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <time.h>
 #include "prototiposDois.h"
 
 int insereEstados(Estado **raiz) {
@@ -51,16 +52,22 @@ int insereCeps(ArvDoisTres **raiz) {
 } 
 
 int inserePessoas(ArvDoisTres **raiz) {
+    int ceps[] = {10000, 3000, 2500, 2000, 3500, 20000, 30000, 35000, 32000, 15000, 12500, 11000, 12000, 17000, 13000, 1000};
     int valores[] = {1000, 300, 250, 200, 350, 2000, 3000, 3500, 3200, 1500, 1250, 1100, 1200, 1700, 1300, 100};
+
+    Dados sobe;
+
+    srand(time(NULL));
     int n = sizeof(valores) / sizeof(valores[0]);
 
-    for (int i = 0; i < n; i++) {
-        Dados sobe;
+    for (int i = 0; i < n; i++) 
+    {
         Dados dado;
         dado.pessoa.cpf = valores[i]; 
+        dado.pessoa.cepAtual = ceps[rand() % 16];
+        dado.pessoa.cepNatal = ceps[rand() % 16];
         inserirNo(raiz, NULL, dado, &sobe);
     }
-
     return 0;
 }
 
@@ -132,6 +139,7 @@ int main() {
                     dadosCidade = lerInfoCidade();
                     dadosQuaisquer.cidade = dadosCidade;
                     inserirNo(&(NoEstado->info.cidades), NULL, dadosQuaisquer, &sobe);
+                    NoEstado->info.populacao += dadosCidade.populacao;
                 }
                 else
                 {
@@ -195,12 +203,15 @@ int main() {
                 NoEstado = buscarEstado(estados, nome);
                 if(NoEstado)
                 {
+                    ArvDoisTres *capital = buscaNo(NoEstado->info.cidades, NoEstado->info.capital);
+                    printf("População da capital %d: %d\n", capital->infoUm.cidade.nome, capital->infoUm.cidade.populacao);
+                    /*
                     dado = 0;
                     populacaoDaCapital(NoEstado->info.cidades, NoEstado->info.capital, &dado);
                     if(dado)
                     {
                         printf("Populacao da capital %d: %d\n", NoEstado->info.capital, dado);
-                    }
+                    } */
                 }
                 else
                 {

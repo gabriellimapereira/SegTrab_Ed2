@@ -7,7 +7,7 @@ ArvDoisTres* criarNo(Dados info, ArvDoisTres *fEsq, ArvDoisTres *fCen)
     ArvDoisTres *no = malloc(sizeof(ArvDoisTres));
     if(no) 
     {
-        no->infoUm.cep = info.cep;
+        no->infoUm = info;
         no->quantInfo = 1;
         no->esq = fEsq;
         no->cen = fCen;
