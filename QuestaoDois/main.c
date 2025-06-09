@@ -13,13 +13,13 @@ void menu() {
     printf("5 - Remover CEP\n");
     printf("6 - Remover Pessoa\n");
     printf("7 - Estado mais populoso\n");
-    printf("8 - População da capital de um estado\n");
+    printf("8 - Populacao da capital de um estado\n");
     printf("9 - Cidade mais populosa de um estado (exceto a capital)\n");
-    printf("10 - Quantas pessoas não moram na cidade natal\n");
+    printf("10 - Quantas pessoas nao moram na cidade natal\n");
     printf("11 - Cidade natal de uma pessoa pelo CEP de natalidade\n");
-    printf("12 - Quantas pessoas nascidas em uma cidade não moram nela\n");
-    printf("13 - Quantas pessoas que moram em uma cidade não nasceram nela\n");
-    printf("14 - Visualizar todas as árvores\n");
+    printf("12 - Quantas pessoas nascidas em uma cidade nao moram nela\n");
+    printf("13 - Quantas pessoas que moram em uma cidade nao nasceram nela\n");
+    printf("14 - Visualizar todas as arvores\n");
     printf("0 - Sair\n");
     printf("============================\n");
 }
@@ -38,7 +38,7 @@ int main() {
     
     do {
         menu();
-        printf("Escolha uma opção: ");
+        printf("Escolha uma opcao: ");
         scanf("%d", &opcao);
 
         switch (opcao) {
@@ -139,7 +139,7 @@ int main() {
                 if(NoEstado)
                 {
                     ArvDoisTres *capital = buscaNo(NoEstado->info.cidades, NoEstado->info.capital);
-                    printf("População da capital %s: %d\n", capital->infoUm.cidade.nome, capital->infoUm.cidade.populacao);
+                    printf("Populacao da capital %s: %d\n", capital->infoUm.cidade.nome, capital->infoUm.cidade.populacao);
                     /*
                     dado = 0;
                     populacaoDaCapital(NoEstado->info.cidades, NoEstado->info.capital, &dado);
@@ -199,7 +199,7 @@ int main() {
                 } 
                 else
                 {
-                    printf("Cep não encontrado!\n");
+                    printf("Cep nao encontrado!\n");
                 }
                 break;
             case 12:
@@ -259,15 +259,12 @@ int main() {
                 printf("Encerrando programa...\n");
                 break;
             default:
-                printf("Opção inválida!\n");
+                printf("Opcao invalida!\n");
         }
     } while (opcao != 0);
-
     liberarArv(&(estados->info.cidades->infoUm.cidade.ceps));
     liberarArv(&(estados->info.cidades));
     liberarLista(&estados);
-    
     liberarArv(&(pessoas));
-
     return 0;
 }

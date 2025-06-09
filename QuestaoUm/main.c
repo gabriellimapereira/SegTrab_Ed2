@@ -14,13 +14,13 @@ void menu()
     printf("5 - Remover CEP\n");
     printf("6 - Remover Pessoa\n");
     printf("7 - Estado mais populoso\n");
-    printf("8 - População da capital de um estado\n");
+    printf("8 - Populacao da capital de um estado\n");
     printf("9 - Cidade mais populosa de um estado (exceto a capital)\n");
-    printf("10 - Quantas pessoas não moram na cidade natal\n");
+    printf("10 - Quantas pessoas nao moram na cidade natal\n");
     printf("11 - Cidade natal de uma pessoa pelo CEP de natalidade\n");
-    printf("12 - Quantas pessoas nascidas em uma cidade não moram nela\n");
-    printf("13 - Quantas pessoas que moram em uma cidade não nasceram nela\n");
-    printf("14 - Visualizar todas as árvores\n");
+    printf("12 - Quantas pessoas nascidas em uma cidade nao moram nela\n");
+    printf("13 - Quantas pessoas que moram em uma cidade nao nasceram nela\n");
+    printf("14 - Visualizar todas as arvores\n");
     printf("0 - Sair\n");
     printf("============================\n");
 }
@@ -168,13 +168,13 @@ int main()
                             printf("CEP removido!\n");
                         } 
                         else 
-                            printf("CEP não encontrado!");
+                            printf("CEP nao encontrado!");
                     }
                     else
-                        printf("Cidade não encontrada!\n");
+                        printf("Cidade nao encontrada!\n");
                 }
                 else
-                    printf("Estado não encontrado!\n");
+                    printf("Estado nao encontrado!\n");
                 break;
             case 6:
                 //removerPessoa();
@@ -245,7 +245,7 @@ int main()
                 } 
                 else 
                 {
-                    printf("Estado não encontrado!\n");
+                    printf("Estado nao encontrado!\n");
                 }
                 break;
             case 10:
@@ -274,7 +274,7 @@ int main()
                 } 
                 else
                 {
-                    printf("Cep não encontrado!\n");
+                    printf("Cep nao encontrado!\n");
                 }
                 break;
             case 12:
@@ -336,7 +336,7 @@ int main()
                 printf("Encerrando programa...\n");
                 break;
             default:
-                printf("Opção inválida!\n");
+                printf("Opcao invalida!\n");
         }
     } while (opcao != 0);
     liberarArvore(estados->info.cidades->info.cidade.ceps);
