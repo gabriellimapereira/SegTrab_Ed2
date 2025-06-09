@@ -75,6 +75,7 @@ int main()
                     if(inseriu)
                     {
                         printf("Cidade inserida com sucesso!\n");
+                        NoEstado->info.populacao += dadosCidade.populacao;
                     }
                     else
                     {
@@ -102,7 +103,9 @@ int main()
                     if(noCidade)
                     {
                         lerCep(cep);
-                        strcpy(dadosQuaisquer.cep, dado);
+                        printf("%s", cep);
+                        strcpy(dadosQuaisquer.cep, cep);
+                        printf("%s", dadosQuaisquer.cep);
                         No = criarNo(dadosQuaisquer);
                         inseriu = insercao(&noCidade->info.cidade.ceps, No);
                         if(inseriu)
