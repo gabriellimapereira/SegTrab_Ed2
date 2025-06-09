@@ -103,9 +103,7 @@ int main()
                     if(noCidade)
                     {
                         lerCep(cep);
-                        printf("%s", cep);
                         strcpy(dadosQuaisquer.cep, cep);
-                        printf("%s", dadosQuaisquer.cep);
                         No = criarNo(dadosQuaisquer);
                         inseriu = insercao(&noCidade->info.cidade.ceps, No);
                         if(inseriu)
@@ -232,15 +230,15 @@ int main()
                 NoEstado = buscarEstado(estados, nome);
                 if(NoEstado)
                 {
-                    noCidade = NoEstado->info.cidades;
-                    cidadeMaisPopulosa(NoEstado->info.cidades, NoEstado->info.capital, &noCidade);
-                    if(noCidade)
+                    noCidade = NULL;
+                    if(NoEstado->info.cidades->esq == NULL && NoEstado->info.cidades->dir == NULL)
                     {
-                        printf("Cidade mais populosa: %s\n", noCidade->info.cidade.nome);
+                        printf("A cidade mais populosa eh a capital!\n");
                     }
                     else
                     {
-                        printf("A cidade mais populosa eh a capital!\n");
+                        cidadeMaisPopulosa(NoEstado->info.cidades, NoEstado->info.capital, &noCidade);
+                         printf("Cidade mais populosa: %s\n", noCidade->info.cidade.nome);
                     }
                 } 
                 else 

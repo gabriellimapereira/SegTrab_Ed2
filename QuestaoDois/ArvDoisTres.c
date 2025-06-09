@@ -210,6 +210,20 @@ ArvDoisTres* quebrarNo(ArvDoisTres **no, Dados info, Dados *sobe, ArvDoisTres *f
     }
     return maior;
 }
+
+int infoNaoTaNoNo(ArvDoisTres *no, Dados info) {
+    // Se for igual a infoUm, então está no nó
+    if (strcmp(no->infoUm.cep, info.cep) == 0)
+        return 0;
+
+    // Se tiver segundo dado e for igual a infoDois, também está no nó
+    if (no->quantInfo == 2 && strcmp(no->infoDois.cep, info.cep) == 0)
+        return 0;
+
+    // Se não encontrou, então não está no nó
+    return 1;
+}
+
 ArvDoisTres* inserirNo(ArvDoisTres **raiz, ArvDoisTres *pai, Dados info, Dados *sobe) 
 {
     ArvDoisTres *maiorNo = NULL;
@@ -221,33 +235,37 @@ ArvDoisTres* inserirNo(ArvDoisTres **raiz, ArvDoisTres *pai, Dados info, Dados *
     {
         if ((*raiz)->esq == NULL) 
         {
-            if ((*raiz)->quantInfo == 1) 
-            {
-                adicionarInfo(raiz, info, NULL);
-            } 
-            else 
-            {
-                maiorNo = quebrarNo(raiz, info, sobe, NULL);
-                if (pai == NULL) 
+            if (infoNaoTaNoNo(*raiz, info)) {
+                if ((*raiz)->quantInfo == 1) 
                 {
-                    *raiz = criarNo(*sobe, *raiz, maiorNo);
-                    maiorNo = NULL;
+                    adicionarInfo(raiz, info, NULL);
+                } 
+                else 
+                {
+                    maiorNo = quebrarNo(raiz, info, sobe, NULL);
+                    if (pai == NULL) 
+                    {
+                        *raiz = criarNo(*sobe, *raiz, maiorNo);
+                        maiorNo = NULL;
+                    }
                 }
             }
         } 
         else 
         {
-            if (strcmp(info.cep, (*raiz)->infoUm.cep) < 0) 
-            {
-                maiorNo = inserirNo(&(*raiz)->esq, *raiz, info, sobe);
-            } 
-            else if ((*raiz)->quantInfo == 1 || strcmp(info.cep, (*raiz)->infoDois.cep) < 0) 
-            {
-                maiorNo = inserirNo(&(*raiz)->cen, *raiz, info, sobe);
-            } 
-            else 
-            {
-                maiorNo = inserirNo(&(*raiz)->dir, *raiz, info, sobe);
+            if (infoNaoTaNoNo(*raiz, info)) {
+                if (strcmp(info.cep, (*raiz)->infoUm.cep) < 0) 
+                {
+                    maiorNo = inserirNo(&(*raiz)->esq, *raiz, info, sobe);
+                } 
+                else if ((*raiz)->quantInfo == 1 || strcmp(info.cep, (*raiz)->infoDois.cep) < 0) 
+                {
+                    maiorNo = inserirNo(&(*raiz)->cen, *raiz, info, sobe);
+                } 
+                else 
+                {
+                    maiorNo = inserirNo(&(*raiz)->dir, *raiz, info, sobe);
+                }
             }
             if (maiorNo != NULL) 
             {
@@ -297,11 +315,11 @@ void exibirCeps(ArvDoisTres *raiz)
     if (raiz) 
     {
         exibirCeps(raiz->esq);
-        printf("Cep: %s\n", raiz->infoUm.cep);
+        printf("   Cep: %s\n", raiz->infoUm.cep);
         exibirCeps(raiz->cen);
         if (raiz->quantInfo == 2) 
         {
-            printf("Cep: %s\n", raiz->infoDois.cep);
+            printf("   Cep: %s\n", raiz->infoDois.cep);
             exibirCeps(raiz->dir);
         }
     }
@@ -312,12 +330,12 @@ void exibirCidades(ArvDoisTres *raiz)
     if (raiz) 
     {
         exibirCidades(raiz->esq);
-        printf("Cidade: %s\n", raiz->infoUm.cidade.nome);
+        printf("  Cidade: %s\n", raiz->infoUm.cidade.nome);
         exibirCeps(raiz->infoUm.cidade.ceps);
         exibirCeps(raiz->cen);
         if (raiz->quantInfo == 2) 
         {
-            printf("Cidade: %s\n", raiz->infoDois.cidade.nome);    
+            printf("  Cidade: %s\n", raiz->infoDois.cidade.nome);    
             exibirCeps(raiz->infoDois.cidade.ceps);
             exibirCidades(raiz->dir);
         }

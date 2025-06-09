@@ -50,6 +50,7 @@ void imprimirArv(ArvDoisTres *raiz, int nivel);
 void liberarArv(ArvDoisTres **raiz);
 void adicionarInfo(ArvDoisTres **no, Dados info, ArvDoisTres *subArvInfo);
 ArvDoisTres* quebrarNo(ArvDoisTres **no, Dados info, Dados *sobe, ArvDoisTres *filhoDir);
+int infoNaoTaNoNo(ArvDoisTres *no, Dados info);
 ArvDoisTres* inserirNo(ArvDoisTres **raiz, ArvDoisTres *pai, Dados info, Dados *sobe);
 ArvDoisTres* buscaNo(ArvDoisTres *raiz, const char *valor);
 
