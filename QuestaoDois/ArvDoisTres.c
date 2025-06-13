@@ -137,23 +137,6 @@ InfoPessoa lerInfoPessoa(Estado *raiz)
     return info;
 }
 
-void imprimirArv(ArvDoisTres *raiz, int nivel) 
-{
-    if (raiz == NULL) return;
-    imprimirArv(raiz->dir, nivel + 1);
-
-    for (int i = 0; i < nivel; i++)
-        printf("   ");
-
-    if (raiz->quantInfo == 1)
-        printf("[%s]\n", raiz->infoUm.cep);
-    else
-        printf("[%s|%s]\n", raiz->infoUm.cep, raiz->infoDois.cep);
-
-    imprimirArv(raiz->cen, nivel + 1);
-    imprimirArv(raiz->esq, nivel + 1);
-}
-
 void liberarArv(ArvDoisTres **raiz) 
 {
     if(*raiz) 
@@ -168,6 +151,7 @@ void liberarArv(ArvDoisTres **raiz)
         *raiz = NULL;
     }
 }
+
 void adicionarInfo(ArvDoisTres **no, Dados info, ArvDoisTres *subArvInfo) 
 {
     if (strcmp(info.cep, (*no)->infoUm.cep) > 0) 
@@ -211,16 +195,14 @@ ArvDoisTres* quebrarNo(ArvDoisTres **no, Dados info, Dados *sobe, ArvDoisTres *f
     return maior;
 }
 
-int infoNaoTaNoNo(ArvDoisTres *no, Dados info) {
-    // Se for igual a infoUm, então está no nó
-    if (strcmp(no->infoUm.cep, info.cep) == 0)
-        return 0;
+int infoNaoEstaNoNo(ArvDoisTres *no, Dados info) {
+    int retorno = 1;
 
-    // Se tiver segundo dado e for igual a infoDois, também está no nó
-    if (no->quantInfo == 2 && strcmp(no->infoDois.cep, info.cep) == 0)
-        return 0;
+    if (strcmp(no->infoUm.cep, info.cep) == 0) {
+        retorno = 0;
+    } else if (no->quantInfo == 2 && strcmp(no->infoDois.cep, info.cep) == 0)
+        retorno = 0;
 
-    // Se não encontrou, então não está no nó
     return 1;
 }
 
@@ -235,7 +217,7 @@ ArvDoisTres* inserirNo(ArvDoisTres **raiz, ArvDoisTres *pai, Dados info, Dados *
     {
         if ((*raiz)->esq == NULL) 
         {
-            if (infoNaoTaNoNo(*raiz, info)) {
+            if (infoNaoEstaNoNo(*raiz, info)) {
                 if ((*raiz)->quantInfo == 1) 
                 {
                     adicionarInfo(raiz, info, NULL);
@@ -253,7 +235,7 @@ ArvDoisTres* inserirNo(ArvDoisTres **raiz, ArvDoisTres *pai, Dados info, Dados *
         } 
         else 
         {
-            if (infoNaoTaNoNo(*raiz, info)) {
+            if (infoNaoEstaNoNo(*raiz, info)) {
                 if (strcmp(info.cep, (*raiz)->infoUm.cep) < 0) 
                 {
                     maiorNo = inserirNo(&(*raiz)->esq, *raiz, info, sobe);

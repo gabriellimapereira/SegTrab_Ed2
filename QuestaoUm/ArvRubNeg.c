@@ -145,21 +145,6 @@ int verificaPessoa(ArvRubNeg *raiz, const char *nome)
     return existe;
 }
 
-void imprimirArvore(ArvRubNeg *r, int espaco) 
-{
-    if (r == NULL) return;
-    const int DISTANCIA = 5;
-    espaco += DISTANCIA;
-    imprimirArvore(r->dir, espaco);
-    printf("\n");
-    for (int i = DISTANCIA; i < espaco; i++)
-    {
-        printf(" ");
-    }
-    printf("%s (%s)\n", r->info.cep, r->cor == 0 ? "P" : "V");
-    imprimirArvore(r->esq, espaco);
-}
-
 void liberarArvore(ArvRubNeg *r) 
 {
     if(r) 
@@ -311,13 +296,14 @@ ArvRubNeg *removeMenor(ArvRubNeg *raiz)
     if((*raiz).esq == NULL) 
     {
         free (raiz);
-        return NULL;
+        raiz = NULL;
     }
     if(cor((*raiz).esq) == preto && cor((*raiz).esq->esq) == preto)
     {
         raiz =  moveTwoEsqRed((*raiz).esq);
     }
     (*raiz).esq = removeMenor((*raiz).esq);
+    
     balanceamento(&raiz);
     return raiz;
 }
@@ -343,21 +329,23 @@ ArvRubNeg* removeNo(ArvRubNeg *raiz, const char *valor)
         if (strcmp(valor, raiz->info.cep) == 0 && raiz->dir == NULL) 
         {
             free(raiz);
-            return NULL;
-        }
-        if (cor(raiz->dir) == preto && cor(raiz->dir->esq) == preto) 
-            raiz = moveTwoDirRed(raiz);
-        if (strcmp(valor, raiz->info.cep) == 0) 
-        {
-            ArvRubNeg *menor = procuraMenor(raiz->dir);
-            raiz->info = menor->info;
-            raiz->dir = removeMenor(raiz->dir);
-        } 
-        else 
-        {
-            raiz->dir = removeNo(raiz->dir, valor);
+            raiz = NULL;
+        } else {
+            if (cor(raiz->dir) == preto && cor(raiz->dir->esq) == preto) 
+                raiz = moveTwoDirRed(raiz);
+            if (strcmp(valor, raiz->info.cep) == 0) 
+            {
+                ArvRubNeg *menor = procuraMenor(raiz->dir);
+                raiz->info = menor->info;
+                raiz->dir = removeMenor(raiz->dir);
+            } 
+            else 
+            {
+                raiz->dir = removeNo(raiz->dir, valor);
+            }
         }
     }
+
     balanceamento(&raiz);
     return raiz;
 }

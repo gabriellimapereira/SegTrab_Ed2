@@ -21,23 +21,6 @@ ArvRubNeg* criarNo(int dado) {
     return novoNo;
 }
 
-void imprimirArvore(ArvRubNeg *r, int espaco) {
-    if (r == NULL) return;
-
-    const int DISTANCIA = 5;
-    espaco += DISTANCIA;
-
-    imprimirArvore(r->dir, espaco);
-
-    printf("\n");
-    for (int i = DISTANCIA; i < espaco; i++)
-        printf(" ");
-    
-    printf("%d (%s)\n", r->info, r->cor == 0 ? "P" : "V");
-
-    imprimirArvore(r->esq, espaco);
-}
-
 void liberarArvore(ArvRubNeg *r) {
     if (r != NULL) {
         liberarArvore(r->esq);

@@ -49,7 +49,6 @@ typedef struct ArvRubNeg
 
 //Rubro-Negra
 ArvRubNeg* criarNo(Dados dado);
-void imprimirArvore(ArvRubNeg *raiz, int espaco);
 void liberarArvore(ArvRubNeg *raiz);
 ArvRubNeg* buscaNo(ArvRubNeg *raiz, const char *valor);
 int cor(ArvRubNeg *raiz);

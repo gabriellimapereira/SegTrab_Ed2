@@ -51,6 +51,7 @@ int main() {
                     printf("Estado inserido com sucesso!\n");
                     dadosQuaisquer.cidade = dadosCidade;
                     inserirNo(&(NoEstado->info.cidades), NULL, dadosQuaisquer, &sobe);
+                    NoEstado->info.quantCidades++;
                 } 
                 else 
                 {
@@ -69,6 +70,7 @@ int main() {
                     dadosQuaisquer.cidade = dadosCidade;
                     inserirNo(&(NoEstado->info.cidades), NULL, dadosQuaisquer, &sobe);
                     NoEstado->info.populacao += dadosCidade.populacao;
+                    NoEstado->info.quantCidades++;
                 }
                 else
                 {

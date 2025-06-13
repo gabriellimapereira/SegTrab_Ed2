@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+//Questão 01
 Estado* estadoMaisPopuloso(Estado *raiz) 
 {
     Estado *aux = raiz;
@@ -21,6 +22,7 @@ Estado* estadoMaisPopuloso(Estado *raiz)
     return estado;
 }
 
+//Questão 02
 void populacaoDaCapital(ArvRubNeg *raiz, const char *capital, int *populacao) 
 {
     if (raiz)
@@ -34,6 +36,7 @@ void populacaoDaCapital(ArvRubNeg *raiz, const char *capital, int *populacao)
     }
 }
 
+// Questão 03
 void cidadeMaisPopulosa(ArvRubNeg *raiz, const char *capital, ArvRubNeg **cidade) 
 {
     if (raiz)
@@ -50,6 +53,7 @@ void cidadeMaisPopulosa(ArvRubNeg *raiz, const char *capital, ArvRubNeg **cidade
     }
 } 
 
+// Questão 04
 void pessoasForaCepNatal(ArvRubNeg *pessoas, int *quantidade)
 {
     if(pessoas)
@@ -63,20 +67,7 @@ void pessoasForaCepNatal(ArvRubNeg *pessoas, int *quantidade)
     }
 }
 
-int estadoNatal(Estado *inicio, const char *cep, char *nomeCidade) 
-{
-    int existe = 0;
-    if(inicio) 
-    {
-        existe = cidadeNatal(inicio->info.cidades, cep, nomeCidade);
-        if(existe == 0)
-        {
-           existe = estadoNatal(inicio->prox, cep, nomeCidade);
-        }
-    } 
-    return existe;
-}
-
+// parte da questão 05
 int cidadeNatal(ArvRubNeg *cidades, const char *cep, char *nomeCidade)
 {
     int existe = 0;
@@ -99,6 +90,22 @@ int cidadeNatal(ArvRubNeg *cidades, const char *cep, char *nomeCidade)
     return existe;
 }
 
+// Questão 05
+int estadoNatal(Estado *inicio, const char *cep, char *nomeCidade) 
+{
+    int existe = 0;
+    if(inicio) 
+    {
+        existe = cidadeNatal(inicio->info.cidades, cep, nomeCidade);
+        if(existe == 0)
+        {
+           existe = estadoNatal(inicio->prox, cep, nomeCidade);
+        }
+    } 
+    return existe;
+}
+
+// Questão 06
 void nascidosQueNaoMoram(ArvRubNeg *pessoas, int *quantidade, const char *cepCidade) 
 {
     if (pessoas)
@@ -115,6 +122,7 @@ void nascidosQueNaoMoram(ArvRubNeg *pessoas, int *quantidade, const char *cepCid
     }
 }
 
+// Questão 07
 void moradoresNaoNascidos(ArvRubNeg *pessoas, int *quantidade, const char *cepCidade) 
 {
     if (pessoas)

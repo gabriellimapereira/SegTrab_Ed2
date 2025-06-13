@@ -46,11 +46,10 @@ typedef struct ArvDoisTres {
 
 //Dois-Três
 ArvDoisTres* criarNo(Dados info, ArvDoisTres *fEsq, ArvDoisTres *fCen);
-void imprimirArv(ArvDoisTres *raiz, int nivel);
 void liberarArv(ArvDoisTres **raiz);
 void adicionarInfo(ArvDoisTres **no, Dados info, ArvDoisTres *subArvInfo);
 ArvDoisTres* quebrarNo(ArvDoisTres **no, Dados info, Dados *sobe, ArvDoisTres *filhoDir);
-int infoNaoTaNoNo(ArvDoisTres *no, Dados info);
+int infoNaoEstaNoNo(ArvDoisTres *no, Dados info);
 ArvDoisTres* inserirNo(ArvDoisTres **raiz, ArvDoisTres *pai, Dados info, Dados *sobe);
 ArvDoisTres* buscaNo(ArvDoisTres *raiz, const char *valor);
 
@@ -79,6 +78,6 @@ void populacaoDaCapital(ArvDoisTres *raiz, const char *capital, int *populacao);
 void cidadeMaisPopulosa(ArvDoisTres *raiz, const char *capital, ArvDoisTres**cidade); //3
 void pessoasForaCepNatal(ArvDoisTres *pessoas, int *quantidade);//4
 int cidadeNatal(ArvDoisTres *cidades, const char *cep, char *nomeCidade);//5
-int estadoNatal(Estado *inicio, const char *cep, char *nomeCidade);
+int estadoNatal(Estado *inicio, const char *cep, char *nomeCidade); // 5
 void nascidosQueNaoMoram(ArvDoisTres *pessoas, int *quantidade, const char *cepCidade);//6
 void moradoresNaoNascidos(ArvDoisTres *pessoas, int *quantidade, const char *cepCidade);//7
