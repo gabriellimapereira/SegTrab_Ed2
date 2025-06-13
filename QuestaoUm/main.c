@@ -161,14 +161,23 @@ int main()
                         printf("Digite o CEP a ser removido: \n"); 
                         setbuf(stdin, NULL);
                         scanf("%[^\n]", cep);
-                        existe = verificaCep(noCidade->info.cidade.ceps, cep);
+                        dadoInt = remocao(&noCidade->info.cidade.ceps, cep);
+                        if(dadoInt)
+                        {
+                            printf("CEP removido!\n");
+                        }
+                        else
+                        {
+                            printf("Falha na remocao!\n");
+                        }
+                        /*existe = verificaCep(noCidade->info.cidade.ceps, cep);
                         if(existe)
                         {
                             noCidade->info.cidade.ceps = removeNo(noCidade->info.cidade.ceps, cep);
                             printf("CEP removido!\n");
                         } 
                         else 
-                            printf("CEP nao encontrado!");
+                            printf("CEP nao encontrado!");*/
                     }
                     else
                         printf("Cidade nao encontrada!\n");

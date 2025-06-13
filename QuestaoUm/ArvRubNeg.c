@@ -37,7 +37,7 @@ void lerCep(char *cep)
 int verificaCep(ArvRubNeg *ceps, const char *cep) 
 {
     int existe = 0;
-    if (ceps) 
+    if(ceps) 
     {
         int cmp = strcmp(cep, ceps->info.cep);
         if(cmp == 0)
@@ -295,7 +295,8 @@ ArvRubNeg *removeMenor(ArvRubNeg *raiz)
 {
     if((*raiz).esq == NULL) 
     {
-        free (raiz);
+        ArvRubNeg *aux = raiz; //adicionei o aux
+        free(aux);
         raiz = NULL;
     }
     if(cor((*raiz).esq) == preto && cor((*raiz).esq->esq) == preto)
@@ -303,7 +304,6 @@ ArvRubNeg *removeMenor(ArvRubNeg *raiz)
         raiz =  moveTwoEsqRed((*raiz).esq);
     }
     (*raiz).esq = removeMenor((*raiz).esq);
-    
     balanceamento(&raiz);
     return raiz;
 }
@@ -328,7 +328,8 @@ ArvRubNeg* removeNo(ArvRubNeg *raiz, const char *valor)
             rotDir(&raiz);
         if (strcmp(valor, raiz->info.cep) == 0 && raiz->dir == NULL) 
         {
-            free(raiz);
+            ArvRubNeg *aux = raiz; //adicionei o aux
+            free(aux);
             raiz = NULL;
         } else {
             if (cor(raiz->dir) == preto && cor(raiz->dir->esq) == preto) 
@@ -345,9 +346,24 @@ ArvRubNeg* removeNo(ArvRubNeg *raiz, const char *valor)
             }
         }
     }
-
     balanceamento(&raiz);
     return raiz;
+}
+
+int remocao(ArvRubNeg **raiz, const char *valor)
+{
+    int removido = 0;
+    if(verificaCep(*raiz, valor))
+    {
+        ArvRubNeg *h = *raiz;
+        *raiz = removeNo(*raiz, valor);
+        if(*raiz != NULL)
+        {
+            (*raiz)->cor = preto;
+        }
+        removido = 1;
+    }
+    return removido;
 }
 
 void exibirCeps(ArvRubNeg *raiz) 

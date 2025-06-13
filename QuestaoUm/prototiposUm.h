@@ -63,6 +63,7 @@ ArvRubNeg* moveTwoDirRed(ArvRubNeg *raiz);
 ArvRubNeg *removeMenor(ArvRubNeg *raiz);
 ArvRubNeg* procuraMenor(ArvRubNeg *raiz);
 ArvRubNeg* removeNo(ArvRubNeg *raiz, const char *valor);
+int remocao(ArvRubNeg **raiz, const char *valor);
 void exibirCeps(ArvRubNeg *raiz);
 void exibirCidades(ArvRubNeg *raiz);
 void exibirPessoas(ArvRubNeg *raiz);
