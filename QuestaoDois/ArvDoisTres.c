@@ -312,12 +312,12 @@ void exibirCidades(ArvDoisTres *raiz)
     if (raiz) 
     {
         exibirCidades(raiz->esq);
-        printf("  Cidade: %s\n", raiz->infoUm.cidade.nome);
+        printf("  Cidade: %s População: %d\n", raiz->infoUm.cidade.nome, raiz->infoUm.cidade.populacao);
         exibirCeps(raiz->infoUm.cidade.ceps);
         exibirCeps(raiz->cen);
         if (raiz->quantInfo == 2) 
         {
-            printf("  Cidade: %s\n", raiz->infoDois.cidade.nome);    
+            printf("  Cidade: %s População: %d\n", raiz->infoDois.cidade.nome, raiz->infoDois.cidade.populacao);    
             exibirCeps(raiz->infoDois.cidade.ceps);
             exibirCidades(raiz->dir);
         }
@@ -329,11 +329,13 @@ void exibirPessoas(ArvDoisTres *raiz)
     if (raiz) 
     {
         exibirPessoas(raiz->esq);
-        printf("CPF: %s\n", raiz->infoUm.pessoa.cpf);
+        printf("\nNome: %s CPF: %s ", raiz->infoUm.pessoa.nome, raiz->infoUm.pessoa.cpf);
+        printf("Cidade natal: %s Cidade atual: %s", raiz->infoUm.pessoa.cepNatal, raiz->infoUm.pessoa.cepAtual);
         exibirPessoas(raiz->cen);
         if (raiz->quantInfo == 2) 
         {
-            printf("CPF: %s\n", raiz->infoDois.pessoa.cpf);
+            printf("\nNome: %s CPF: %s ", raiz->infoDois.pessoa.nome, raiz->infoDois.pessoa.cpf);
+            printf("Cidade natal: %s Cidade atual: %s", raiz->infoDois.pessoa.cepNatal, raiz->infoDois.pessoa.cepAtual);
             exibirPessoas(raiz->dir);
         }
     }

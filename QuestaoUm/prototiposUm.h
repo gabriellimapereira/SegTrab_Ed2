@@ -72,7 +72,6 @@ void lerCep(char *cep);
 int verificaCep(ArvRubNeg *ceps, const char *cep);
 int verificaCepCidade(ArvRubNeg *cidades, const char *cep);
 int verificaCepEstado(Estado *inicio, const char *cep);
-int verificaPessoa(ArvRubNeg *raiz, const char *nome);
 InfoPessoa lerInfoPessoa(Estado *raiz);
 
 //Estados - DuplaEncadeada

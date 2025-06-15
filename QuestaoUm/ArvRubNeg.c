@@ -124,27 +124,6 @@ InfoPessoa lerInfoPessoa(Estado *raiz)
     return info;
 }
 
-int verificaPessoa(ArvRubNeg *raiz, const char *nome)
-{
-    int existe = 0;
-    if (raiz)
-    {
-        if (strcmp(raiz->info.pessoa.nome, nome) == 0)
-        {
-            existe = 1;
-        }
-        else
-        {
-            existe = verificaPessoa(raiz->esq, nome);
-            if (!existe)
-            {
-                existe = verificaPessoa(raiz->dir, nome);
-            }
-        }
-    }
-    return existe;
-}
-
 void liberarArvore(ArvRubNeg *r) 
 {
     if(r) 
@@ -295,7 +274,7 @@ ArvRubNeg *removeMenor(ArvRubNeg *raiz)
 {
     if((*raiz).esq == NULL) 
     {
-        ArvRubNeg *aux = raiz; //adicionei o aux
+        ArvRubNeg *aux = raiz; 
         free(aux);
         raiz = NULL;
     }
@@ -328,7 +307,7 @@ ArvRubNeg* removeNo(ArvRubNeg *raiz, const char *valor)
             rotDir(&raiz);
         if (strcmp(valor, raiz->info.cep) == 0 && raiz->dir == NULL) 
         {
-            ArvRubNeg *aux = raiz; //adicionei o aux
+            ArvRubNeg *aux = raiz; 
             free(aux);
             raiz = NULL;
         } else {
@@ -346,14 +325,14 @@ ArvRubNeg* removeNo(ArvRubNeg *raiz, const char *valor)
             }
         }
     }
-    balanceamento(&raiz);
+    if (raiz) balanceamento(&raiz);
     return raiz;
 }
 
 int remocao(ArvRubNeg **raiz, const char *valor)
 {
     int removido = 0;
-    if(verificaCep(*raiz, valor))
+    if(buscaNo(*raiz, valor))
     {
         ArvRubNeg *h = *raiz;
         *raiz = removeNo(*raiz, valor);
@@ -381,7 +360,7 @@ void exibirCidades(ArvRubNeg *raiz)
     if(raiz) 
     {
         exibirCidades(raiz->esq);
-        printf("  Cidade: %s\n", raiz->info.cidade.nome);
+        printf("  Cidade: %s População: %d\n", raiz->info.cidade.nome, raiz->info.cidade.populacao);
         if (raiz->info.cidade.ceps) 
         {
             printf("  Árvore de ceps dessa cidade: \n");
@@ -396,8 +375,8 @@ void exibirPessoas(ArvRubNeg *raiz)
     if(raiz) 
     {
         exibirPessoas(raiz->esq);
-        printf("\nCPF: %s ", raiz->info.pessoa.cpf);
-        printf("cidade natal: %s cidade atual: %s", raiz->info.pessoa.cepNatal, raiz->info.pessoa.cepAtual);
+        printf("\nNome: %s CPF: %s ", raiz->info.pessoa.nome, raiz->info.pessoa.cpf);
+        printf("Cidade natal: %s Cidade atual: %s", raiz->info.pessoa.cepNatal, raiz->info.pessoa.cepAtual);
         exibirPessoas(raiz->dir);
     }
 }

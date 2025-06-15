@@ -142,13 +142,6 @@ int main() {
                 {
                     ArvDoisTres *capital = buscaNo(NoEstado->info.cidades, NoEstado->info.capital);
                     printf("Populacao da capital %s: %d\n", capital->infoUm.cidade.nome, capital->infoUm.cidade.populacao);
-                    /*
-                    dado = 0;
-                    populacaoDaCapital(NoEstado->info.cidades, NoEstado->info.capital, &dado);
-                    if(dado)
-                    {
-                        printf("Populacao da capital %d: %d\n", NoEstado->info.capital, dado);
-                    } */
                 }
                 else
                 {
@@ -253,8 +246,9 @@ int main() {
                 }
                 break;
             case 14:
+                printf("\nEstados: ");
                 exibirEstados(estados);
-                printf("\n");
+                printf("\nPessoas: ");
                 exibirPessoas(pessoas);
                 break;
             case 0:

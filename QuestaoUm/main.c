@@ -170,14 +170,6 @@ int main()
                         {
                             printf("Falha na remocao!\n");
                         }
-                        /*existe = verificaCep(noCidade->info.cidade.ceps, cep);
-                        if(existe)
-                        {
-                            noCidade->info.cidade.ceps = removeNo(noCidade->info.cidade.ceps, cep);
-                            printf("CEP removido!\n");
-                        } 
-                        else 
-                            printf("CEP nao encontrado!");*/
                     }
                     else
                         printf("Cidade nao encontrada!\n");
@@ -187,18 +179,17 @@ int main()
                 break;
             case 6:
                 //removerPessoa();
-                printf("Digite o nome da pessoa para remover: "); 
+                printf("Digite o CPF da pessoa para remover: "); 
                 setbuf(stdin, NULL);
                 scanf("%[^\n]", nome);
-                existe = verificaPessoa(pessoas, nome);
-                if(existe)
+                dadoInt = remocao(&pessoas, nome);
+                if(dadoInt)
                 {
-                    pessoas = removeNo(pessoas, nome);
                     printf("Pessoa removida com sucesso!\n");
                 }
                 else
                 {
-                    printf("Pessoa nao cadastrada!\n");
+                    printf("Falha na remocao!\n");
                 }
                 break;
             case 7:
