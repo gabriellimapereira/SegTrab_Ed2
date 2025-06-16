@@ -199,52 +199,71 @@ int main() {
                 break;
             case 12:
                 //nascidosQueNaoMoram();
-                printf("Digite o cep: "); 
+                printf("Digite o nome do estado: ");
                 setbuf(stdin, NULL);
-                scanf("%[^\n]", cep);
-                existe = verificaCepEstado(estados, cep);
-                if(existe)
-                {
-                    dadoInt = 0;
-                    nascidosQueNaoMoram(pessoas, &dadoInt, cep);
-                    if(dado)
+                scanf("%[^\n]", nome);
+                NoEstado = buscarEstado(estados, nome);
+                if (NoEstado) {
+                    printf("Digite o nome da cidade: ");
+                    setbuf(stdin, NULL);
+                    scanf("%[^\n]", nome);
+                    noCidade = buscaNo(NoEstado->info.cidades, nome);
+                    if (noCidade) {
+                        dadoInt = 0;
+                        nascidosQueNaoMoram(pessoas, &dadoInt, noCidade, nome);
+                        if(dadoInt)
+                        {
+                            if (strcmp(noCidade->infoUm.cidade.nome, nome) == 0) 
+                                printf("%d pessoas nao moram na cidade %s.\n", dadoInt, noCidade->infoUm.cidade.nome);
+                            else 
+                                printf("%d pessoas nao moram na cidade %s.\n", dadoInt, noCidade->infoDois.cidade.nome);
+                        }
+                        else
+                        {
+                            printf("Todos moram na cidade natal!\n");
+                        }
+                    } 
+                    else 
                     {
-                        printf("%d pessoas nao moram na cidade natal %s.\n", dadoInt, cep);
+                        printf("Cidade nao encontrada!\n");
                     }
-                    else
-                    {
-                        printf("Todos moram na cidade natal!\n");
-                    }
-                }
-                else
-                {
-                    printf("Cep invalido!\n");
-                }
-                break;
+                }                
+            break;
             case 13:
                 //moradoresNaoNascidos();
-                printf("Digite o cep: "); 
+                printf("Digite o nome do estado: ");
                 setbuf(stdin, NULL);
-                scanf("%[^\n]", cep);
-                existe = verificaCepEstado(estados, cep);
-                if(existe)
-                {
-                    dadoInt = 0;
-                    moradoresNaoNascidos(pessoas, &dadoInt, cep);
-                    if(dado)
-                    {
-                        printf("%d pessoas nao nasceram na cidade %s.\n", dadoInt, cep); 
+                scanf("%[^\n]", nome);
+                NoEstado = buscarEstado(estados, nome);
+                if (NoEstado) {
+                    printf("Digite o nome da cidade: ");
+                    setbuf(stdin, NULL);
+                    scanf("%[^\n]", nome);
+                    noCidade = buscaNo(NoEstado->info.cidades, nome);
+                    if (noCidade) {
+                        dadoInt = 0;
+                        moradoresNaoNascidos(pessoas, &dadoInt, noCidade, nome);
+                        if(dadoInt)
+                        {
+                            if (strcmp(noCidade->infoUm.cidade.nome, nome) == 0) 
+                                printf("%d pessoas nao moram na cidade %s.\n", dadoInt, noCidade->infoUm.cidade.nome);
+                            else 
+                                printf("%d pessoas nao moram na cidade %s.\n", dadoInt, noCidade->infoDois.cidade.nome);
+                        }
+                        else
+                        {
+                            printf("Todos nasceram na cidade!\n");
+                        }                    
                     }
-                    else
+                    else 
                     {
-                        printf("Todos nasceram na cidade!\n");
+                        printf("Cidade nao encontrada!\n");
                     }
                 }
-                else
-                {
-                    printf("Cep invalido!\n");
+                else {
+                    printf("Estado nao encontrado!\n");
                 }
-                break;
+            break;
             case 14:
                 printf("\nEstados: ");
                 exibirEstados(estados);

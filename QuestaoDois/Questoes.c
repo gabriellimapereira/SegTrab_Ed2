@@ -162,51 +162,52 @@ int estadoNatal(Estado *inicio, const char *cep, char *nomeCidade)
 }
 
 // Questão 6: Quantas pessoas nascidas em uma determinada cidade não moram na cidade natal?
-void nascidosQueNaoMoram(ArvDoisTres *pessoas, int *quantidade, const char *cepCidade) 
+void nascidosQueNaoMoram(ArvDoisTres *pessoas, int *quantidade, ArvDoisTres *cidade, const char *nomeDaCidade) 
 {
     if (pessoas)
     {
-        if (strcmp(pessoas->infoUm.pessoa.cepNatal, cepCidade) == 0 &&
-            strcmp(pessoas->infoUm.pessoa.cepAtual, cepCidade) != 0)
-        {
-            (*quantidade)++;
-        }
-        if (pessoas->quantInfo == 2)
-        {
-            if (strcmp(pessoas->infoDois.pessoa.cepNatal, cepCidade) == 0 &&
-                strcmp(pessoas->infoDois.pessoa.cepAtual, cepCidade) != 0)
+        if (strcmp(cidade->infoUm.cidade.nome, nomeDaCidade) == 0) {
+            if (verificaCep(cidade->infoUm.cidade.ceps, pessoas->infoUm.pessoa.cepNatal) &&
+                verificaCep(cidade->infoUm.cidade.ceps, pessoas->infoUm.pessoa.cepAtual) == 0)
             {
                 (*quantidade)++;
             }
         }
-        nascidosQueNaoMoram(pessoas->esq, quantidade, cepCidade);
-        nascidosQueNaoMoram(pessoas->cen, quantidade, cepCidade);
+        else {
+            if (verificaCep(cidade->infoDois.cidade.ceps, pessoas->infoDois.pessoa.cepNatal)  &&
+                verificaCep(cidade->infoDois.cidade.ceps, pessoas->infoDois.pessoa.cepAtual) == 0)
+            {
+                (*quantidade)++;
+            }
+        }
+        nascidosQueNaoMoram(pessoas->esq, quantidade, cidade, nomeDaCidade);
+        nascidosQueNaoMoram(pessoas->cen, quantidade, cidade, nomeDaCidade);
         if (pessoas->quantInfo == 2) 
-            nascidosQueNaoMoram(pessoas->dir, quantidade, cepCidade);
+            nascidosQueNaoMoram(pessoas->dir, quantidade, cidade, nomeDaCidade);
     }
 }
 
 // Questão 7: Quantas pessoas que moram em uma determinada cidade não nasceram na cidade?
-void moradoresNaoNascidos(ArvDoisTres *pessoas, int *quantidade, const char *cepCidade) 
+void moradoresNaoNascidos(ArvDoisTres *pessoas, int *quantidade, ArvDoisTres *cidade, const char *nomeDaCidade) 
 {
     if (pessoas)
     {
-        if (strcmp(pessoas->infoUm.pessoa.cepAtual, cepCidade) == 0 &&
-            strcmp(pessoas->infoUm.pessoa.cepNatal, cepCidade) != 0)
-        {
-            (*quantidade)++;
-        }
-        if (pessoas->quantInfo == 2)
-        {
-            if (strcmp(pessoas->infoDois.pessoa.cepAtual, cepCidade) == 0 &&
-                strcmp(pessoas->infoDois.pessoa.cepNatal, cepCidade) != 0)
+        if (strcmp(cidade->infoUm.cidade.nome, nomeDaCidade) == 0) {
+            if (verificaCep(cidade->infoUm.cidade.ceps, pessoas->infoUm.pessoa.cepAtual) &&
+                verificaCep(cidade->infoUm.cidade.ceps, pessoas->infoUm.pessoa.cepNatal) == 0)
+            {
+                (*quantidade)++;
+            }
+        } else {
+            if (verificaCep(cidade->infoDois.cidade.ceps, pessoas->infoDois.pessoa.cepAtual) &&
+                verificaCep(cidade->infoDois.cidade.ceps, pessoas->infoDois.pessoa.cepNatal) == 0)
             {
                 (*quantidade)++;
             }
         }
-        moradoresNaoNascidos(pessoas->esq, quantidade, cepCidade);
-        moradoresNaoNascidos(pessoas->cen, quantidade, cepCidade);
+        moradoresNaoNascidos(pessoas->esq, quantidade, cidade, nomeDaCidade);
+        moradoresNaoNascidos(pessoas->cen, quantidade, cidade, nomeDaCidade);
         if (pessoas->quantInfo == 2) 
-            moradoresNaoNascidos(pessoas->dir, quantidade, cepCidade);
+            moradoresNaoNascidos(pessoas->dir, quantidade, cidade, nomeDaCidade);
     }
 }

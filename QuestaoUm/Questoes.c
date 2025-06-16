@@ -106,35 +106,34 @@ int estadoNatal(Estado *inicio, const char *cep, char *nomeCidade)
 }
 
 // Questão 06
-void nascidosQueNaoMoram(ArvRubNeg *pessoas, int *quantidade, const char *cepCidade) 
+void nascidosQueNaoMoram(ArvRubNeg *pessoas, int *quantidade, ArvRubNeg *cidade) 
 {
     if (pessoas)
     {
-        if (strcmp(pessoas->info.pessoa.cepNatal, cepCidade) == 0)
+        if (verificaCep(cidade->info.cidade.ceps, pessoas->info.pessoa.cepNatal))
         {
-            if (strcmp(pessoas->info.pessoa.cepAtual, cepCidade) != 0)
+            if (verificaCep(cidade->info.cidade.ceps, pessoas->info.pessoa.cepAtual) == 0)
             {
                 (*quantidade)++;
             }
         }
-        nascidosQueNaoMoram(pessoas->esq, quantidade, cepCidade);
-        nascidosQueNaoMoram(pessoas->dir, quantidade, cepCidade);
+        nascidosQueNaoMoram(pessoas->esq, quantidade, cidade);
+        nascidosQueNaoMoram(pessoas->dir, quantidade, cidade);
     }
 }
 
 // Questão 07
-void moradoresNaoNascidos(ArvRubNeg *pessoas, int *quantidade, const char *cepCidade) 
-{
+void moradoresNaoNascidos(ArvRubNeg *pessoas, int *quantidade, ArvRubNeg *cidade) {
     if (pessoas)
     {
-        if (strcmp(pessoas->info.pessoa.cepAtual, cepCidade) == 0)
+        if (verificaCep(cidade->info.cidade.ceps, pessoas->info.pessoa.cepAtual))
         {
-            if (strcmp(pessoas->info.pessoa.cepNatal, cepCidade) != 0)
+            if (verificaCep(cidade->info.cidade.ceps, pessoas->info.pessoa.cepNatal) == 0)
             {
                 (*quantidade)++;
             }
         }
-        moradoresNaoNascidos(pessoas->esq, quantidade, cepCidade);
-        moradoresNaoNascidos(pessoas->dir, quantidade, cepCidade);
+        nascidosQueNaoMoram(pessoas->esq, quantidade, cidade);
+        nascidosQueNaoMoram(pessoas->dir, quantidade, cidade);
     }
 }

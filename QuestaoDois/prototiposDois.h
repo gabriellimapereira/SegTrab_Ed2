@@ -79,5 +79,5 @@ void cidadeMaisPopulosa(ArvDoisTres *raiz, const char *capital, ArvDoisTres**cid
 void pessoasForaCepNatal(ArvDoisTres *pessoas, int *quantidade);//4
 int cidadeNatal(ArvDoisTres *cidades, const char *cep, char *nomeCidade);//5
 int estadoNatal(Estado *inicio, const char *cep, char *nomeCidade); // 5
-void nascidosQueNaoMoram(ArvDoisTres *pessoas, int *quantidade, const char *cepCidade);//6
-void moradoresNaoNascidos(ArvDoisTres *pessoas, int *quantidade, const char *cepCidade);//7
+void nascidosQueNaoMoram(ArvDoisTres *pessoas, int *quantidade, ArvDoisTres *cepCidade, const char *nomeDaCidade);//6
+void moradoresNaoNascidos(ArvDoisTres *pessoas, int *quantidade, ArvDoisTres *cepCidade, const char *nomeDaCidade);//7

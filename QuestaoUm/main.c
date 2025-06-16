@@ -54,7 +54,6 @@ int main()
                     printf("Estado inserido com sucesso!\n");
                     dadosQuaisquer.cidade = dadosCidade;
                     inseriu = insereNo(&(NoEstado->info.cidades), criarNo(dadosQuaisquer));
-                    NoEstado->info.quantCidades++;
                 } 
                 else 
                 {
@@ -232,7 +231,7 @@ int main()
                 NoEstado = buscarEstado(estados, nome);
                 if(NoEstado)
                 {
-                    noCidade = NULL;
+                    noCidade = NoEstado->info.cidades;
                     if(NoEstado->info.cidades->esq == NULL && NoEstado->info.cidades->dir == NULL)
                     {
                         printf("A cidade mais populosa eh a capital!\n");
@@ -240,7 +239,7 @@ int main()
                     else
                     {
                         cidadeMaisPopulosa(NoEstado->info.cidades, NoEstado->info.capital, &noCidade);
-                         printf("Cidade mais populosa: %s\n", noCidade->info.cidade.nome);
+                        printf("Cidade mais populosa: %s\n", noCidade->info.cidade.nome);
                     }
                 } 
                 else 
@@ -279,50 +278,63 @@ int main()
                 break;
             case 12:
                 //nascidosQueNaoMoram();
-                printf("Digite o cep: "); 
+                printf("Digite o nome do estado: ");
                 setbuf(stdin, NULL);
-                scanf("%[^\n]", cep);
-                existe = verificaCepEstado(estados, cep);
-                if(existe)
-                {
-                    dadoInt = 0;
-                    nascidosQueNaoMoram(pessoas, &dadoInt, cep);
-                    if(dado)
+                scanf("%[^\n]", nome);
+                NoEstado = buscarEstado(estados, nome);
+                if (NoEstado) {
+                    printf("Digite o nome da cidade: ");
+                    setbuf(stdin, NULL);
+                    scanf("%[^\n]", nome);
+                    noCidade = buscaNo(NoEstado->info.cidades, nome);
+                    if (noCidade) {
+                        dadoInt = 0;
+                        nascidosQueNaoMoram(pessoas, &dadoInt, noCidade);
+                        if(dadoInt)
+                        {
+                            printf("%d pessoas nao moram na cidade %s.\n", dadoInt, noCidade->info.cidade.nome);
+                        }
+                        else
+                        {
+                            printf("Todos moram na cidade natal!\n");
+                        }
+                    } 
+                    else 
                     {
-                        printf("%d pessoas nao moram na cidade natal %s.\n", dadoInt, cep);
+                        printf("Cidade nao encontrada!\n");
                     }
-                    else
-                    {
-                        printf("Todos moram na cidade natal!\n");
-                    }
-                }
-                else
-                {
-                    printf("Cep invalido!\n");
                 }
                 break;
             case 13:
                 //moradoresNaoNascidos();
-                printf("Digite o cep: "); 
+                printf("Digite o nome do estado: ");
                 setbuf(stdin, NULL);
-                scanf("%[^\n]", cep);
-                existe = verificaCepEstado(estados, cep);
-                if(existe)
-                {
-                    dadoInt = 0;
-                    moradoresNaoNascidos(pessoas, &dadoInt, cep);
-                    if(dado)
-                    {
-                        printf("%d pessoas nao nasceram na cidade %s.\n", dadoInt, cep);
+                scanf("%[^\n]", nome);
+                NoEstado = buscarEstado(estados, nome);
+                if (NoEstado) {
+                    printf("Digite o nome da cidade: ");
+                    setbuf(stdin, NULL);
+                    scanf("%[^\n]", nome);
+                    noCidade = buscaNo(NoEstado->info.cidades, nome);
+                    if (noCidade) {
+                        dadoInt = 0;
+                        moradoresNaoNascidos(pessoas, &dadoInt, noCidade);
+                        if(dadoInt)
+                        {
+                            printf("%d pessoas nao nasceram em %s e moram nela.\n", dadoInt, noCidade->info.cidade.nome);
+                        }
+                        else
+                        {
+                            printf("Todos nasceram na cidade!\n");
+                        }                    
                     }
-                    else
+                    else 
                     {
-                        printf("Todos nasceram na cidade!\n");
+                        printf("Cidade nao encontrada!\n");
                     }
                 }
-                else
-                {
-                    printf("Cep invalido!\n");
+                else {
+                    printf("Estado nao encontrado!\n");
                 }
                 break;
             case 14:
